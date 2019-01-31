@@ -1,11 +1,13 @@
 package model;
 
-public class Patient {
+public class Patient extends Person{
 
-    private int balance;
-    private int phoneNumber;
-    private String email;
     private Insurance insurance;
+    private PaymentCard paymentCard;
 
+
+    public double getAccountBalance(){
+        return 0;
+    }
 
 }

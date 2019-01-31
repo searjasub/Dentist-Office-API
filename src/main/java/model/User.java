@@ -1,16 +1,36 @@
 package model;
 
-public class User extends Person {
+import java.io.Serializable;
 
+public class User implements Serializable {
+
+    private String name, lastName;
     private String username;
     private String password;
     private UserRole userRole;
 
     public User(String name, String lastName, String username, String password, UserRole userRole) {
-        super(name, lastName);
+        this.setName(name);
+        this.setLastName(lastName);
         this.setUsername(username);
         this.setPassword(password);
         this.setUserRole(userRole);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getUsername() {
