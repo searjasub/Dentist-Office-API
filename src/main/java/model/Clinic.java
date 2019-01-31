@@ -10,6 +10,7 @@ public class Clinic implements Serializable {
     private List<Payment> payments;
     private List<Appointment> appointments;
 
+
 //    public List<Provider> searchProviders(ProviderSearchCriteria criteria){
 //        return null;
 //    }
@@ -38,5 +39,39 @@ public class Clinic implements Serializable {
 
     public List<Appointment> getPastAppointment() {
         return null;
+    }
+
+
+    //GETTER AND SETTERS
+    public List<Provider> getProviders() {
+        return providers;
+    }
+
+    public void setProviders(List<Provider> providers) {
+        this.providers = providers;
+    }
+
+    public List<Patient> getPatients() {
+        return patients;
+    }
+
+    public void setPatients(List<Patient> patients) {
+        this.patients = patients;
+    }
+
+    public List<Payment> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<Payment> payments) {
+        this.payments = payments;
+    }
+
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
     }
 }

@@ -1,5 +1,6 @@
 package controller;
 
+import model.Clinic;
 import model.User;
 import model.UserRole;
 import view.UserInteraction;
@@ -19,59 +20,48 @@ public class App {
     private UserInteraction userInteraction = new UserInteraction();
     private List<User> userList = new ArrayList<>();
 
+    private Clinic clinic = new Clinic();
+
     public void start() throws IOException, ClassNotFoundException {
         int selection;
+
+        ObjectInputStream in = new ObjectInputStream(new FileInputStream(directory + "\\save.db"));
+        userList = (List<User>) in.readObject();
+        in.close();
+
         if (userList.isEmpty()) {
             addAdmin();
         } else {
-            userList = deserializeUser();
-            for (int i = 0; i < userList.size(); i++) {
-                if (!userList.get(i).getUsername().equals("admin")) {
-                    String name = userList.get(i).getName();
-                    String lastName = userList.get(i).getLastName();
-                    String username = userList.get(i).getUsername();
-                    String password = userList.get(i).getPassword();
-                    UserRole type = userList.get(i).getUserRole();
-                    userList.add(new User(name, lastName, username, password, type));
-                }
-            }
-            loginScreen();
-            boolean isDone = false;
-            while (!isDone) {
 
-                if (currentUser.getUserRole() == UserRole.ADMINISTRATIVE) {
-                    if (currentUser.getPassword().equals("1234Password")) {
-                        userInteraction.print("Welcome to the Dentist Office App, since is your first login please ");
+            //clinic = deserializeUser();
+            do {
+                loginScreen();
+                boolean isDone = false;
+                while (!isDone) {
 
-                        String newPass = passwordVerified(true);
-                        //currentUser.setPassword(newPass);
-                        for (User u :
-                                userList) {
-                            if (u.getUsername().equals(currentUser.getUsername())) {
-                                u.setPassword(newPass);
+                    if (currentUser.getUserRole() == UserRole.ADMINISTRATIVE) {
+                        if (currentUser.getPassword().equals("1234Password")) {
+                            userInteraction.print("Welcome to the Dentist Office App, since is your first login please ");
+
+                            String newPass = passwordVerified(true);
+                            //currentUser.setPassword(newPass);
+                            for (User u : userList) {
+                                if (u.getUsername().equals(currentUser.getUsername())) {
+                                    u.setPassword(newPass);
+                                }
                             }
+                            save();
                         }
-                        save();
+                        selection = userInteraction.mainMenu(true);
+                        isDone = adminMenuHandler(selection);
+                    } else {
+                        selection = userInteraction.mainMenu(false);
+                        isDone = standardMenuHandler(selection);
                     }
-                    selection = userInteraction.mainMenu(true);
-                    isDone = adminMenuHandler(selection);
-                } else {
-                    selection = userInteraction.mainMenu(false);
-                    isDone = standardMenuHandler(selection);
                 }
-            }
 
-
-
+            } while (true);
         }
-    }
-
-    private List<User> deserializeUser() throws IOException, ClassNotFoundException {
-        List<User> users;
-        ObjectInputStream in = new ObjectInputStream(new FileInputStream(directory + "\\save.db"));
-        users = (List<User>) in.readObject();
-        in.close();
-        return users;
     }
 
     private void addAdmin() throws IOException, ClassNotFoundException {
@@ -102,6 +92,7 @@ public class App {
             case 4:
                 userInteraction.println("You have successfully logged out\n\n");
                 currentUser = null;
+                save();
                 return true;
             default:
                 break;
@@ -163,9 +154,12 @@ public class App {
 
     private void save() throws IOException {
         makeDirIfNotExists();
-        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(directory + "\\save.db"));
+        FileOutputStream fileOutputStream = new FileOutputStream(directory + "\\save.db");
+        ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
         out.writeObject(userList);
         out.close();
+        out.flush();
+        fileOutputStream.close();
     }
 
     private void makeDirIfNotExists() throws IOException {
