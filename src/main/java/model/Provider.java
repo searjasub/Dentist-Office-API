@@ -5,7 +5,7 @@ public class Provider extends Person {
     private ProviderTitle title;
 
     public Provider(String name, String lastName, String id, ProviderTitle title) {
-        super(name, lastName, id);
+        super(name, lastName);
         this.setTitle(title);
     }
 

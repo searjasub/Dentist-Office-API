@@ -3,12 +3,10 @@ package model;
 public class Person {
 
     private String name, lastName;
-    private String id = "D";
 
-    public Person(String name, String lastName, String id) {
+    public Person(String name, String lastName) {
         this.setName(name);
         this.setLastName(lastName);
-        this.setId(id);
     }
 
     public Person() {
@@ -30,17 +28,8 @@ public class Person {
         this.lastName = lastName;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     @Override
     public String toString() {
-        return "Name: " + getName() + " " + getLastName() +
-                "ID: " + getId();
+        return "Name: " + getName() + " " + getLastName() ;
     }
 }

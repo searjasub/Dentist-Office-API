@@ -5,8 +5,8 @@ public class User extends Person {
     private String password;
     private Privilege privilege;
 
-    public User(String name, String lastName, String id, String password, Privilege privilege) {
-        super(name, lastName, id);
+    public User(String name, String lastName, String password, Privilege privilege) {
+        super(name, lastName);
         this.setPassword(password);
         this.setPrivilege(privilege);
     }
