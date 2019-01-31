@@ -25,23 +25,35 @@ public class App {
         if (userList.isEmpty()) {
             addAdmin();
         } else {
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream(directory + "\\sav.db"));
-            ArrayList<User> temp;
-            temp =  in.readObject();
-            for (User user : temp) {
-                String name = user.getName();
-                String lastName = user.getLastName();
-                String username = user.getUsername();
-                String password = user.getPassword();
-                UserType type = user.getUserType();
-                userList.add(new User(name, lastName, username, password, type));
+
+            userList = deserializeUser();
+
+            for (User user : userList) {
+                if (!user.getUsername().equals("admin")) {
+                    String name = user.getName();
+                    String lastName = user.getLastName();
+                    String username = user.getUsername();
+                    String password = user.getPassword();
+                    UserType type = user.getUserType();
+                    userList.add(new User(name, lastName, username, password, type));
+                }
             }
-            in.close();
 
             loginScreen();
             if (currentUser.getUserType() == UserType.ADMINISTRATIVE) {
                 if (currentUser.getPassword().equals("1234Password")) {
-                    passwordVerified();
+                    userInteraction.print("Welcome to the Dentist Office App, since is your first login please ");
+
+                    String newPass = passwordVerified(true);
+
+                    //currentUser.setPassword(newPass);
+                    for (User u :
+                            userList) {
+                        if(u.getUsername().equals(currentUser.getUsername())){
+                            u.setPassword(newPass);
+                        }
+                    }
+                    save();
                 }
                 selection = userInteraction.mainMenu(true);
                 adminMenuHandler(selection);
@@ -53,6 +65,14 @@ public class App {
 
     }
 
+    private List<User> deserializeUser() throws IOException, ClassNotFoundException {
+        List<User> users;
+        ObjectInputStream in = new ObjectInputStream(new FileInputStream(directory + "\\save.db"));
+        users = (List<User>) in.readObject();
+        in.close();
+        return users;
+    }
+
     private void addAdmin() throws IOException, ClassNotFoundException {
         User admin = new User("Administrator", "one", "admin", "1234Password", UserType.ADMINISTRATIVE);
         userList.add(admin);
@@ -61,33 +81,44 @@ public class App {
     }
 
     private void adminMenuHandler(int selection) throws IOException, ClassNotFoundException {
-        switch (selection) {
-            case 0:
-                int choice = userInteraction.manageUsersMenu();
-                manageUsers(choice);
-                break;
-            case 1:
-                //change password
-                passwordVerified();
-                break;
-            case 2:
-                //search
-                break;
-            case 3:
-                //reports
-                break;
-            case 4:
-                userInteraction.println("You have successfully logged out\n\n");
-                currentUser = null;
-                start();
-                break;
+
+        boolean wantToBeOut = false;
+        while (!wantToBeOut) {
+            switch (selection) {
+                case 0:
+                    int choice = userInteraction.manageUsersMenu();
+                    manageUsers(choice);
+                    break;
+                case 1:
+                    //change password
+                    currentUser.setPassword(passwordVerified(false));
+                    save();
+                    break;
+                case 2:
+                    //search
+                    break;
+                case 3:
+                    //reports
+                    break;
+                case 4:
+                    userInteraction.println("You have successfully logged out\n\n");
+                    currentUser = null;
+                    start();
+                    wantToBeOut = true;
+                    break;
+            }
         }
     }
 
-    private void passwordVerified() throws IOException {
+    private String passwordVerified(boolean isFirstTime) throws IOException {
+        String newPassword = null;
         boolean isValid = false;
         while (!isValid) {
-            String newPassword = userInteraction.changePassword();
+            if (isFirstTime) {
+                newPassword = userInteraction.changeFirstPassword();
+            } else {
+                newPassword = userInteraction.changePassword();
+            }
             String verification = userInteraction.verifyPassword();
             if (newPassword.equals(verification)) {
                 isValid = true;
@@ -96,6 +127,7 @@ public class App {
                 userInteraction.println("The passwords don't match, please try again.");
             }
         }
+        return newPassword;
     }
 
     private void manageUsers(int choice) throws IOException {
@@ -109,6 +141,8 @@ public class App {
                 break;
             case 3:
                 break;
+            default:
+                break;
         }
     }
 
@@ -117,6 +151,7 @@ public class App {
         User user = new User(person.getName(), person.getLastName(), userInteraction.getUsername(), userInteraction.getPassword(), userInteraction.getUserType());
         userList.add(user);
         save();
+        userInteraction.println("User " + person.getName() + " has been created");
     }
 
     private void save() throws IOException {
@@ -130,11 +165,8 @@ public class App {
         Path path = Paths.get(directory);
         if (!Files.exists(path)) {
             Files.createDirectories(path);
-            System.out.println("Directory created");
-        } else {
-
-            System.out.println("Directory already exists");
         }
+
     }
 
     private Person basicInfo() throws IOException {

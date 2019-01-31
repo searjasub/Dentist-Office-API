@@ -10,7 +10,7 @@ import java.util.List;
 
 public class UserInteraction {
 
-    private final String defaultQuestion = "What would you like to do?";
+    private final String defaultQuestion = "\nWhat would you like to do?";
 
     public void welcome() {
         ConsoleUI.displayMessage("Welcome to the managment office", false);
@@ -86,11 +86,11 @@ public class UserInteraction {
     }
 
     public String getUsername() throws IOException {
-        return ConsoleUI.promptForInput("Enter the name: ", false, true);
+        return ConsoleUI.promptForInput("Enter the username: ", false, true);
     }
 
     public String getPassword() throws IOException {
-        return ConsoleUI.promptForInput("Enter the name: ", false, true);
+        return ConsoleUI.promptForInput("Enter the password: ", false, true);
     }
 
     public UserType getUserType() throws IOException{
@@ -117,6 +117,10 @@ public class UserInteraction {
         return ConsoleUI.promptForInput("Enter new password", false, false);
     }
 
+    public String changeFirstPassword() throws IOException {
+        return ConsoleUI.promptForInput("enter new password\n", false, true);
+    }
+
     public String verifyPassword() throws IOException {
         return ConsoleUI.promptForInput("Re-enter password", false, false);
     }
@@ -133,6 +137,10 @@ public class UserInteraction {
 
     public void println(String message){
         System.out.println(message);
+    }
+
+    public void print(String message){
+        System.out.print(message);
     }
 
 }
