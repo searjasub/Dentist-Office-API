@@ -1,15 +1,17 @@
 package model;
 
-public class Person {
+import java.io.Serializable;
+
+public class Person implements Serializable {
 
     private String name, lastName;
+
+    public Person() {
+    }
 
     public Person(String name, String lastName) {
         this.setName(name);
         this.setLastName(lastName);
-    }
-
-    public Person() {
     }
 
     public String getName() {
@@ -32,4 +34,6 @@ public class Person {
     public String toString() {
         return "Name: " + getName() + " " + getLastName() ;
     }
+
+
 }
