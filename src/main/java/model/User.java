@@ -70,6 +70,6 @@ public class User implements Serializable {
     }
 
     public void changePassword(String password){
-
+        this.setPassword(password);
     }
 }

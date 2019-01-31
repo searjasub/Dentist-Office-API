@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Clinic implements Serializable {
@@ -9,6 +10,7 @@ public class Clinic implements Serializable {
     private List<Patient> patients;
     private List<Payment> payments;
     private List<Appointment> appointments;
+    private List<User> users = new ArrayList<>();
 
 
 //    public List<Provider> searchProviders(ProviderSearchCriteria criteria){
@@ -73,5 +75,13 @@ public class Clinic implements Serializable {
 
     public void setAppointments(List<Appointment> appointments) {
         this.appointments = appointments;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }

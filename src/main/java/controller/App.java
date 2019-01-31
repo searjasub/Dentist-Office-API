@@ -9,7 +9,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 public class App {
@@ -18,22 +17,19 @@ public class App {
     private static final String directory = "savables";
     private User currentUser;
     private UserInteraction userInteraction = new UserInteraction();
-    private List<User> userList = new ArrayList<>();
-
     private Clinic clinic = new Clinic();
 
     public void start() throws IOException, ClassNotFoundException {
         int selection;
 
         ObjectInputStream in = new ObjectInputStream(new FileInputStream(directory + "\\save.db"));
-        userList = (List<User>) in.readObject();
+        clinic.setUsers((List<User>) in.readObject());
+
         in.close();
 
-        if (userList.isEmpty()) {
+        if (clinic.getUsers().isEmpty()) {
             addAdmin();
         } else {
-
-            //clinic = deserializeUser();
             do {
                 loginScreen();
                 boolean isDone = false;
@@ -44,8 +40,7 @@ public class App {
                             userInteraction.print("Welcome to the Dentist Office App, since is your first login please ");
 
                             String newPass = passwordVerified(true);
-                            //currentUser.setPassword(newPass);
-                            for (User u : userList) {
+                            for (User u : clinic.getUsers()) {
                                 if (u.getUsername().equals(currentUser.getUsername())) {
                                     u.setPassword(newPass);
                                 }
@@ -59,14 +54,13 @@ public class App {
                         isDone = standardMenuHandler(selection);
                     }
                 }
-
             } while (true);
         }
     }
 
     private void addAdmin() throws IOException, ClassNotFoundException {
         User admin = new User("Administrator", "one", "admin", "1234Password", UserRole.ADMINISTRATIVE);
-        userList.add(admin);
+        clinic.getUsers().add(admin);
         save();
         start();
     }
@@ -80,7 +74,7 @@ public class App {
                 return false;
             case 1:
                 //change password
-                currentUser.setPassword(passwordVerified(false));
+                currentUser.changePassword(userInteraction.changePassword());
                 save();
                 return false;
             case 2:
@@ -131,7 +125,7 @@ public class App {
                 //Remove
                 break;
             case 2:
-                //Chance password
+                //chance other's password
                 break;
             case 3:
                 //Change the role
@@ -147,7 +141,7 @@ public class App {
     private void addUser() throws IOException {
 
         User user = new User(userInteraction.getName(), userInteraction.getLastName(), userInteraction.getUsername(), userInteraction.getPassword(), userInteraction.getUserType());
-        userList.add(user);
+        clinic.getUsers().add(user);
         save();
         userInteraction.println("User " + user.getName() + " has been created");
     }
@@ -156,7 +150,7 @@ public class App {
         makeDirIfNotExists();
         FileOutputStream fileOutputStream = new FileOutputStream(directory + "\\save.db");
         ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
-        out.writeObject(userList);
+        out.writeObject(clinic.getUsers());
         out.close();
         out.flush();
         fileOutputStream.close();
@@ -179,7 +173,7 @@ public class App {
         boolean isValid = false;
         while (!isValid) {
 
-            User userTryingToLogin = userInteraction.selectUser(userList, "Choose user to login");
+            User userTryingToLogin = userInteraction.selectUser(clinic.getUsers(), "Choose user to login");
             String username = userInteraction.getLoginUsername();
             String password = userInteraction.getLoginPassword();
 
