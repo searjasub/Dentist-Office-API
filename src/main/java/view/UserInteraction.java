@@ -3,7 +3,7 @@ package view;
 
 import interfaces.ConsoleUI;
 import model.User;
-import model.UserType;
+import model.UserRole;
 
 import java.io.IOException;
 import java.util.List;
@@ -48,11 +48,12 @@ public class UserInteraction {
     }
 
     private String[] fillManageUsers() {
-        String[] menuOptions = new String[4];
+        String[] menuOptions = new String[5];
         menuOptions[0] = "Add";
         menuOptions[1] = "Delete";
         menuOptions[2] = "Change other user's password";
-        menuOptions[3] = "Exit";
+        menuOptions[3] = "Change role";
+        menuOptions[4] = "Exit";
         return menuOptions;
     }
 
@@ -93,15 +94,15 @@ public class UserInteraction {
         return ConsoleUI.promptForInput("Enter the password: ", false, true);
     }
 
-    public UserType getUserType() throws IOException{
+    public UserRole getUserType() throws IOException{
         String[] menuOptions = new String[2];
         menuOptions[0] = "Administrative";
         menuOptions[1] = "Standard";
         int selection = ConsoleUI.promptForMenuSelection(menuOptions, "What type of user?");
         if(selection == 0){
-            return UserType.ADMINISTRATIVE;
+            return UserRole.ADMINISTRATIVE;
         } else {
-            return UserType.STANDARD;
+            return UserRole.STANDARD;
         }
     }
     public User selectUser(List<User> users, String message) throws IOException {

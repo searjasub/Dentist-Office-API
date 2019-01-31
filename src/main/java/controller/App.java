@@ -2,7 +2,7 @@ package controller;
 
 import model.Person;
 import model.User;
-import model.UserType;
+import model.UserRole;
 import view.UserInteraction;
 
 import java.io.*;
@@ -34,13 +34,13 @@ public class App {
                     String lastName = user.getLastName();
                     String username = user.getUsername();
                     String password = user.getPassword();
-                    UserType type = user.getUserType();
+                    UserRole type = user.getUserRole();
                     userList.add(new User(name, lastName, username, password, type));
                 }
             }
 
             loginScreen();
-            if (currentUser.getUserType() == UserType.ADMINISTRATIVE) {
+            if (currentUser.getUserRole() == UserRole.ADMINISTRATIVE) {
                 if (currentUser.getPassword().equals("1234Password")) {
                     userInteraction.print("Welcome to the Dentist Office App, since is your first login please ");
 
@@ -74,7 +74,7 @@ public class App {
     }
 
     private void addAdmin() throws IOException, ClassNotFoundException {
-        User admin = new User("Administrator", "one", "admin", "1234Password", UserType.ADMINISTRATIVE);
+        User admin = new User("Administrator", "one", "admin", "1234Password", UserRole.ADMINISTRATIVE);
         userList.add(admin);
         save();
         start();
@@ -136,10 +136,15 @@ public class App {
                 addUser();
                 break;
             case 1:
+                //Chance password
                 break;
             case 2:
                 break;
             case 3:
+                //Change the role
+                break;
+            case 4:
+                //Exit
                 break;
             default:
                 break;
@@ -187,10 +192,10 @@ public class App {
             String username = userInteraction.getLoginUsername();
             String password = userInteraction.getLoginPassword();
 
-            if (username.equals(userTryingToLogin.getUsername()) && password.equals(userTryingToLogin.getPassword()) && userTryingToLogin.getUserType() == UserType.ADMINISTRATIVE) {
+            if (username.equals(userTryingToLogin.getUsername()) && password.equals(userTryingToLogin.getPassword()) && userTryingToLogin.getUserRole() == UserRole.ADMINISTRATIVE) {
                 currentUser = userTryingToLogin;
                 isValid = true;
-            } else if (username.equals(userTryingToLogin.getUsername()) && password.equals(userTryingToLogin.getPassword()) && userTryingToLogin.getUserType() == UserType.STANDARD) {
+            } else if (username.equals(userTryingToLogin.getUsername()) && password.equals(userTryingToLogin.getPassword()) && userTryingToLogin.getUserRole() == UserRole.STANDARD) {
                 currentUser = userTryingToLogin;
                 isValid = true;
             } else {

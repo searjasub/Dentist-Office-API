@@ -4,13 +4,13 @@ public class User extends Person {
 
     private String username;
     private String password;
-    private UserType userType;
+    private UserRole userRole;
 
-    public User(String name, String lastName, String username, String password, UserType userType) {
+    public User(String name, String lastName, String username, String password, UserRole userRole) {
         super(name, lastName);
         this.setUsername(username);
         this.setPassword(password);
-        this.setUserType(userType);
+        this.setUserRole(userRole);
     }
 
     public String getUsername() {
@@ -29,11 +29,11 @@ public class User extends Person {
         this.password = password;
     }
 
-    public UserType getUserType() {
-        return userType;
+    public UserRole getUserRole() {
+        return userRole;
     }
 
-    public void setUserType(UserType userType) {
-        this.userType = userType;
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 }
