@@ -30,8 +30,6 @@ public class UserInteraction {
 
 
 
-
-
     private String[] fillManageUsers(){
         String[] menuOptions = new String[4];
         menuOptions[0] = "Add";
