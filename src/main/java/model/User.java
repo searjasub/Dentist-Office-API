@@ -3,12 +3,12 @@ package model;
 public class User extends Person {
 
     private String password;
-    private Privilege privilege;
+    private UserType userType;
 
-    public User(String name, String lastName, String password, Privilege privilege) {
+    public User(String name, String lastName, String password, UserType userType) {
         super(name, lastName);
         this.setPassword(password);
-        this.setPrivilege(privilege);
+        this.setUserType(userType);
     }
 
     public String getPassword() {
@@ -19,11 +19,11 @@ public class User extends Person {
         this.password = password;
     }
 
-    public Privilege getPrivilege() {
-        return privilege;
+    public UserType getUserType() {
+        return userType;
     }
 
-    public void setPrivilege(Privilege privilege) {
-        this.privilege = privilege;
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
 }
