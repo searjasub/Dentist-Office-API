@@ -56,4 +56,8 @@ public class User implements Serializable {
     public void setUserRole(UserRole userRole) {
         this.userRole = userRole;
     }
+
+    public void changePassword(String password){
+
+    }
 }

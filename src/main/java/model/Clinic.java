@@ -1,20 +1,42 @@
 package model;
 
-import model.Payment;
-import model.Provider;
-
+import java.io.Serializable;
 import java.util.List;
 
-public class Clinic {
+public class Clinic implements Serializable {
 
     private List<Provider> providers;
+    private List<Patient> patients;
     private List<Payment> payments;
+    private List<Appointment> appointments;
 
-    public List<Provider> search(){
+//    public List<Provider> searchProviders(ProviderSearchCriteria criteria){
+//        return null;
+//    }
+//
+//    public List<Patient> searchPatients(PatientSearchCriteria criteria){
+//        return null;
+//    }
+//
+//    public List<Appointment> searchAppointment(AppointmentSearchCriteria criteria){
+//        return null;
+//    }
+
+
+    public void receivePayment(Payment payment) {
+
+    }
+
+    //TODO view details
+    public double getAccountBalance(int patientId) {
+        return 0;
+    }
+
+    public List<Appointment> getFutureAppointment() {
         return null;
     }
 
-    public void receivePayment(Payment payment){
-
+    public List<Appointment> getPastAppointment() {
+        return null;
     }
 }

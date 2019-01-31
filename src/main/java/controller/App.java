@@ -1,6 +1,5 @@
 package controller;
 
-import model.Person;
 import model.User;
 import model.UserRole;
 import view.UserInteraction;
@@ -25,44 +24,46 @@ public class App {
         if (userList.isEmpty()) {
             addAdmin();
         } else {
-
             userList = deserializeUser();
-
-            for (User user : userList) {
-                if (!user.getUsername().equals("admin")) {
-                    String name = user.getName();
-                    String lastName = user.getLastName();
-                    String username = user.getUsername();
-                    String password = user.getPassword();
-                    UserRole type = user.getUserRole();
+            for (int i = 0; i < userList.size(); i++) {
+                if (!userList.get(i).getUsername().equals("admin")) {
+                    String name = userList.get(i).getName();
+                    String lastName = userList.get(i).getLastName();
+                    String username = userList.get(i).getUsername();
+                    String password = userList.get(i).getPassword();
+                    UserRole type = userList.get(i).getUserRole();
                     userList.add(new User(name, lastName, username, password, type));
                 }
             }
-
             loginScreen();
-            if (currentUser.getUserRole() == UserRole.ADMINISTRATIVE) {
-                if (currentUser.getPassword().equals("1234Password")) {
-                    userInteraction.print("Welcome to the Dentist Office App, since is your first login please ");
+            boolean isDone = false;
+            while (!isDone) {
 
-                    String newPass = passwordVerified(true);
+                if (currentUser.getUserRole() == UserRole.ADMINISTRATIVE) {
+                    if (currentUser.getPassword().equals("1234Password")) {
+                        userInteraction.print("Welcome to the Dentist Office App, since is your first login please ");
 
-                    //currentUser.setPassword(newPass);
-                    for (User u :
-                            userList) {
-                        if(u.getUsername().equals(currentUser.getUsername())){
-                            u.setPassword(newPass);
+                        String newPass = passwordVerified(true);
+                        //currentUser.setPassword(newPass);
+                        for (User u :
+                                userList) {
+                            if (u.getUsername().equals(currentUser.getUsername())) {
+                                u.setPassword(newPass);
+                            }
                         }
+                        save();
                     }
-                    save();
+                    selection = userInteraction.mainMenu(true);
+                    isDone = adminMenuHandler(selection);
+                } else {
+                    selection = userInteraction.mainMenu(false);
+                    isDone = standardMenuHandler(selection);
                 }
-                selection = userInteraction.mainMenu(true);
-                adminMenuHandler(selection);
-            } else {
-                selection = userInteraction.mainMenu(false);
-                standardMenuHandler(selection);
             }
-        }
 
+
+
+        }
     }
 
     private List<User> deserializeUser() throws IOException, ClassNotFoundException {
@@ -80,35 +81,35 @@ public class App {
         start();
     }
 
-    private void adminMenuHandler(int selection) throws IOException, ClassNotFoundException {
+    private boolean adminMenuHandler(int selection) throws IOException, ClassNotFoundException {
 
-        boolean wantToBeOut = false;
-        while (!wantToBeOut) {
-            switch (selection) {
-                case 0:
-                    int choice = userInteraction.manageUsersMenu();
-                    manageUsers(choice);
-                    break;
-                case 1:
-                    //change password
-                    currentUser.setPassword(passwordVerified(false));
-                    save();
-                    break;
-                case 2:
-                    //search
-                    break;
-                case 3:
-                    //reports
-                    break;
-                case 4:
-                    userInteraction.println("You have successfully logged out\n\n");
-                    currentUser = null;
-                    start();
-                    wantToBeOut = true;
-                    break;
-            }
+        switch (selection) {
+            case 0:
+                int choice = userInteraction.manageUsersMenu();
+                manageUsers(choice);
+                return false;
+            case 1:
+                //change password
+                currentUser.setPassword(passwordVerified(false));
+                save();
+                return false;
+            case 2:
+                //search
+                return false;
+            case 3:
+                //reports
+                return false;
+            case 4:
+                userInteraction.println("You have successfully logged out\n\n");
+                currentUser = null;
+                return true;
+            default:
+                break;
         }
+
+        return false;
     }
+
 
     private String passwordVerified(boolean isFirstTime) throws IOException {
         String newPassword = null;
@@ -136,9 +137,10 @@ public class App {
                 addUser();
                 break;
             case 1:
-                //Chance password
+                //Remove
                 break;
             case 2:
+                //Chance password
                 break;
             case 3:
                 //Change the role
@@ -152,11 +154,11 @@ public class App {
     }
 
     private void addUser() throws IOException {
-        Person person = basicInfo();
-        User user = new User(person.getName(), person.getLastName(), userInteraction.getUsername(), userInteraction.getPassword(), userInteraction.getUserType());
+
+        User user = new User(userInteraction.getName(), userInteraction.getLastName(), userInteraction.getUsername(), userInteraction.getPassword(), userInteraction.getUserType());
         userList.add(user);
         save();
-        userInteraction.println("User " + person.getName() + " has been created");
+        userInteraction.println("User " + user.getName() + " has been created");
     }
 
     private void save() throws IOException {
@@ -174,14 +176,9 @@ public class App {
 
     }
 
-    private Person basicInfo() throws IOException {
-        String newUserName = userInteraction.getName();
-        String newUserLastName = userInteraction.getLastName();
-        return new Person(newUserName, newUserLastName);
-    }
+    private boolean standardMenuHandler(int selection) {
 
-    private void standardMenuHandler(int selection) {
-
+        return false;
     }
 
     private void loginScreen() throws IOException {

@@ -2,20 +2,20 @@ package model;
 
 public class Provider extends Person {
 
-    private ProviderTitle title;
+    private ProviderType title;
     private int uniqueId;
 
-    public Provider(String name, String lastName, ProviderTitle title, int uniqueId) {
-        super(name, lastName);
-        this.setTitle(title);
-        this.setUniqueId(uniqueId);
+    public Provider(String name, String lastName, int uniqueId, String email, int phoneNumber, ProviderType title, int uniqueId1) {
+        super(name, lastName, uniqueId, email, phoneNumber);
+        this.title = title;
+        this.uniqueId = uniqueId1;
     }
 
-    public ProviderTitle getTitle() {
+    public ProviderType getTitle() {
         return title;
     }
 
-    public void setTitle(ProviderTitle title) {
+    public void setTitle(ProviderType title) {
         this.title = title;
     }
 

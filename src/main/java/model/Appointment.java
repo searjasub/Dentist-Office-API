@@ -1,10 +1,8 @@
 package model;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
-public class Appointment {
-
-    private Patient patient;
-    private List<Procedure> procedures;
+public abstract class Appointment {
+    private LocalDateTime dateTime;
 
 }

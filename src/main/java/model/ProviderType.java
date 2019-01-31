@@ -1,6 +1,6 @@
 package model;
 
-public enum ProviderTitle {
+public enum ProviderType {
     DENTIST,
     ASSISTANT,
     HYGIENIST

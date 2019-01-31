@@ -6,14 +6,14 @@ public class Procedure {
     private Provider provider;
     private String code = "D";
     private String description;
-    private int amountCharged;
+    private double cost;
 
-    public Procedure(Patient patient, String code, String description, int amountCharged, Provider provider) {
+    public Procedure(Patient patient, String code, String description, double cost, Provider provider) {
         this.setProvider(provider);
         this.setPatient(patient);
         this.setCode(code);
         this.setDescription(description);
-        this.setAmountCharged(amountCharged);
+        this.setCost(cost);
     }
 
     public Patient getPatient() {
@@ -48,11 +48,11 @@ public class Procedure {
         this.description = description;
     }
 
-    public int getAmountCharged() {
-        return amountCharged;
+    public double getCost() {
+        return cost;
     }
 
-    public void setAmountCharged(int amountCharged) {
-        this.amountCharged = amountCharged;
+    public void setCost(double cost) {
+        this.cost = cost;
     }
 }
