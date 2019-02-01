@@ -74,8 +74,6 @@ public class App {
                 //create
                 int choice1 = userInteraction.createMenu();
                 createMenuHandler(choice1);
-//                currentUser.changePassword(userInteraction.changePassword());
-//                save();
                 return false;
             case 2:
                 //edit
@@ -102,7 +100,6 @@ public class App {
             default:
                 break;
         }
-
         return false;
     }
 
@@ -147,13 +144,67 @@ public class App {
         }
     }
 
+    private void editAdminMenuHandler(int choice) throws IOException {
+        switch (choice) {
+            case 0:
+                currentUser.changePassword(userInteraction.changePassword());
+                save();
+                break;
+            case 1:
+                //other user password
+                break;
+            case 2:
+                //provider
+                break;
+            case 3:
+                //patients
+                break;
+            case 4:
+                //appointments
+                break;
+            case 5:
+                //procedure
+                break;
+            case 6:
+                //exit
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void editStandardMenuHandler(int choice) throws IOException{
+        switch (choice) {
+            case 0:
+                currentUser.changePassword(userInteraction.changePassword());
+                save();
+                break;
+            case 1:
+                //provider
+                break;
+            case 2:
+                //patients
+                break;
+            case 3:
+                //appointments
+                break;
+            case 4:
+                //procedure
+                break;
+            case 5:
+                //exit
+                break;
+            default:
+                break;
+        }
+    }
 
     private String passwordVerified(boolean isFirstTime) throws IOException {
         String newPassword = null;
         boolean isValid = false;
         while (!isValid) {
             if (isFirstTime) {
-                newPassword = userInteraction.changeFirstPassword();
+                newPassword = userInteraction.changePasswordSameLine();
             } else {
                 newPassword = userInteraction.changePassword();
             }
@@ -214,11 +265,6 @@ public class App {
             Files.createDirectories(path);
         }
 
-    }
-
-    private boolean standardMenuHandler(int selection) {
-
-        return false;
     }
 
     private void loginScreen() throws IOException {

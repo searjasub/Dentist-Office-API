@@ -65,12 +65,13 @@ public class UserInteraction {
     }
 
     private String[] fillStandardEditMenu() {
-        String[] menuOptions = new String[7];
+        String[] menuOptions = new String[6];
         menuOptions[0] = "Own Password";
-        menuOptions[1] = "Edit";
-        menuOptions[2] = "Add Appointment";
-        menuOptions[3] = "Add Procedure";
-        menuOptions[4] = "Exit";
+        menuOptions[1] = "Provider";
+        menuOptions[2] = "Patient";
+        menuOptions[3] = "Appointment";
+        menuOptions[4] = "Procedure";
+        menuOptions[5] = "Exit";
         return menuOptions;
     }
 
@@ -81,11 +82,12 @@ public class UserInteraction {
     private String[] fillAdminEditMenu() {
         String[] menuOptions = new String[7];
         menuOptions[0] = "Own Password";
-        menuOptions[1] = "Other";
-        menuOptions[2] = "Add Patient";
-        menuOptions[3] = "Add Appointment";
-        menuOptions[4] = "Add Procedure";
-        menuOptions[5] = "Exit";
+        menuOptions[1] = "Other User Password";
+        menuOptions[2] = "Provider";
+        menuOptions[3] = "Patient";
+        menuOptions[4] = "Appointment";
+        menuOptions[5] = "Procedure";
+        menuOptions[6] = "Exit";
         return menuOptions;
     }
 
@@ -195,11 +197,14 @@ public class UserInteraction {
         return ConsoleUI.promptForInput("Enter new password", false, false);
     }
 
-    public String changeFirstPassword() throws IOException {
+    public String changePasswordSameLine() throws IOException {
         return ConsoleUI.promptForInput("enter new password\n", false, true);
     }
 
     public String verifyPassword() throws IOException {
+
+
+
         return ConsoleUI.promptForInput("Re-enter password", false, false);
     }
 
