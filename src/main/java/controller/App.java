@@ -1,6 +1,7 @@
 package controller;
 
 import model.Clinic;
+import model.Provider;
 import model.User;
 import model.UserRole;
 import view.UserInteraction;
@@ -220,8 +221,8 @@ public class App {
         }
     }
     
-    private void editProviderMnu() {
-    	Provider selectedProvider = userInteraction.selectUser(users, message)
+    private void editProviderMnu() throws IOException {
+    	Provider selectedProvider = userInteraction.selectProvider(clinic.getProviders(), "Select a Provider To Edit");
     	
     	
     	
