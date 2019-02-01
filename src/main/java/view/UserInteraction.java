@@ -43,16 +43,31 @@ public class UserInteraction {
         return menuOptions;
     }
 
-    public int createMenu() throws IOException {
-        return ConsoleUI.promptForMenuSelection(fillCreateMenu(), defaultQuestion);
+    public int createAdminMenu() throws IOException {
+        return ConsoleUI.promptForMenuSelection(fillCreateAdminMenu(), defaultQuestion);
     }
 
-    private String[] fillCreateMenu() {
+    private String[] fillCreateAdminMenu() {
+        String[] menuOptions = new String[6];
+        menuOptions[0] = "User";
+        menuOptions[1] = "Provider";
+        menuOptions[2] = "Patient";
+        menuOptions[3] = "Appointment";
+        menuOptions[4] = "Procedure";
+        menuOptions[5] = "Exit";
+        return menuOptions;
+    }
+
+    public int createStandardMenu()throws IOException{
+        return ConsoleUI.promptForMenuSelection(fillCreateStandardMenu(), defaultQuestion);
+    }
+
+    private String[] fillCreateStandardMenu() {
         String[] menuOptions = new String[5];
-        menuOptions[0] = "Add Provider";
-        menuOptions[1] = "Add Patient";
-        menuOptions[2] = "Add Appointment";
-        menuOptions[3] = "Add Procedure";
+        menuOptions[0] = "Provider";
+        menuOptions[1] = "Patient";
+        menuOptions[2] = "Appointment";
+        menuOptions[3] = "Procedure";
         menuOptions[4] = "Exit";
         return menuOptions;
     }
@@ -108,7 +123,7 @@ public class UserInteraction {
         return ConsoleUI.promptForMenuSelection(fillDeleteStandardMenu(), defaultQuestion);
     }
 
-    public String[] fillDeleteStandardMenu() {
+    private String[] fillDeleteStandardMenu() {
         String[] menuOptions = new String[5];
         menuOptions[0] = "Providers";
         menuOptions[1] = "Patients";
@@ -253,5 +268,6 @@ public class UserInteraction {
     public void print(String message) {
         System.out.print(message);
     }
+
 
 }
