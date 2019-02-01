@@ -1,7 +1,17 @@
 package model;
 
 public enum ProviderType {
-    DENTIST,
-    ASSISTANT,
-    HYGIENIST
+    DENTIST("Dentist"),
+    ASSISTANT("Assistant"),
+    HYGIENIST("Hygienist");
+
+    private String type;
+
+    ProviderType(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
 }
