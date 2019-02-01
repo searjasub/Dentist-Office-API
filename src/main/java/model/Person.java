@@ -57,12 +57,12 @@ public class Person implements Serializable {
         this.email = email;
     }
 
-    public int getPhoneNumber() {
+    public long getPhoneNumber() {
         return phoneNumber;
     }
 
     public void setPhoneNumber(long phoneNumber) {
-    	if(phoneNumber < 1000000000 || phoneNumber > 9999999999) {
+    	if(phoneNumber < 1000000000 || phoneNumber > Long.MAX_VALUE) {
     		
     	}
         this.phoneNumber = phoneNumber;
