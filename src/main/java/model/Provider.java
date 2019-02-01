@@ -16,8 +16,8 @@ public class Provider extends Person {
     }
 
     public void setTitle(ProviderType title) {
-        if(title != ProviderType.ASSISTANT || title != ProviderType.DENTIST || title != ProviderType.HYGIENIST) {
-        	throw new IllegalArgumentException("This is now an allowed ProviderType");
+        if(title == null) {
+        	throw new IllegalArgumentException("This is not an allowed ProviderType");
         }
         this.title = title;
     }
