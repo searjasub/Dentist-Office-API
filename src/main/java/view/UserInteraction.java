@@ -95,4 +95,11 @@ public class UserInteraction {
         System.out.print(message);
     }
 
+    public String getEmail() {
+        return null;
+    }
+
+    public int getPhoneNumber() {
+        return 0;
+    }
 }
