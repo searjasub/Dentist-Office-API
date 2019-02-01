@@ -174,7 +174,6 @@ public class App {
                 save();
                 break;
             case 2:
-            	System.out.println("this is a thing");
                 //provider
                 break;
             case 3:
@@ -213,7 +212,7 @@ public class App {
                 //procedure
                 break;
             case 5:
-                //exit
+            	userInteraction.println("You have exited the Edit Menu\n");
                 break;
             default:
                 break;
