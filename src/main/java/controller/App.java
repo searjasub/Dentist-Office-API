@@ -5,6 +5,7 @@ import model.Provider;
 import model.User;
 import model.UserRole;
 import view.UserInteraction;
+import view.menu.UserMenuInteraction;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -15,10 +16,11 @@ import java.util.List;
 
 public class App {
 
-    //TODO dentist database with helper methods of list?
+
     private static final String directory = "savables";
     private User currentUser;
     private UserInteraction userInteraction = new UserInteraction();
+    private UserMenuInteraction userMenuInteraction = new UserMenuInteraction();
     private Clinic clinic = new Clinic();
     private HashMap<String, String> loginCredentials = new HashMap<>();
 
@@ -52,7 +54,7 @@ public class App {
                             }
                             save();
                         }
-                        int selection = userInteraction.mainMenu();
+                        int selection = userMenuInteraction.mainMenu();
                         isDone = mainMenuHandler(selection);
                     }
                 }
@@ -72,17 +74,17 @@ public class App {
         switch (selection) {
             case 0:
                 //view
-                int choice0 = userInteraction.viewMenu();
+                int choice0 = userMenuInteraction.viewMenu();
                 viewMenuHandler(choice0);
                 return false;
             case 1:
                 //create
                 int choice1;
                 if (currentUser.getUserRole() == UserRole.ADMINISTRATIVE) {
-                    choice1 = userInteraction.createAdminMenu();
+                    choice1 = userMenuInteraction.createAdminMenu();
                     createAdminMenuHandler(choice1);
                 } else {
-                    choice1 = userInteraction.createStandardMenu();
+                    choice1 = userMenuInteraction.createStandardMenu();
                     createStandardMenuHandler(choice1);
                 }
                 return false;
@@ -90,10 +92,10 @@ public class App {
                 //edit
                 int choice2;
                 if (currentUser.getUserRole() == UserRole.ADMINISTRATIVE) {
-                    choice2 = userInteraction.editAdminMenu();
+                    choice2 = userMenuInteraction.editAdminMenu();
                     editAdminMenuHandler(choice2);
                 } else {
-                    choice2 = userInteraction.editStandardMenu();
+                    choice2 = userMenuInteraction.editStandardMenu();
                     editStandardMenuHandler(choice2);
                 }
                 return false;
@@ -101,16 +103,16 @@ public class App {
                 //delete
                 int choice3;
                 if (currentUser.getUserRole() == UserRole.ADMINISTRATIVE) {
-                    choice3 = userInteraction.deleteAdminMenu();
+                    choice3 = userMenuInteraction.deleteAdminMenu();
                     deleteAdminMenuHandler(choice3);
                 } else {
-                    choice3 = userInteraction.deleteStandardMenu();
+                    choice3 = userMenuInteraction.deleteStandardMenu();
                     deleteStandardMenuHandler(choice3);
                 }
                 return false;
             case 4:
                 //search
-                int choice4 = userInteraction.searchMenu();
+                int choice4 = userMenuInteraction.searchMenu();
                 searchMenuHandler(choice4);
                 return false;
             case 5:
@@ -164,7 +166,7 @@ public class App {
                 addProvider();
                 break;
             case 2:
-                //add patient
+                addPatient();
                 break;
             case 3:
                 //add appointment
@@ -202,13 +204,13 @@ public class App {
         //return username;
     }
 
-    public void createStandardMenuHandler(int choice) {
+    public void createStandardMenuHandler(int choice) throws IOException, ClassNotFoundException {
         switch (choice) {
             case 0:
                 addProvider();
                 break;
             case 1:
-                //add patient
+                addPatient();
                 break;
             case 2:
                 //add appointment
@@ -225,8 +227,21 @@ public class App {
         }
     }
 
-    private void addProvider() {
+    private void addProvider() throws IOException, ClassNotFoundException {
+        Provider newProvider = new Provider(
+                userInteraction.getName(),
+                userInteraction.getLastName(),
+                userInteraction.getProviderID(),
+                userInteraction.getEmail(),
+                userInteraction.getPhoneNumber(),
+                userInteraction.getProviderType());
 
+        clinic.getProviders().add(newProvider);
+        save();
+        load();
+    }
+
+    private void addPatient(){
 
     }
 
@@ -237,7 +252,7 @@ public class App {
                 save();
                 break;
             case 1:
-                User who = userInteraction.selectUser(clinic.getUsers(), "Who do you want to change the password");
+                User who = userMenuInteraction.selectUser(clinic.getUsers(), "Who do you want to change the password");
                 String newPassword = passwordVerified(false);
                 who.setPassword(newPassword);
                 save();
@@ -289,7 +304,7 @@ public class App {
     }
     
     private void editProviderMnu() throws IOException {
-    	Provider selectedProvider = userInteraction.selectProvider(clinic.getProviders(), "Select a Provider To Edit");
+    	Provider selectedProvider = userMenuInteraction.selectProvider(clinic.getProviders(), "Select a Provider To Edit");
     	
     	
     	
