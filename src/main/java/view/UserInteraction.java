@@ -65,7 +65,7 @@ public class UserInteraction {
     }
 
     public int editAdminMenu() throws IOException{
-
+        return ConsoleUI.promptForMenuSelection(fillAdminEditMenu(), defaultQuestion);
     }
 
     private String[] fillAdminEditMenu() {
@@ -79,6 +79,40 @@ public class UserInteraction {
         return menuOptions;
     }
 
+    public int deleteAdminMenu() throws IOException{
+return ConsoleUI.promptForMenuSelection(fillDeleteAdminMenu(), defaultQuestion);
+    }
+
+    private String[] fillDeleteAdminMenu() {
+        String[] menuOptions = new String[7];
+        menuOptions[0] = "User";
+        menuOptions[1] = "All users";
+        menuOptions[2] = "Providers";
+        menuOptions[3] = "Patients";
+        menuOptions[4] = "Appointments";
+        menuOptions[5] = "Procedure";
+        menuOptions[6] = "Exit";
+        return menuOptions;
+    }
+
+    public int deleteStandardMenu() throws IOException {
+        return ConsoleUI.promptForMenuSelection(fillDeleteStandardMenu(),defaultQuestion);
+    }
+
+    public String[] fillDeleteStandardMenu(){
+        String[] menuOptions = new String[5];
+        menuOptions[0] = "Providers";
+        menuOptions[1] = "Patients";
+        menuOptions[2] = "Appointments";
+        menuOptions[3] = "Procedure";
+        menuOptions[4] = "Exit";
+        return menuOptions;
+    }
+
+
+    public int searchMenu() throws IOException {
+        return ConsoleUI.promptForMenuSelection(fillSearchMenu(),defaultQuestion);
+    }
 
     private String[] fillSearchMenu() {
         String[] menuOptions = new String[4];
