@@ -6,6 +6,7 @@ import model.UserRole;
 import view.UserInteraction;
 
 import java.io.*;
+import java.nio.channels.spi.SelectorProvider;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -172,7 +173,6 @@ public class App {
                 String newPassword = passwordVerified(false);
                 who.setPassword(newPassword);
                 save();
-
                 break;
             case 2:
                 //provider
@@ -219,7 +219,18 @@ public class App {
                 break;
         }
     }
-
+    
+    private void editProviderMnu() {
+    	Provider selectedProvider = userInteraction.selectUser(users, message)
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    }
+    
     private void deleteAdminMenuHandler(int choice) {
         switch (choice) {
             case 0:
