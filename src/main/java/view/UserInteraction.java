@@ -16,66 +16,79 @@ public class UserInteraction {
         ConsoleUI.displayMessage("Welcome to the managment office", false);
     }
 
-    public int mainMenu(boolean isAdmin) throws IOException {
-        String[] menuOptions;
-        if (isAdmin){
-            menuOptions = fillAdminMenu();
-        } else {
-            menuOptions = fillStandardMenu();
-        }
-        return ConsoleUI.promptForMenuSelection(menuOptions, defaultQuestion);
+
+    public int mainMenu() throws IOException {
+        return ConsoleUI.promptForMenuSelection(fillMainMenu(), defaultQuestion);
     }
 
-
-    private String[] fillAdminMenu() {
-        String[] menuOptions = new String[5];
-        menuOptions[0] = "Manage Users";
-        menuOptions[1] = "Change password";
-        menuOptions[2] = "Search";
-        menuOptions[3] = "Reports";
-        menuOptions[4] = "Log out";
+    private String[] fillMainMenu() {
+        String[] menuOptions = new String[6];
+        menuOptions[0] = "View";
+        menuOptions[1] = "Create";
+        menuOptions[2] = "Edit";
+        menuOptions[3] = "Delete";
+        menuOptions[4] = "Search";
+        menuOptions[5] = "Log out";
         return menuOptions;
     }
 
-    private String[] fillStandardMenu() {
-        //TODO search providers
-        //TODO reports
-        return new String[0];
-    }
-
-    public int manageUsersMenu() throws IOException {
-        return ConsoleUI.promptForMenuSelection(fillManageUsers(), defaultQuestion);
-    }
-
-    private String[] fillManageUsers() {
-        String[] menuOptions = new String[5];
-        menuOptions[0] = "Add";
-        menuOptions[1] = "Delete";
-        menuOptions[2] = "Change other user's password";
-        menuOptions[3] = "Change role";
-        menuOptions[4] = "Exit";
-        return menuOptions;
-    }
-
-    private String[] fillSearchMenu(){
-        String[] menuOptions = new String[7];
-        menuOptions[0] = "By name";
-        menuOptions[1] = "By last name";
-        menuOptions[2] = "by time interval";
-        menuOptions[3] = "by provider";
-        menuOptions[4] = "by patient";
-        menuOptions[5] = "by procedure core";
-        menuOptions[6] = "Exit";
-        return menuOptions;
-    }
-
-    private String[] fillReportsMenu(){
+    private String[] fillViewMenu() {
         String[] menuOptions = new String[3];
         menuOptions[0] = "Production";
         menuOptions[1] = "Patient Balance";
         menuOptions[2] = "Collections";
         return menuOptions;
     }
+
+    private String[] fillCreateMenu() {
+        String[] menuOptions = new String[5];
+        menuOptions[0] = "Add Provider";
+        menuOptions[1] = "Add Patient";
+        menuOptions[2] = "Add Appointment";
+        menuOptions[3] = "Add Procedure";
+        menuOptions[4] = "Exit";
+        return menuOptions;
+    }
+
+    public int editStandardMenu() throws IOException {
+        return ConsoleUI.promptForMenuSelection(fillStandardEditMenu(),defaultQuestion);
+    }
+
+    private String[] fillStandardEditMenu() {
+        String[] menuOptions = new String[7];
+        menuOptions[0] = "Own Password";
+        menuOptions[1] = "Edit";
+        menuOptions[2] = "Add Appointment";
+        menuOptions[3] = "Add Procedure";
+        menuOptions[4] = "Exit";
+        return menuOptions;
+    }
+
+    public int editAdminMenu() throws IOException{
+
+    }
+
+    private String[] fillAdminEditMenu() {
+        String[] menuOptions = new String[7];
+        menuOptions[0] = "Own Password";
+        menuOptions[1] = "Other";
+        menuOptions[2] = "Add Patient";
+        menuOptions[3] = "Add Appointment";
+        menuOptions[4] = "Add Procedure";
+        menuOptions[5] = "Exit";
+        return menuOptions;
+    }
+
+
+    private String[] fillSearchMenu() {
+        String[] menuOptions = new String[4];
+        menuOptions[0] = "Providers";
+        menuOptions[1] = "Patients";
+        menuOptions[2] = "Appointments";
+        menuOptions[3] = "Exit";
+        return menuOptions;
+    }
+
 
 
     public String getName() throws IOException {
@@ -94,17 +107,18 @@ public class UserInteraction {
         return ConsoleUI.promptForInput("Enter the password: ", false, true);
     }
 
-    public UserRole getUserType() throws IOException{
+    public UserRole getUserType() throws IOException {
         String[] menuOptions = new String[2];
         menuOptions[0] = "Administrative";
         menuOptions[1] = "Standard";
         int selection = ConsoleUI.promptForMenuSelection(menuOptions, "What type of user?");
-        if(selection == 0){
+        if (selection == 0) {
             return UserRole.ADMINISTRATIVE;
         } else {
             return UserRole.STANDARD;
         }
     }
+
     public User selectUser(List<User> users, String message) throws IOException {
         Object[] list = users.toArray();
         String[] options = new String[list.length];
@@ -127,7 +141,7 @@ public class UserInteraction {
     }
 
     public String getLoginUsername() throws IOException {
-        ConsoleUI.displayMessage("Username:" , true);
+        ConsoleUI.displayMessage("Username:", true);
         return ConsoleUI.promptForInput(" ", false, true);
     }
 
@@ -136,11 +150,11 @@ public class UserInteraction {
         return ConsoleUI.promptForInput(" ", false, true);
     }
 
-    public void println(String message){
+    public void println(String message) {
         System.out.println(message);
     }
 
-    public void print(String message){
+    public void print(String message) {
         System.out.print(message);
     }
 
