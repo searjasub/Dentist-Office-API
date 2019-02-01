@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Clinic implements Serializable {
@@ -11,6 +12,8 @@ public class Clinic implements Serializable {
     private List<Payment> payments;
     private List<Appointment> appointments;
     private List<User> users = new ArrayList<>();
+
+
 
 
 //    public List<Provider> searchProviders(ProviderSearchCriteria criteria){

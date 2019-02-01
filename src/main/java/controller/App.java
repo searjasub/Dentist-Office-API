@@ -6,10 +6,10 @@ import model.UserRole;
 import view.UserInteraction;
 
 import java.io.*;
-import java.nio.channels.spi.SelectorProvider;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
 
 public class App {
@@ -19,12 +19,18 @@ public class App {
     private User currentUser;
     private UserInteraction userInteraction = new UserInteraction();
     private Clinic clinic = new Clinic();
+    private HashMap<String, String> loginCredentials = new HashMap<>();
 
     public void start() throws IOException, ClassNotFoundException {
         int selection;
 
         ObjectInputStream in = new ObjectInputStream(new FileInputStream(directory + "\\save.db"));
         clinic.setUsers((List<User>) in.readObject());
+
+        for (int i = 0; i < clinic.getUsers().size(); i++) {
+
+            loginCredentials.put(clinic.getUsers().get(i).getUsername(), clinic.getUsers().get(i).getPassword());
+        }
 
         in.close();
 
@@ -213,29 +219,19 @@ public class App {
                 //procedure
                 break;
             case 5:
-            	userInteraction.println("You have exited the Edit Menu\n");
+                userInteraction.println("You have exited the Edit Menu\n");
                 break;
             default:
                 break;
         }
     }
-    
-    private void editProviderMnu() {
-    	Provider selectedProvider = userInteraction.selectUser(users, message)
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    }
-    
+
+
     private void deleteAdminMenuHandler(int choice) {
         switch (choice) {
             case 0:
                 //user
-            break;
+                break;
             case 1:
                 //all users
                 break;
@@ -344,21 +340,31 @@ public class App {
         boolean isValid = false;
         while (!isValid) {
 
-            User userTryingToLogin = userInteraction.selectUser(clinic.getUsers(), "Choose user to login");
             String username = userInteraction.getLoginUsername();
             String password = userInteraction.getLoginPassword();
 
-            if (username.equals(userTryingToLogin.getUsername()) && password.equals(userTryingToLogin.getPassword()) && userTryingToLogin.getUserRole() == UserRole.ADMINISTRATIVE) {
-                currentUser = userTryingToLogin;
-                isValid = true;
-            } else if (username.equals(userTryingToLogin.getUsername()) && password.equals(userTryingToLogin.getPassword()) && userTryingToLogin.getUserRole() == UserRole.STANDARD) {
-                currentUser = userTryingToLogin;
+            if (password.equals(loginCredentials.get(username))) {
+
+                for (int i = 0; i < clinic.getUsers().size(); i++) {
+                    if(clinic.getUsers().get(i).getUsername().equals(username)){
+                        currentUser = clinic.getUsers().get(i);
+                    }
+                }
                 isValid = true;
             } else {
                 userInteraction.println("The credentials are incorrect, please try again.\n");
             }
+
+
+//            if (username.equals(userTryingToLogin.getUsername()) && password.equals(userTryingToLogin.getPassword()) && userTryingToLogin.getUserRole() == UserRole.ADMINISTRATIVE) {
+//                currentUser = userTryingToLogin;
+//                isValid = true;
+//            } else if (username.equals(userTryingToLogin.getUsername()) && password.equals(userTryingToLogin.getPassword()) && userTryingToLogin.getUserRole() == UserRole.STANDARD) {
+//                currentUser = userTryingToLogin;
+//                isValid = true;
+//            } else {
+//                userInteraction.println("The credentials are incorrect, please try again.\n");
+//            }
         }
     }
-
-
 }
