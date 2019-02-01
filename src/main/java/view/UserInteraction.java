@@ -2,6 +2,7 @@ package view;
 
 
 import interfaces.ConsoleUI;
+import model.ProviderType;
 import model.User;
 import model.UserRole;
 
@@ -32,12 +33,21 @@ public class UserInteraction {
         return menuOptions;
     }
 
+    public int viewMenu() throws IOException {
+        return ConsoleUI.promptForMenuSelection(fillViewMenu(), defaultQuestion);
+    }
+
     private String[] fillViewMenu() {
-        String[] menuOptions = new String[3];
+        String[] menuOptions = new String[4];
         menuOptions[0] = "Production";
         menuOptions[1] = "Patient Balance";
         menuOptions[2] = "Collections";
+        menuOptions[3] = "Exit";
         return menuOptions;
+    }
+
+    public int createMenu() throws IOException {
+        return ConsoleUI.promptForMenuSelection(fillCreateMenu(), defaultQuestion);
     }
 
     private String[] fillCreateMenu() {
@@ -51,7 +61,7 @@ public class UserInteraction {
     }
 
     public int editStandardMenu() throws IOException {
-        return ConsoleUI.promptForMenuSelection(fillStandardEditMenu(),defaultQuestion);
+        return ConsoleUI.promptForMenuSelection(fillStandardEditMenu(), defaultQuestion);
     }
 
     private String[] fillStandardEditMenu() {
@@ -64,7 +74,7 @@ public class UserInteraction {
         return menuOptions;
     }
 
-    public int editAdminMenu() throws IOException{
+    public int editAdminMenu() throws IOException {
         return ConsoleUI.promptForMenuSelection(fillAdminEditMenu(), defaultQuestion);
     }
 
@@ -79,8 +89,8 @@ public class UserInteraction {
         return menuOptions;
     }
 
-    public int deleteAdminMenu() throws IOException{
-return ConsoleUI.promptForMenuSelection(fillDeleteAdminMenu(), defaultQuestion);
+    public int deleteAdminMenu() throws IOException {
+        return ConsoleUI.promptForMenuSelection(fillDeleteAdminMenu(), defaultQuestion);
     }
 
     private String[] fillDeleteAdminMenu() {
@@ -96,10 +106,10 @@ return ConsoleUI.promptForMenuSelection(fillDeleteAdminMenu(), defaultQuestion);
     }
 
     public int deleteStandardMenu() throws IOException {
-        return ConsoleUI.promptForMenuSelection(fillDeleteStandardMenu(),defaultQuestion);
+        return ConsoleUI.promptForMenuSelection(fillDeleteStandardMenu(), defaultQuestion);
     }
 
-    public String[] fillDeleteStandardMenu(){
+    public String[] fillDeleteStandardMenu() {
         String[] menuOptions = new String[5];
         menuOptions[0] = "Providers";
         menuOptions[1] = "Patients";
@@ -111,7 +121,7 @@ return ConsoleUI.promptForMenuSelection(fillDeleteAdminMenu(), defaultQuestion);
 
 
     public int searchMenu() throws IOException {
-        return ConsoleUI.promptForMenuSelection(fillSearchMenu(),defaultQuestion);
+        return ConsoleUI.promptForMenuSelection(fillSearchMenu(), defaultQuestion);
     }
 
     private String[] fillSearchMenu() {
@@ -122,7 +132,6 @@ return ConsoleUI.promptForMenuSelection(fillDeleteAdminMenu(), defaultQuestion);
         menuOptions[3] = "Exit";
         return menuOptions;
     }
-
 
 
     public String getName() throws IOException {
@@ -151,6 +160,26 @@ return ConsoleUI.promptForMenuSelection(fillDeleteAdminMenu(), defaultQuestion);
         } else {
             return UserRole.STANDARD;
         }
+    }
+
+    public ProviderType getProviderType() throws IOException {
+        String[] menuOptions = new String[3];
+        menuOptions[0] = "Dentist";
+        menuOptions[1] = "Assistant";
+        menuOptions[2] = "Hygenist";
+        int selection = ConsoleUI.promptForMenuSelection(menuOptions, "Who is the provider?");
+        switch (selection) {
+            case 0:
+                return ProviderType.DENTIST;
+            case 1:
+                return ProviderType.ASSISTANT;
+            case 2:
+                return ProviderType.HYGIENIST;
+            default:
+                throw new IllegalArgumentException("Something went wrong in the UserInteraction Class (You should not see me)");
+        }
+
+
     }
 
     public User selectUser(List<User> users, String message) throws IOException {

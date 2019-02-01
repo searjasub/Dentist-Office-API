@@ -47,11 +47,8 @@ public class App {
                             }
                             save();
                         }
-                        selection = userInteraction.mainMenu(true);
-                        isDone = adminMenuHandler(selection);
-                    } else {
-                        selection = userInteraction.mainMenu(false);
-                        isDone = standardMenuHandler(selection);
+                        selection = userInteraction.mainMenu();
+                        isDone = mainMenuHandler(selection);
                     }
                 }
             } while (true);
@@ -65,25 +62,39 @@ public class App {
         start();
     }
 
-    private boolean adminMenuHandler(int selection) throws IOException, ClassNotFoundException {
+    private boolean mainMenuHandler(int selection) throws IOException, ClassNotFoundException {
 
         switch (selection) {
             case 0:
-                int choice = userInteraction.manageUsersMenu();
-                manageUsers(choice);
+                //view
+                int choice0 = userInteraction.viewMenu();
+                viewMenuHandler(choice0);
                 return false;
             case 1:
-                //change password
-                currentUser.changePassword(userInteraction.changePassword());
-                save();
+                //create
+                int choice1 = userInteraction.createMenu();
+                createMenuHandler(choice1);
+//                currentUser.changePassword(userInteraction.changePassword());
+//                save();
                 return false;
             case 2:
-                //search
+                //edit
+                int choice3;
+                if (currentUser.getUserRole() == UserRole.ADMINISTRATIVE) {
+                    choice3 = userInteraction.editAdminMenu();
+                    editAdminMenuHandler(choice3);
+                } else {
+                    choice3 = userInteraction.editStandardMenu();
+                    editStandardMenuHandler(choice3);
+                }
                 return false;
             case 3:
-                //reports
+                //delete
                 return false;
             case 4:
+                //search
+                return false;
+            case 5:
                 userInteraction.println("You have successfully logged out\n\n");
                 currentUser = null;
                 save();
@@ -93,6 +104,47 @@ public class App {
         }
 
         return false;
+    }
+
+    private void viewMenuHandler(int choice) {
+        switch (choice) {
+            case 0:
+                //production
+                break;
+            case 1:
+                //patient balance
+                break;
+            case 2:
+                //Collections
+                break;
+            case 3:
+                //exit
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void createMenuHandler(int choice) {
+        switch (choice) {
+            case 0:
+                //add provider
+                break;
+            case 1:
+                //add patient
+                break;
+            case 2:
+                //add appointment
+                break;
+            case 3:
+                //add procedure
+                break;
+            case 4:
+                //exit
+                break;
+            default:
+                break;
+        }
     }
 
 
