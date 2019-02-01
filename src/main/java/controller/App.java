@@ -133,10 +133,11 @@ public class App {
         }
     }
 
+
     private void createMenuHandler(int choice) {
         switch (choice) {
             case 0:
-                //add provider
+                addProvider();
                 break;
             case 1:
                 //add patient
@@ -155,6 +156,11 @@ public class App {
         }
     }
 
+    private void addProvider() {
+
+
+    }
+
     private void editAdminMenuHandler(int choice) throws IOException {
         switch (choice) {
             case 0:
@@ -162,7 +168,11 @@ public class App {
                 save();
                 break;
             case 1:
-                //other user password
+                User who = userInteraction.selectUser(clinic.getUsers(), "Who do you want to change the password");
+                String newPassword = passwordVerified(false);
+                who.setPassword(newPassword);
+                save();
+
                 break;
             case 2:
                 //provider
@@ -212,7 +222,7 @@ public class App {
 
     private void deleteAdminMenuHandler(int choice) {
         switch (choice) {
-            case 0:     System.out.println("something");
+            case 0:
                 //user
             break;
             case 1:
@@ -300,12 +310,6 @@ public class App {
         return newPassword;
     }
 
-    private void addUser() throws IOException {
-        User user = new User(userInteraction.getName(), userInteraction.getLastName(), userInteraction.getUsername(), userInteraction.getPassword(), userInteraction.getUserType());
-        clinic.getUsers().add(user);
-        save();
-        userInteraction.println("User " + user.getName() + " has been created");
-    }
 
     private void save() throws IOException {
         makeDirIfNotExists();
