@@ -289,7 +289,7 @@ public class App {
     }
     
     private void editProviderMnu() throws IOException {
-    	Provider selectedProvider = userInteraction.selectProvider(clinic.getProviders(), "Select a Provider To Edit asjdajsdasdads");
+    	Provider selectedProvider = userInteraction.selectProvider(clinic.getProviders(), "Select a Provider To Edit");
     	
     	
     	
