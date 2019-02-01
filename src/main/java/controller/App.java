@@ -88,9 +88,19 @@ public class App {
                 return false;
             case 3:
                 //delete
+                int choice4;
+                if (currentUser.getUserRole() == UserRole.ADMINISTRATIVE) {
+                    choice4 = userInteraction.deleteAdminMenu();
+                    deleteAdminMenuHandler(choice4);
+                } else {
+                    choice4 = userInteraction.deleteStandardMenu();
+                    deleteStandardMenuHandler(choice4);
+                }
                 return false;
             case 4:
                 //search
+                int choice5 = userInteraction.searchMenu();
+                searchMenuHandler(choice5);
                 return false;
             case 5:
                 userInteraction.println("You have successfully logged out\n\n");
@@ -102,6 +112,7 @@ public class App {
         }
         return false;
     }
+
 
     private void viewMenuHandler(int choice) {
         switch (choice) {
@@ -147,7 +158,7 @@ public class App {
     private void editAdminMenuHandler(int choice) throws IOException {
         switch (choice) {
             case 0:
-                currentUser.changePassword(userInteraction.changePassword());
+                currentUser.changePassword(passwordVerified(false));
                 save();
                 break;
             case 1:
@@ -173,10 +184,10 @@ public class App {
         }
     }
 
-    private void editStandardMenuHandler(int choice) throws IOException{
+    private void editStandardMenuHandler(int choice) throws IOException {
         switch (choice) {
             case 0:
-                currentUser.changePassword(userInteraction.changePassword());
+                currentUser.changePassword(passwordVerified(false));
                 save();
                 break;
             case 1:
@@ -199,6 +210,76 @@ public class App {
         }
     }
 
+    private void deleteAdminMenuHandler(int choice) {
+        switch (choice) {
+            case 0:
+                //user
+                break;
+            case 1:
+                //all users
+                break;
+            case 2:
+                //provider
+                break;
+            case 3:
+                //patients
+                break;
+            case 4:
+                //appointments
+                break;
+            case 5:
+                //procedure
+                break;
+            case 6:
+                //exit
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void deleteStandardMenuHandler(int choice) {
+        switch (choice) {
+            case 0:
+                //delete provider
+                break;
+            case 1:
+                //delete patients
+                break;
+            case 2:
+                //appointments
+                break;
+            case 3:
+                //procedure
+                break;
+            case 4:
+                //exit
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void searchMenuHandler(int choice) {
+        switch (choice) {
+            case 0:
+                //providers
+                break;
+            case 1:
+                //search patients
+                break;
+            case 2:
+                //appointments
+                break;
+            case 3:
+                //exit
+                break;
+            default:
+                break;
+        }
+    }
+
+
     private String passwordVerified(boolean isFirstTime) throws IOException {
         String newPassword = null;
         boolean isValid = false;
@@ -219,30 +300,7 @@ public class App {
         return newPassword;
     }
 
-    private void manageUsers(int choice) throws IOException {
-        switch (choice) {
-            case 0:
-                addUser();
-                break;
-            case 1:
-                //Remove
-                break;
-            case 2:
-                //chance other's password
-                break;
-            case 3:
-                //Change the role
-                break;
-            case 4:
-                //Exit
-                break;
-            default:
-                break;
-        }
-    }
-
     private void addUser() throws IOException {
-
         User user = new User(userInteraction.getName(), userInteraction.getLastName(), userInteraction.getUsername(), userInteraction.getPassword(), userInteraction.getUserType());
         clinic.getUsers().add(user);
         save();
