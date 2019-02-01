@@ -7,7 +7,7 @@ public class Provider extends Person {
 
     public Provider(String name, String lastName, int uniqueId, String email, int phoneNumber, ProviderType title, int uniqueId1) {
         super(name, lastName, uniqueId, email, phoneNumber);
-        this.title = title;
+        this.setTitle(title);
         this.uniqueId = uniqueId1;
     }
 
@@ -16,15 +16,14 @@ public class Provider extends Person {
     }
 
     public void setTitle(ProviderType title) {
+        if(title != ProviderType.ASSISTANT || title != ProviderType.DENTIST || title != ProviderType.HYGIENIST) {
+        	throw new IllegalArgumentException("This is now an allowed ProviderType");
+        }
         this.title = title;
     }
 
     public int getUniqueId() {
         return uniqueId;
-    }
-
-    public void setUniqueId(int uniqueId) {
-        this.uniqueId = uniqueId;
     }
 
     @Override

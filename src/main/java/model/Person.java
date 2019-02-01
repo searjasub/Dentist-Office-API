@@ -15,7 +15,7 @@ public class Person implements Serializable {
     public Person(String name, String lastName, int uniqueId, String email, int phoneNumber) {
         this.setName(name);
         this.setLastName(lastName);
-        this.setUniqueId(uniqueId);
+        this.uniqueId = uniqueId;
         this.setEmail(email);
         this.setPhoneNumber(phoneNumber);
     }
@@ -25,6 +25,9 @@ public class Person implements Serializable {
     }
 
     public void setName(String name) {
+    	if(name == null || name.trim() == "") {
+    		throw new IllegalArgumentException("Name cannot be nothing.");
+    	}
         this.name = name;
     }
 
@@ -33,6 +36,9 @@ public class Person implements Serializable {
     }
 
     public void setLastName(String lastName) {
+    	if(lastName == null || lastName.trim() == "") {
+    		throw new IllegalArgumentException("Last Name cannot be nothing.");
+    	}
         this.lastName = lastName;
     }
 
@@ -40,15 +46,14 @@ public class Person implements Serializable {
         return uniqueId;
     }
 
-    public void setUniqueId(int uniqueId) {
-        this.uniqueId = uniqueId;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
+    	if(email == null || email.trim() == "") {
+    		throw new IllegalArgumentException("You cannot have nothing for an email");
+    	}
         this.email = email;
     }
 
@@ -57,6 +62,9 @@ public class Person implements Serializable {
     }
 
     public void setPhoneNumber(int phoneNumber) {
+    	if(phoneNumber < 1000000000 || phoneNumber > 9999999999) {
+    		
+    	}
         this.phoneNumber = phoneNumber;
     }
 
