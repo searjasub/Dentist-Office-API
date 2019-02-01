@@ -2,9 +2,7 @@ package view;
 
 
 import interfaces.ConsoleUI;
-import model.ProviderType;
-import model.User;
-import model.UserRole;
+import model.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -193,6 +191,24 @@ public class UserInteraction {
         return (User) list[ConsoleUI.promptForMenuSelection(options, message)];
     }
 
+    public Provider selectProvider(List<Provider> providers, String message) throws IOException{
+        Object[] list = providers.toArray();
+        String[] options = new String[list.length];
+        for (int i = 0; i < options.length; i++) {
+            options[i] = providers.get(i).getName() + " " + providers.get(i).getLastName() + " (" + providers.get(i).getTitle().getType() + ")";
+        }
+        return (Provider) list[ConsoleUI.promptForMenuSelection(options, message)];
+    }
+
+    public Insurance selectInsurance(List<Insurance> insurances, String message)throws IOException{
+        Object[] list = insurances.toArray();
+        String[] options = new String[list.length];
+        for (int i = 0; i < options.length; i++) {
+            options[i] = insurances.get(i).getName() + " | Group ID: " + insurances.get(i).getGroupId();
+        }
+        return (Insurance) list[ConsoleUI.promptForMenuSelection(options, message)];
+    }
+
     public String changePassword() throws IOException {
         return ConsoleUI.promptForInput("Enter new password", false, false);
     }
@@ -202,9 +218,6 @@ public class UserInteraction {
     }
 
     public String verifyPassword() throws IOException {
-
-
-
         return ConsoleUI.promptForInput("Re-enter password", false, false);
     }
 

@@ -172,7 +172,6 @@ public class App {
                 String newPassword = passwordVerified(false);
                 who.setPassword(newPassword);
                 save();
-
                 break;
             case 2:
             	System.out.println("this is a thing");
