@@ -7,10 +7,10 @@ import model.UserRole;
 import view.UserInteraction;
 
 import java.io.*;
-import java.nio.channels.spi.SelectorProvider;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
 
 public class App {
@@ -20,15 +20,20 @@ public class App {
     private User currentUser;
     private UserInteraction userInteraction = new UserInteraction();
     private Clinic clinic = new Clinic();
+    private HashMap<String, String> loginCredentials = new HashMap<>();
 
-    public void start() throws IOException, ClassNotFoundException {
-        int selection;
-
+    private void load() throws IOException, ClassNotFoundException {
         ObjectInputStream in = new ObjectInputStream(new FileInputStream(directory + "\\save.db"));
         clinic.setUsers((List<User>) in.readObject());
-
+        for (int i = 0; i < clinic.getUsers().size(); i++) {
+            loginCredentials.put(clinic.getUsers().get(i).getUsername(), clinic.getUsers().get(i).getPassword());
+        }
         in.close();
+    }
 
+    public void start() throws IOException, ClassNotFoundException {
+
+        load();
         if (clinic.getUsers().isEmpty()) {
             addAdmin();
         } else {
@@ -36,11 +41,9 @@ public class App {
                 loginScreen();
                 boolean isDone = false;
                 while (!isDone) {
-
                     if (currentUser.getUserRole() == UserRole.ADMINISTRATIVE) {
                         if (currentUser.getPassword().equals("1234Password")) {
                             userInteraction.print("Welcome to the Dentist Office App, since is your first login please ");
-
                             String newPass = passwordVerified(true);
                             for (User u : clinic.getUsers()) {
                                 if (u.getUsername().equals(currentUser.getUsername())) {
@@ -49,7 +52,7 @@ public class App {
                             }
                             save();
                         }
-                        selection = userInteraction.mainMenu();
+                        int selection = userInteraction.mainMenu();
                         isDone = mainMenuHandler(selection);
                     }
                 }
@@ -74,35 +77,41 @@ public class App {
                 return false;
             case 1:
                 //create
-                int choice1 = userInteraction.createMenu();
-                createMenuHandler(choice1);
+                int choice1;
+                if (currentUser.getUserRole() == UserRole.ADMINISTRATIVE) {
+                    choice1 = userInteraction.createAdminMenu();
+                    createAdminMenuHandler(choice1);
+                } else {
+                    choice1 = userInteraction.createStandardMenu();
+                    createStandardMenuHandler(choice1);
+                }
                 return false;
             case 2:
                 //edit
-                int choice3;
+                int choice2;
                 if (currentUser.getUserRole() == UserRole.ADMINISTRATIVE) {
-                    choice3 = userInteraction.editAdminMenu();
-                    editAdminMenuHandler(choice3);
+                    choice2 = userInteraction.editAdminMenu();
+                    editAdminMenuHandler(choice2);
                 } else {
-                    choice3 = userInteraction.editStandardMenu();
-                    editStandardMenuHandler(choice3);
+                    choice2 = userInteraction.editStandardMenu();
+                    editStandardMenuHandler(choice2);
                 }
                 return false;
             case 3:
                 //delete
-                int choice4;
+                int choice3;
                 if (currentUser.getUserRole() == UserRole.ADMINISTRATIVE) {
-                    choice4 = userInteraction.deleteAdminMenu();
-                    deleteAdminMenuHandler(choice4);
+                    choice3 = userInteraction.deleteAdminMenu();
+                    deleteAdminMenuHandler(choice3);
                 } else {
-                    choice4 = userInteraction.deleteStandardMenu();
-                    deleteStandardMenuHandler(choice4);
+                    choice3 = userInteraction.deleteStandardMenu();
+                    deleteStandardMenuHandler(choice3);
                 }
                 return false;
             case 4:
                 //search
-                int choice5 = userInteraction.searchMenu();
-                searchMenuHandler(choice5);
+                int choice4 = userInteraction.searchMenu();
+                searchMenuHandler(choice4);
                 return false;
             case 5:
                 userInteraction.println("You have successfully logged out\n\n");
@@ -136,7 +145,64 @@ public class App {
     }
 
 
-    private void createMenuHandler(int choice) {
+    private void createAdminMenuHandler(int choice) throws IOException, ClassNotFoundException {
+        switch (choice) {
+            case 0:
+                //user
+                User newUser = new User(
+                        userInteraction.getName(),
+                        userInteraction.getLastName(),
+                        checkUniqueUsername(),
+                        passwordVerified(false),
+                        userInteraction.getUserType());
+
+                clinic.getUsers().add(newUser);
+                save();
+                load();
+                break;
+            case 1:
+                addProvider();
+                break;
+            case 2:
+                //add patient
+                break;
+            case 3:
+                //add appointment
+                break;
+            case 4:
+                //add procedure
+                break;
+            case 5:
+                //exit
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private String checkUniqueUsername() throws IOException {
+        String username = null;
+
+
+        boolean isValid = false;
+        while (true) {
+
+            username = userInteraction.getUsername();
+
+            if(loginCredentials.get(username) == null){
+                return username;
+            }
+
+            userInteraction.println("\nUsername already exist. Please choose another one.");
+
+        }
+
+        //System.out.println(username);
+        //return username;
+    }
+
+    public void createStandardMenuHandler(int choice) {
         switch (choice) {
             case 0:
                 addProvider();
@@ -153,6 +219,7 @@ public class App {
             case 4:
                 //exit
                 break;
+
             default:
                 break;
         }
@@ -214,7 +281,7 @@ public class App {
                 //procedure
                 break;
             case 5:
-            	userInteraction.println("You have exited the Edit Menu\n");
+                userInteraction.println("You have exited the Edit Menu\n");
                 break;
             default:
                 break;
@@ -236,7 +303,7 @@ public class App {
         switch (choice) {
             case 0:
                 //user
-            break;
+                break;
             case 1:
                 //all users
                 break;
@@ -324,7 +391,10 @@ public class App {
 
 
     private void save() throws IOException {
-        makeDirIfNotExists();
+        Path path = Paths.get(directory);
+        if (!Files.exists(path)) {
+            Files.createDirectories(path);
+        }
         FileOutputStream fileOutputStream = new FileOutputStream(directory + "\\save.db");
         ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
         out.writeObject(clinic.getUsers());
@@ -333,33 +403,25 @@ public class App {
         fileOutputStream.close();
     }
 
-    private void makeDirIfNotExists() throws IOException {
-        Path path = Paths.get(directory);
-        if (!Files.exists(path)) {
-            Files.createDirectories(path);
-        }
-
-    }
 
     private void loginScreen() throws IOException {
         boolean isValid = false;
         while (!isValid) {
 
-            User userTryingToLogin = userInteraction.selectUser(clinic.getUsers(), "Choose user to login");
             String username = userInteraction.getLoginUsername();
             String password = userInteraction.getLoginPassword();
 
-            if (username.equals(userTryingToLogin.getUsername()) && password.equals(userTryingToLogin.getPassword()) && userTryingToLogin.getUserRole() == UserRole.ADMINISTRATIVE) {
-                currentUser = userTryingToLogin;
-                isValid = true;
-            } else if (username.equals(userTryingToLogin.getUsername()) && password.equals(userTryingToLogin.getPassword()) && userTryingToLogin.getUserRole() == UserRole.STANDARD) {
-                currentUser = userTryingToLogin;
+            if (password.equals(loginCredentials.get(username))) {
+
+                for (int i = 0; i < clinic.getUsers().size(); i++) {
+                    if (clinic.getUsers().get(i).getUsername().equals(username)) {
+                        currentUser = clinic.getUsers().get(i);
+                    }
+                }
                 isValid = true;
             } else {
                 userInteraction.println("The credentials are incorrect, please try again.\n");
             }
         }
     }
-
-
 }

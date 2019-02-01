@@ -15,7 +15,6 @@ public class UserInteraction {
         ConsoleUI.displayMessage("Welcome to the managment office", false);
     }
 
-
     public int mainMenu() throws IOException {
         return ConsoleUI.promptForMenuSelection(fillMainMenu(), defaultQuestion);
     }
@@ -44,16 +43,31 @@ public class UserInteraction {
         return menuOptions;
     }
 
-    public int createMenu() throws IOException {
-        return ConsoleUI.promptForMenuSelection(fillCreateMenu(), defaultQuestion);
+    public int createAdminMenu() throws IOException {
+        return ConsoleUI.promptForMenuSelection(fillCreateAdminMenu(), defaultQuestion);
     }
 
-    private String[] fillCreateMenu() {
+    private String[] fillCreateAdminMenu() {
+        String[] menuOptions = new String[6];
+        menuOptions[0] = "User";
+        menuOptions[1] = "Provider";
+        menuOptions[2] = "Patient";
+        menuOptions[3] = "Appointment";
+        menuOptions[4] = "Procedure";
+        menuOptions[5] = "Exit";
+        return menuOptions;
+    }
+
+    public int createStandardMenu()throws IOException{
+        return ConsoleUI.promptForMenuSelection(fillCreateStandardMenu(), defaultQuestion);
+    }
+
+    private String[] fillCreateStandardMenu() {
         String[] menuOptions = new String[5];
-        menuOptions[0] = "Add Provider";
-        menuOptions[1] = "Add Patient";
-        menuOptions[2] = "Add Appointment";
-        menuOptions[3] = "Add Procedure";
+        menuOptions[0] = "Provider";
+        menuOptions[1] = "Patient";
+        menuOptions[2] = "Appointment";
+        menuOptions[3] = "Procedure";
         menuOptions[4] = "Exit";
         return menuOptions;
     }
@@ -109,7 +123,7 @@ public class UserInteraction {
         return ConsoleUI.promptForMenuSelection(fillDeleteStandardMenu(), defaultQuestion);
     }
 
-    public String[] fillDeleteStandardMenu() {
+    private String[] fillDeleteStandardMenu() {
         String[] menuOptions = new String[5];
         menuOptions[0] = "Providers";
         menuOptions[1] = "Patients";
@@ -178,8 +192,6 @@ public class UserInteraction {
             default:
                 throw new IllegalArgumentException("Something went wrong in the UserInteraction Class (You should not see me)");
         }
-
-
     }
 
     public User selectUser(List<User> users, String message) throws IOException {
@@ -207,6 +219,24 @@ public class UserInteraction {
             options[i] = insurances.get(i).getName() + " | Group ID: " + insurances.get(i).getGroupId();
         }
         return (Insurance) list[ConsoleUI.promptForMenuSelection(options, message)];
+    }
+
+    public Patient selectPatient(List<Patient> patients, String message)throws IOException{
+        Object[] list = patients.toArray();
+        String[] options = new String[list.length];
+        for (int i = 0; i < options.length; i++) {
+            options[i] = patients.get(i).getName();
+        }
+        return (Patient) list[ConsoleUI.promptForMenuSelection(options, message)];
+    }
+
+    public FutureAppointment selectFutureAppointment(List<FutureAppointment> appointments, String message)throws IOException{
+        Object[] list = appointments.toArray();
+        String[] options = new String[list.length];
+        for (int i = 0; i < options.length; i++) {
+//            options[i] = appointments.get(i)
+        }
+        return (FutureAppointment) list[ConsoleUI.promptForMenuSelection(options, message)];
     }
 
     public String changePassword() throws IOException {
@@ -238,5 +268,6 @@ public class UserInteraction {
     public void print(String message) {
         System.out.print(message);
     }
+
 
 }

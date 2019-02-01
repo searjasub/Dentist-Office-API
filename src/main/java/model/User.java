@@ -22,7 +22,7 @@ public class User implements Serializable {
     }
 
     public void setName(String name) {
-    	if(name == null || name.trim() == "") {
+    	if(name == null || name.isEmpty()) {
     		throw new IllegalArgumentException("This is not a valid name input");
     	}
         this.name = name;
@@ -33,7 +33,7 @@ public class User implements Serializable {
     }
 
     public void setLastName(String lastName) {
-    	if(lastName == null || lastName.trim() == "") {
+    	if(lastName == null || lastName.isEmpty()) {
     		throw new IllegalArgumentException("This is not a valid last name input");
     	}
         this.lastName = lastName;
@@ -44,7 +44,7 @@ public class User implements Serializable {
     }
 
     public void setUsername(String username) {
-    	if(username == null || username.trim() == "") {
+    	if(username == null || username.isEmpty()) {
     		throw new IllegalArgumentException("This is not a valid username input");
     	}
         this.username = username;
@@ -55,7 +55,7 @@ public class User implements Serializable {
     }
 
     public void setPassword(String password) {
-    	if(password == null || password.trim() == "") {
+    	if(password == null || password.isEmpty()) {
     		throw new IllegalArgumentException("This is not a valid password input");
     	}
         this.password = password;
@@ -66,7 +66,7 @@ public class User implements Serializable {
     }
 
     public void setUserRole(UserRole userRole) {
-    	if(userRole != UserRole.ADMINISTRATIVE || userRole != UserRole.STANDARD) {
+    	if(userRole == null) {
     		throw new IllegalArgumentException("This should not happen, but the setUserRole is not working.");
     	}
     	
@@ -74,7 +74,7 @@ public class User implements Serializable {
     }
 
     public void changePassword(String password){
-    	if(password == null || password.trim() == "") {
+    	if(password == null || password.isEmpty()) {
     		throw new IllegalArgumentException("You cannot have nothing as a password");
     	}
     	
