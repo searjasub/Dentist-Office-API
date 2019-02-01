@@ -66,10 +66,18 @@ public class User implements Serializable {
     }
 
     public void setUserRole(UserRole userRole) {
+    	if(userRole != UserRole.ADMINISTRATIVE || userRole != UserRole.STANDARD) {
+    		throw new IllegalArgumentException("This should not happen, but the setUserRole is not working.");
+    	}
+    	
         this.userRole = userRole;
     }
 
     public void changePassword(String password){
+    	if(password == null || password.trim() == "") {
+    		throw new IllegalArgumentException("You cannot have nothing as a password");
+    	}
+    	
         this.setPassword(password);
     }
 }

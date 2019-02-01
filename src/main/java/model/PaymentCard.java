@@ -23,6 +23,9 @@ public class PaymentCard {
     }
 
     public void setNumber(long number) {
+    	if(number < 0 || number > Long.MAX_VALUE) {
+    		throw new IllegalArgumentException("Number cannot be negative or bigger than max value");
+    	}
         this.number = number;
     }
 
@@ -31,6 +34,9 @@ public class PaymentCard {
     }
 
     public void setExpMonth(int expMonth) {
+    	if(expMonth < 0 || expMonth > 2100000000) {
+    		throw new IllegalArgumentException("Expiration Month cannot be negative or bigger than max value");
+    	}
         this.expMonth = expMonth;
     }
 
@@ -39,6 +45,9 @@ public class PaymentCard {
     }
 
     public void setExpYear(int expYear) {
+    	if(expYear < 0 || expYear > 210000000) {
+    		throw new IllegalArgumentException("Expiration Year cannot be negative or bigger than max value");
+    	}
         this.expYear = expYear;
     }
 
@@ -47,6 +56,9 @@ public class PaymentCard {
     }
 
     public void setName(String name) {
+    	if(name == null || name.trim() == "") {
+    		throw new IllegalArgumentException("Name cannot be nothing");
+    	}
         this.name = name;
     }
 
@@ -55,6 +67,9 @@ public class PaymentCard {
     }
 
     public void setCvv(int cvv) {
+    	if(cvv < 0 || cvv > 210000000) {
+    		throw new IllegalArgumentException("CVV cannot be negative or bigger than max value");
+    	}
         this.cvv = cvv;
     }
 
@@ -63,6 +78,9 @@ public class PaymentCard {
     }
 
     public void setZipCode(int zipCode) {
+    	if(zipCode < 10000 || zipCode > 99999) {
+    		throw new IllegalArgumentException("Zip Code cannot be smaller than 10000 or bigger than 99999");
+    	}
         this.zipCode = zipCode;
     }
 }
