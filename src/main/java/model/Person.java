@@ -7,12 +7,12 @@ public class Person implements Serializable {
     private String name, lastName;
     private int uniqueId;
     private String email;
-    private int phoneNumber;
+    private long phoneNumber;
 
     public Person() {
     }
 
-    public Person(String name, String lastName, int uniqueId, String email, int phoneNumber) {
+    public Person(String name, String lastName, int uniqueId, String email, long phoneNumber) {
         this.setName(name);
         this.setLastName(lastName);
         this.uniqueId = uniqueId;
@@ -61,7 +61,7 @@ public class Person implements Serializable {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(long phoneNumber) {
     	if(phoneNumber < 1000000000 || phoneNumber > 9999999999) {
     		
     	}
