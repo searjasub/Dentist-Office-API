@@ -212,9 +212,9 @@ public class App {
 
     private void deleteAdminMenuHandler(int choice) {
         switch (choice) {
-            case 0:
+            case 0:     System.out.println("something");
                 //user
-                break;
+            break;
             case 1:
                 //all users
                 break;
