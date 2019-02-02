@@ -192,14 +192,12 @@ public class UserMenuInteraction {
         return (FutureAppointment) list[ConsoleUI.promptForMenuSelection(options, message)];
     }
     
-    public void ChangeProviderInformation(Provider p) {
-    	
-    	
-    	
-    	
-    	
-    	
-    	
+    public String[] ChangeProviderInformation(Provider p) {
+    	String[] options = {"First Name","Last Name","Phone-Number","E-Mail","Provider Type","Exit"};
+    	for(int i = 0; i < options.length; i++) {
+    		System.out.println(options[i]);
+    	}
+    	return options;
     }
 
 }
