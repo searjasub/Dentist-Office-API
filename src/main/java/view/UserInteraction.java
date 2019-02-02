@@ -128,18 +128,21 @@ public class UserInteraction {
         }
     }
 
-    public long getPhoneNumber() throws IOException {
-        long phoneNumber;
+    public String getPhoneNumber() throws IOException {
 
-        return ConsoleUI.promptForLong("Please enter phone number", 0,Long.MAX_VALUE);
-//        while (true) {
-//            phoneNumber = ConsoleUI.promptForLong("Please enter Phone number", 0, 99999999);
-//            if (phoneNumber < 9999999) {
-//                println("The code is too short, please try again. (minimum 5 digits)");
-//            } else {
-//                return phoneNumber;
-//            }
-//        }
+        String phone;
+        while (true) {
+            phone = ConsoleUI.promptForInput("Please enter phone number", false, false);
+            if (phone.length() > 10) {
+                println("The phone number is too long, please try again. (maximum 10 digits)");
+            } else if (phone.length() < 10) {
+                println("The phone number is too short, please try again. (minimum 10 digits)");
+            } else if (phone.matches("[a-zA-Z]")) {
+                println("Only numbers allowed");
+            } else {
+                return phone;
+            }
+        }
     }
 
     public String getCode() throws IOException {
@@ -151,7 +154,7 @@ public class UserInteraction {
                 println("The code is too long, please try again. (maximum 5 digits)");
             } else if (code.length() < 5) {
                 println("The code is too short, please try again. (minimum 5 digits)");
-            } else if (code.matches("[a-zA-z]+")) {
+            } else if (code.matches("[a-zA-Z]+")) {
                 println("Only numbers allowed");
             } else {
                 return code;

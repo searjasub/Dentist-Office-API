@@ -5,7 +5,7 @@ public class Patient extends Person{
     private Insurance insurance;
     private PaymentCard paymentCard;
 
-    public Patient(String name, String lastName, int uniqueId, String email, long phoneNumber, Insurance insurance, PaymentCard paymentCard) {
+    public Patient(String name, String lastName, int uniqueId, String email, String phoneNumber, Insurance insurance, PaymentCard paymentCard) {
         super(name, lastName, uniqueId, email, phoneNumber);
         this.setInsurance(insurance);
         this.setPaymentCard(paymentCard);

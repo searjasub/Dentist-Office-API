@@ -5,12 +5,12 @@ public class Person {
     private String name, lastName;
     private int uniqueId;
     private String email;
-    private long phoneNumber;
+    private String phoneNumber;
 
     public Person() {
     }
 
-    public Person(String name, String lastName, int uniqueId, String email, long phoneNumber) {
+    public Person(String name, String lastName, int uniqueId, String email, String phoneNumber) {
         this.setName(name);
         this.setLastName(lastName);
         this.uniqueId = uniqueId;
@@ -55,11 +55,11 @@ public class Person {
         this.email = email;
     }
 
-    public long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(long phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
 //    	if(phoneNumber < 1000000000 || phoneNumber > Long.MAX_VALUE) {
 //
 //    	}
