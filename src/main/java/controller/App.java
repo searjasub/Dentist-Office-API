@@ -249,10 +249,9 @@ public class App {
             clinic.getProcedures().add(procedure);
             autoSaveLoad();
         } catch (NullPointerException ex){
-            userInteraction.println("There are no patients in record. Please add a patient first");
+            notFoundMessage();
 
         }
-
     }
 
     private void editAdminMenuHandler(int choice) throws IOException {
@@ -317,9 +316,16 @@ public class App {
 
     private void editProviderMenu() throws IOException {
 
+        try{
         Provider selectedProvider = userMenuInteraction.selectProvider(clinic.getProviders(), "Select a Provider To Edit");
 
 
+
+
+
+        } catch (IllegalArgumentException ex){
+            notFoundMessage();
+        }
     }
 
     private void deleteAdminMenuHandler(int choice) {
@@ -458,5 +464,9 @@ public class App {
             loginCredentials.put(clinic.getUsers().get(i).getUsername(), clinic.getUsers().get(i).getPassword());
         }
         in.close();
+    }
+
+    private void notFoundMessage(){
+        userInteraction.println("There are no patients in record. Please add a patient first");
     }
 }
