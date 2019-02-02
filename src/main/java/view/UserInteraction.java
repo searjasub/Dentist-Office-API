@@ -114,7 +114,6 @@ public class UserInteraction {
         String code;
 
         while (true) {
-
             code = ConsoleUI.promptForInput("Please enter code\nD", false, true);
             if (code.length() > 5) {
                 println("The code is too long, please try again.");

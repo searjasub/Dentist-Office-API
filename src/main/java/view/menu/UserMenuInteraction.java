@@ -170,7 +170,12 @@ public class UserMenuInteraction {
     }
 
     public Patient selectPatient(List<Patient> patients, String message)throws IOException{
+
         Object[] list = patients.toArray();
+        if (patients.isEmpty()){
+            throw new NullPointerException();
+        }
+
         String[] options = new String[list.length];
         for (int i = 0; i < options.length; i++) {
             options[i] = patients.get(i).getName();

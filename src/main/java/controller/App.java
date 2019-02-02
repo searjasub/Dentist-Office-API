@@ -237,14 +237,22 @@ public class App {
     }
 
     private void addProcedure() throws IOException, ClassNotFoundException {
-        Procedure procedure = new Procedure(
-                userMenuInteraction.selectPatient(clinic.getPatients(),"Select a patient."),
-                userInteraction.getCode(),
-                userInteraction.getDescription(),
-                userInteraction.getCost(),
-                userMenuInteraction.selectProvider(clinic.getProviders(),"Choose a provider"));
-        clinic.getProcedures().add(procedure);
-        autoSaveLoad();
+
+        try {
+
+            Procedure procedure = new Procedure(
+                    userMenuInteraction.selectPatient(clinic.getPatients(), "Select a patient."),
+                    userInteraction.getCode(),
+                    userInteraction.getDescription(),
+                    userInteraction.getCost(),
+                    userMenuInteraction.selectProvider(clinic.getProviders(), "Choose a provider"));
+            clinic.getProcedures().add(procedure);
+            autoSaveLoad();
+        } catch (NullPointerException ex){
+            userInteraction.println("There are no patients in record. Please add a patient first");
+
+        }
+
     }
 
     private void editAdminMenuHandler(int choice) throws IOException {
@@ -306,6 +314,7 @@ public class App {
     }
 
     private void editProviderMenu() throws IOException {
+
         Provider selectedProvider = userMenuInteraction.selectProvider(clinic.getProviders(), "Select a Provider To Edit");
 
 
