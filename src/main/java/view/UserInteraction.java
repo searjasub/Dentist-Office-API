@@ -120,7 +120,7 @@ public class UserInteraction {
                 println("The code is too long, please try again.");
             } else if (code.length() < 5) {
                 println("The code is too short, please try again.");
-            } else if(code.contains("['a-z']") || code.contains("[A-Z]")){
+            } else if(code.matches("[a-zA-z]+")){
                 println("Only numbers allowed");
             } else {
                 return code;
@@ -130,5 +130,9 @@ public class UserInteraction {
 
     public String getDescription() throws IOException {
         return ConsoleUI.promptForInput("Description", false, false);
+    }
+
+    public double getCost() throws IOException {
+        return ConsoleUI.promptForDouble("How much did it cost?",0, Double.MAX_VALUE);
     }
 }

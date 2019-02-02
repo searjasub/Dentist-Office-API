@@ -3,10 +3,10 @@ package model;
 public class Procedure {
 
     private Patient patient;
-    private Provider provider;
     private String code = "D";
     private String description;
     private double cost;
+    private Provider provider;
 
     public Procedure(Patient patient, String code, String description, double cost, Provider provider) {
         this.setProvider(provider);

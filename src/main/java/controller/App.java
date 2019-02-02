@@ -1,9 +1,6 @@
 package controller;
 
-import model.Clinic;
-import model.Provider;
-import model.User;
-import model.UserRole;
+import model.*;
 import view.UserInteraction;
 import view.menu.UserMenuInteraction;
 
@@ -24,14 +21,7 @@ public class App {
     private Clinic clinic = new Clinic();
     private HashMap<String, String> loginCredentials = new HashMap<>();
 
-    private void load() throws IOException, ClassNotFoundException {
-        ObjectInputStream in = new ObjectInputStream(new FileInputStream(directory + "\\save.db"));
-        clinic.setUsers((List<User>) in.readObject());
-        for (int i = 0; i < clinic.getUsers().size(); i++) {
-            loginCredentials.put(clinic.getUsers().get(i).getUsername(), clinic.getUsers().get(i).getPassword());
-        }
-        in.close();
-    }
+
 
     public void start() throws IOException, ClassNotFoundException {
 
@@ -65,7 +55,7 @@ public class App {
     private void addAdmin() throws IOException, ClassNotFoundException {
         User admin = new User("Administrator", "one", "admin", "1234Password", UserRole.ADMINISTRATIVE);
         clinic.getUsers().add(admin);
-        save();
+        autoSaveLoad();
         start();
     }
 
@@ -159,8 +149,7 @@ public class App {
                         userInteraction.getUserType());
 
                 clinic.getUsers().add(newUser);
-                save();
-                load();
+                autoSaveLoad();
                 break;
             case 1:
                 addProvider();
@@ -169,15 +158,14 @@ public class App {
                 addPatient();
                 break;
             case 3:
-                //add appointment
+                addAppointment();
                 break;
             case 4:
-                //add procedure
+                addProcedure();
                 break;
             case 5:
                 //exit
                 break;
-
             default:
                 break;
         }
@@ -192,7 +180,7 @@ public class App {
 
             username = userInteraction.getUsername();
 
-            if(loginCredentials.get(username) == null){
+            if (loginCredentials.get(username) == null) {
                 return username;
             }
 
@@ -213,19 +201,19 @@ public class App {
                 addPatient();
                 break;
             case 2:
-                //add appointment
+                addAppointment();
                 break;
             case 3:
-                //add procedure
+                addProcedure();
                 break;
             case 4:
                 //exit
                 break;
-
             default:
                 break;
         }
     }
+
 
     private void addProvider() throws IOException, ClassNotFoundException {
         Provider newProvider = new Provider(
@@ -237,12 +225,26 @@ public class App {
                 userInteraction.getProviderType());
 
         clinic.getProviders().add(newProvider);
-        save();
-        load();
+        autoSaveLoad();
     }
 
-    private void addPatient(){
+    private void addPatient() {
 
+    }
+
+    private void addAppointment() {
+
+    }
+
+    private void addProcedure() throws IOException, ClassNotFoundException {
+        Procedure procedure = new Procedure(
+                userMenuInteraction.selectPatient(clinic.getPatients(),"Select a patient."),
+                userInteraction.getCode(),
+                userInteraction.getDescription(),
+                userInteraction.getCost(),
+                userMenuInteraction.selectProvider(clinic.getProviders(),"Choose a provider"));
+        clinic.getProcedures().add(procedure);
+        autoSaveLoad();
     }
 
     private void editAdminMenuHandler(int choice) throws IOException {
@@ -277,11 +279,11 @@ public class App {
         }
     }
 
-    private void editStandardMenuHandler(int choice) throws IOException {
+    private void editStandardMenuHandler(int choice) throws IOException, ClassNotFoundException {
         switch (choice) {
             case 0:
                 currentUser.changePassword(passwordVerified(false));
-                save();
+                autoSaveLoad();
                 break;
             case 1:
                 //provider
@@ -302,18 +304,13 @@ public class App {
                 break;
         }
     }
-    
+
     private void editProviderMenu() throws IOException {
-    	Provider selectedProvider = userInteraction.selectProvider(clinic.getProviders(), "Select a Provider To Edit");
-    	
-    	
-    	
-    	
-    	
-    	
-    	
+        Provider selectedProvider = userMenuInteraction.selectProvider(clinic.getProviders(), "Select a Provider To Edit");
+
+
     }
-    
+
     private void deleteAdminMenuHandler(int choice) {
         switch (choice) {
             case 0:
@@ -404,21 +401,6 @@ public class App {
         return newPassword;
     }
 
-
-    private void save() throws IOException {
-        Path path = Paths.get(directory);
-        if (!Files.exists(path)) {
-            Files.createDirectories(path);
-        }
-        FileOutputStream fileOutputStream = new FileOutputStream(directory + "\\save.db");
-        ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
-        out.writeObject(clinic.getUsers());
-        out.close();
-        out.flush();
-        fileOutputStream.close();
-    }
-
-
     private void loginScreen() throws IOException {
         boolean isValid = false;
         while (!isValid) {
@@ -438,5 +420,32 @@ public class App {
                 userInteraction.println("The credentials are incorrect, please try again.\n");
             }
         }
+    }
+
+    private void autoSaveLoad() throws IOException, ClassNotFoundException {
+        save();
+        load();
+    }
+
+    private void save() throws IOException {
+        Path path = Paths.get(directory);
+        if (!Files.exists(path)) {
+            Files.createDirectories(path);
+        }
+        FileOutputStream fileOutputStream = new FileOutputStream(directory + "\\save.db");
+        ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
+        out.writeObject(clinic.getUsers());
+        out.close();
+        out.flush();
+        fileOutputStream.close();
+    }
+
+    private void load() throws IOException, ClassNotFoundException {
+        ObjectInputStream in = new ObjectInputStream(new FileInputStream(directory + "\\save.db"));
+        clinic.setUsers((List<User>) in.readObject());
+        for (int i = 0; i < clinic.getUsers().size(); i++) {
+            loginCredentials.put(clinic.getUsers().get(i).getUsername(), clinic.getUsers().get(i).getPassword());
+        }
+        in.close();
     }
 }
