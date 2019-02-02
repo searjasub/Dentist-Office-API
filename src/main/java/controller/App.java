@@ -253,14 +253,15 @@ public class App {
                 currentUser.changePassword(passwordVerified(false));
                 save();
                 break;
-            case 1:
+            case 1: //CHANGE PASSWORD FOR A SPECIFIED USER
                 User who = userMenuInteraction.selectUser(clinic.getUsers(), "Who do you want to change the password");
                 String newPassword = passwordVerified(false);
                 who.setPassword(newPassword);
                 save();
                 break;
-            case 2:
-                //provider
+            case 2: //EDIT PROVIDER
+            	Provider provider = userMenuInteraction.selectProvider(clinic.getProviders(), "Which Provider Would you like to Change?");
+            	userMenuInteraction.ChangeProviderInformation(provider);
                 break;
             case 3:
                 //patients
@@ -272,6 +273,7 @@ public class App {
                 //procedure
                 break;
             case 6:
+            	userInteraction.println("You have exited the Edit Menu\n");
                 //exit
                 break;
             default:

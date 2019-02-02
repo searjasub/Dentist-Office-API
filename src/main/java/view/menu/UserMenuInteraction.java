@@ -186,5 +186,15 @@ public class UserMenuInteraction {
         }
         return (FutureAppointment) list[ConsoleUI.promptForMenuSelection(options, message)];
     }
+    
+    public void ChangeProviderInformation(Provider p) {
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    }
 
 }

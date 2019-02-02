@@ -37,7 +37,7 @@ public class Procedure {
     }
 
     public void setCode(String code) {
-    	if(code == null || code.trim() == "") {
+    	if(code == null || (code.trim()).isEmpty()) {
     		throw new IllegalArgumentException("You cannot have nothing for the code");
     	}
         this.code += code;
@@ -48,7 +48,7 @@ public class Procedure {
     }
 
     public void setDescription(String description) {
-    	if(description == null || description.trim() == "") {
+    	if(description == null || (description.trim()).isEmpty()) {
     		throw new IllegalArgumentException("Please add a description");
     	}
         this.description = description;
