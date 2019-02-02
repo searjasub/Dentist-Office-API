@@ -23,9 +23,9 @@ public class Person {
     }
 
     public void setName(String name) {
-    	if(name == null || (name.trim()).isEmpty()) {
-    		throw new IllegalArgumentException("Name cannot be nothing.");
-    	}
+        if (name == null || (name.trim()).isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be nothing.");
+        }
         this.name = name;
     }
 
@@ -34,9 +34,9 @@ public class Person {
     }
 
     public void setLastName(String lastName) {
-    	if(lastName == null || (lastName.trim()).isEmpty()) {
-    		throw new IllegalArgumentException("Last Name cannot be nothing.");
-    	}
+        if (lastName == null || (lastName.trim()).isEmpty()) {
+            throw new IllegalArgumentException("Last Name cannot be nothing.");
+        }
         this.lastName = lastName;
     }
 
@@ -49,9 +49,9 @@ public class Person {
     }
 
     public void setEmail(String email) {
-    	if(email == null || (email.trim()).isEmpty()) {
-    		throw new IllegalArgumentException("You cannot have nothing for an email");
-    	}
+        if (email == null || (email.trim()).isEmpty()) {
+            throw new IllegalArgumentException("You cannot have nothing for an email");
+        }
         this.email = email;
     }
 
@@ -60,9 +60,9 @@ public class Person {
     }
 
     public void setPhoneNumber(String phoneNumber) {
-//    	if(phoneNumber < 1000000000 || phoneNumber > Long.MAX_VALUE) {
-//
-//    	}
+        if (phoneNumber == null) {
+            throw new IllegalArgumentException("Phone number cannot be null");
+        }
         this.phoneNumber = phoneNumber;
     }
 

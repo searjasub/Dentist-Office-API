@@ -5,15 +5,15 @@ public class PaymentCard {
     private String number;
     private int expMonth;
     private int expYear;
-    private String name;
+    private String cardName;
     private int cvv;
     private int zipCode;
 
-    public PaymentCard(String number, int expMonth, int expYear, String name, int cvv, int zipCode) {
+    public PaymentCard(String number, int expMonth, int expYear, String cardName, int cvv, int zipCode) {
         this.setNumber(number);
         this.setExpMonth(expMonth);
         this.setExpYear(expYear);
-        this.setName(name);
+        this.setCardName(cardName);
         this.setCvv(cvv);
         this.setZipCode(zipCode);
     }
@@ -34,9 +34,9 @@ public class PaymentCard {
     }
 
     public void setExpMonth(int expMonth) {
-    	if(expMonth < 0 || expMonth > 2100000000) {
-    		throw new IllegalArgumentException("Expiration Month cannot be negative or bigger than max value");
-    	}
+        if (expMonth < 0 || expMonth > 2100000000) {
+            throw new IllegalArgumentException("Expiration Month cannot be negative or bigger than max value");
+        }
         this.expMonth = expMonth;
     }
 
@@ -45,21 +45,21 @@ public class PaymentCard {
     }
 
     public void setExpYear(int expYear) {
-    	if(expYear < 0 || expYear > 210000000) {
-    		throw new IllegalArgumentException("Expiration Year cannot be negative or bigger than max value");
-    	}
+        if (expYear < 0 || expYear > 210000000) {
+            throw new IllegalArgumentException("Expiration Year cannot be negative or bigger than max value");
+        }
         this.expYear = expYear;
     }
 
-    public String getName() {
-        return name;
+    public String getCardName() {
+        return cardName;
     }
 
-    public void setName(String name) {
-    	if(name == null || name.trim() == "") {
-    		throw new IllegalArgumentException("Name cannot be nothing");
-    	}
-        this.name = name;
+    public void setCardName(String cardName) {
+        if (cardName == null || cardName.trim() == "") {
+            throw new IllegalArgumentException("Name cannot be nothing");
+        }
+        this.cardName = cardName;
     }
 
     public int getCvv() {
@@ -67,9 +67,9 @@ public class PaymentCard {
     }
 
     public void setCvv(int cvv) {
-    	if(cvv < 0 || cvv > 210000000) {
-    		throw new IllegalArgumentException("CVV cannot be negative or bigger than max value");
-    	}
+        if (cvv < 0 || cvv > 210000000) {
+            throw new IllegalArgumentException("CVV cannot be negative or bigger than max value");
+        }
         this.cvv = cvv;
     }
 
@@ -78,9 +78,9 @@ public class PaymentCard {
     }
 
     public void setZipCode(int zipCode) {
-    	if(zipCode < 10000 || zipCode > 99999) {
-    		throw new IllegalArgumentException("Zip Code cannot be smaller than 10000 or bigger than 99999");
-    	}
+        if (zipCode < 10000 || zipCode > 99999) {
+            throw new IllegalArgumentException("Zip Code cannot be smaller than 10000 or bigger than 99999");
+        }
         this.zipCode = zipCode;
     }
 }

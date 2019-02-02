@@ -5,9 +5,7 @@ import interfaces.ConsoleUI;
 import model.ProviderType;
 import model.Source;
 import model.UserRole;
-
 import java.io.IOException;
-import java.math.BigInteger;
 
 public class UserInteraction {
 
@@ -116,9 +114,9 @@ public class UserInteraction {
         while (true) {
             email = ConsoleUI.promptForInput("Enter email", false, false);
             for (int i = email.length() - 1; i > 0; i--) {
-                if(email.charAt(i) == '@'){
+                if (email.charAt(i) == '@') {
                     for (int j = email.length() - 1; j > i; j--) {
-                        if(email.charAt(j) == '.'){
+                        if (email.charAt(j) == '.') {
                             return email;
                         }
                     }
@@ -129,7 +127,6 @@ public class UserInteraction {
     }
 
     public String getPhoneNumber() throws IOException {
-
         String phone;
         while (true) {
             phone = ConsoleUI.promptForInput("Please enter phone number", false, false);
@@ -168,5 +165,41 @@ public class UserInteraction {
 
     public double getCost() throws IOException {
         return ConsoleUI.promptForDouble("How much did it cost?", 0, Double.MAX_VALUE);
+    }
+
+    public String getInsuranceName() throws IOException {
+        return ConsoleUI.promptForInput("Enter Insurance Name", false, false);
+    }
+
+    public String getGroupId() throws IOException {
+        return ConsoleUI.promptForInput("Enter GroupID", false, false);
+    }
+
+    public String getMemberId() throws IOException {
+        return ConsoleUI.promptForInput("Enter MemberID", false, false);
+    }
+
+    public String getCardNumber() throws IOException {
+        return ConsoleUI.promptForInput("Please Enter A New Card Number", false, false);
+    }
+
+    public int getExpMonth() throws IOException {
+        return ConsoleUI.promptForInt("Please Enter An Expiration Month", 1, 12);
+    }
+
+    public int getExpYear() throws IOException {
+        return ConsoleUI.promptForInt("Please Enter An Expiration Year", 2019, 2100);
+    }
+
+    public String getCardName() throws IOException {
+        return ConsoleUI.promptForInput("Please Enter The Name On The Car", false, false);
+    }
+
+    public int getCvv() throws IOException {
+        return ConsoleUI.promptForInt("Please Enter a New CVV Number", 0, 999);
+    }
+
+    public int getZipCode() throws IOException {
+        return ConsoleUI.promptForInt("Please Enter A New Zip Code", 10000, 99999);
     }
 }

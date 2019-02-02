@@ -22,9 +22,9 @@ public class User implements Serializable {
     }
 
     public void setName(String name) {
-    	if(name == null || name.isEmpty()) {
-    		throw new IllegalArgumentException("This is not a valid name input");
-    	}
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("This is not a valid name input");
+        }
         this.name = name;
     }
 
@@ -33,9 +33,9 @@ public class User implements Serializable {
     }
 
     public void setLastName(String lastName) {
-    	if(lastName == null || lastName.isEmpty()) {
-    		throw new IllegalArgumentException("This is not a valid last name input");
-    	}
+        if (lastName == null || lastName.isEmpty()) {
+            throw new IllegalArgumentException("This is not a valid last name input");
+        }
         this.lastName = lastName;
     }
 
@@ -44,9 +44,9 @@ public class User implements Serializable {
     }
 
     public void setUsername(String username) {
-    	if(username == null || username.isEmpty()) {
-    		throw new IllegalArgumentException("This is not a valid username input");
-    	}
+        if (username == null || username.isEmpty()) {
+            throw new IllegalArgumentException("This is not a valid username input");
+        }
         this.username = username;
     }
 
@@ -55,9 +55,9 @@ public class User implements Serializable {
     }
 
     public void setPassword(String password) {
-    	if(password == null || password.isEmpty()) {
-    		throw new IllegalArgumentException("This is not a valid password input");
-    	}
+        if (password == null || password.isEmpty()) {
+            throw new IllegalArgumentException("This is not a valid password input");
+        }
         this.password = password;
     }
 
@@ -66,18 +66,18 @@ public class User implements Serializable {
     }
 
     public void setUserRole(UserRole userRole) {
-    	if(userRole == null) {
-    		throw new IllegalArgumentException("This should not happen, but the setUserRole is not working.");
-    	}
-    	
+        if (userRole == null) {
+            throw new IllegalArgumentException("This should not happen, but the setUserRole is not working.");
+        }
+
         this.userRole = userRole;
     }
 
-    public void changePassword(String password){
-    	if(password == null || password.isEmpty()) {
-    		throw new IllegalArgumentException("You cannot have nothing as a password");
-    	}
-    	
+    public void changePassword(String password) {
+        if (password == null || password.isEmpty()) {
+            throw new IllegalArgumentException("You cannot have nothing as a password");
+        }
+
         this.setPassword(password);
     }
 }

@@ -1,6 +1,6 @@
 package model;
 
-public class Patient extends Person{
+public class Patient extends Person {
 
     private Insurance insurance;
     private PaymentCard paymentCard;
@@ -15,7 +15,7 @@ public class Patient extends Person{
         return insurance;
     }
 
-    public void setInsurance(Insurance insurance) {    	
+    public void setInsurance(Insurance insurance) {
         this.insurance = insurance;
     }
 
