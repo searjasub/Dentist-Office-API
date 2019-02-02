@@ -5,7 +5,9 @@ import interfaces.ConsoleUI;
 import model.ProviderType;
 import model.Source;
 import model.UserRole;
+
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 public class UserInteraction {
 
@@ -97,7 +99,7 @@ public class UserInteraction {
         }
     }
 
-    public int getProviderID() throws IOException {
+    public int getUniqueID() throws IOException {
         int id;
         while (true) {
             id = ConsoleUI.promptForInt("Please enter unique ID number", 0, 99999);
@@ -134,6 +136,7 @@ public class UserInteraction {
                 println("The phone number is too long, please try again. (maximum 10 digits)");
             } else if (phone.length() < 10) {
                 println("The phone number is too short, please try again. (minimum 10 digits)");
+                //TODO MAKE SURE YOU CAN'T PUT ANY LETTERS
             } else if (phone.matches("[a-zA-Z]")) {
                 println("Only numbers allowed");
             } else {
@@ -151,6 +154,7 @@ public class UserInteraction {
                 println("The code is too long, please try again. (maximum 5 digits)");
             } else if (code.length() < 5) {
                 println("The code is too short, please try again. (minimum 5 digits)");
+                //TODO MAKE SURE YOU CAN'T PUT ANY LETTERS
             } else if (code.matches("[a-zA-Z]+")) {
                 println("Only numbers allowed");
             } else {
@@ -201,5 +205,36 @@ public class UserInteraction {
 
     public int getZipCode() throws IOException {
         return ConsoleUI.promptForInt("Please Enter A New Zip Code", 10000, 99999);
+    }
+
+    public LocalDateTime getFutureDate() throws IOException {
+
+        return LocalDateTime.of(
+                getYear(),
+                getMonth(),
+                getDay(),
+                getHour(),
+                getMinute());
+
+    }
+
+    private int getYear() throws IOException {
+        return ConsoleUI.promptForInt("Enter Year", 2019, 2100);
+    }
+
+    private int getMonth() throws IOException {
+        return ConsoleUI.promptForInt("Enter Month Number", 1, 12);
+    }
+
+    private int getDay() throws IOException {
+        return ConsoleUI.promptForInt("Enter day", 1, 31);
+    }
+
+    private int getHour() throws IOException {
+        return ConsoleUI.promptForInt("Enter Hour", 1, 24);
+    }
+
+    private int getMinute() throws IOException {
+        return ConsoleUI.promptForInt("Enter Minutes", 0, 59);
     }
 }

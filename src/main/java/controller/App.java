@@ -3,6 +3,7 @@ package controller;
 import model.*;
 import view.UserInteraction;
 import view.menu.UserMenuInteraction;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -160,12 +161,16 @@ public class App {
                 addProcedure();
                 break;
             case 5:
+                addInsurance();
+                break;
+            case 6:
                 //exit
                 break;
             default:
                 break;
         }
     }
+
 
     private String checkUniqueUsername() throws IOException {
         String username;
@@ -178,7 +183,7 @@ public class App {
         }
     }
 
-    public void createStandardMenuHandler(int choice) throws IOException, ClassNotFoundException {
+    private void createStandardMenuHandler(int choice) throws IOException, ClassNotFoundException {
         switch (choice) {
             case 0:
                 addProvider();
@@ -193,6 +198,9 @@ public class App {
                 addProcedure();
                 break;
             case 4:
+                addInsurance();
+                break;
+            case 5:
                 //exit
                 break;
             default:
@@ -202,23 +210,64 @@ public class App {
 
 
     private void addProvider() throws IOException, ClassNotFoundException {
-
         clinic.getProviders().add(new Provider(
                 userInteraction.getName(),
                 userInteraction.getLastName(),
-                userInteraction.getProviderID(),
+                userInteraction.getUniqueID(),
                 userInteraction.getEmail(),
                 userInteraction.getPhoneNumber(),
                 userInteraction.getProviderType()));
         autoSaveLoad();
     }
 
-    private void addPatient() {
+    private void addPatient() throws IOException {
+        try {
+            clinic.getPatients().add(new Patient(
+                    userInteraction.getName(),
+                    userInteraction.getLastName(),
+                    userInteraction.getUniqueID(),
+                    userInteraction.getEmail(),
+                    userInteraction.getPhoneNumber(),
+                    addInsuranceCompany(),
+                    new PaymentCard(
+                            userInteraction.getCardNumber(),
+                            userInteraction.getExpMonth(),
+                            userInteraction.getExpYear(),
+                            userInteraction.getCardName(),
+                            userInteraction.getCvv(),
+                            userInteraction.getZipCode()
+                    )));
+        } catch (NullPointerException ex) {
+            notFoundMessage("insurance");
+        }
 
     }
 
-    private void addAppointment() {
+    private Insurance addInsuranceCompany() throws IOException {
+        Insurance temp = userMenuInteraction.selectInsurance(clinic.getInsurances(), "Choose Insurance Company");
+        temp.setGroupId(userInteraction.getMemberId());
+        return temp;
+    }
 
+    private void addAppointment() throws IOException, ClassNotFoundException {
+        FutureAppointment fa = new FutureAppointment(
+                userMenuInteraction.selectPatient(clinic.getPatients(), "Select Patient"),
+                userInteraction.getFutureDate(),
+                getProcedureByProvider());
+
+        clinic.getAppointments().add(fa);
+        autoSaveLoad();
+
+    }
+
+    private HashMap<Provider, Procedure> getProcedureByProvider() throws IOException {
+        Provider provider = userMenuInteraction.selectProvider(clinic.getProviders(), "Select Provider");
+        Procedure procedure = userMenuInteraction.selectProcedure(clinic.getProcedures(), "Select Procedure");
+
+        HashMap<Provider, Procedure> procedureHashMap = new HashMap<>();
+        procedureHashMap.put(provider, procedure);
+
+        return procedureHashMap;
     }
 
     private void addProcedure() throws IOException, ClassNotFoundException {
@@ -235,6 +284,13 @@ public class App {
             notFoundMessage("patient");
 
         }
+    }
+
+    private void addInsurance() throws IOException, ClassNotFoundException {
+        clinic.getInsurances().add(new Insurance(
+                userInteraction.getInsuranceName(),
+                userInteraction.getGroupId()));
+        autoSaveLoad();
     }
 
     private void editAdminMenuHandler(int choice) throws IOException, ClassNotFoundException {
@@ -372,6 +428,7 @@ public class App {
         }
     }
 
+
     private void editName(Object object) throws IOException, ClassNotFoundException {
         String firstName = userInteraction.getName();
         if (object instanceof Provider) {
@@ -380,6 +437,7 @@ public class App {
             ((Patient) object).setName(firstName);
         }
         autoSaveLoad();
+
     }
 
     private void editLastName(Object object) throws IOException, ClassNotFoundException {
@@ -529,6 +587,7 @@ public class App {
     private void autoSaveLoad() throws IOException, ClassNotFoundException {
         save();
         load();
+
     }
 
     private void save() throws IOException {
@@ -539,6 +598,12 @@ public class App {
         FileOutputStream fileOutputStream = new FileOutputStream(directory + "\\save.db");
         ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
         out.writeObject(clinic.getUsers());
+        out.writeObject(clinic.getProviders());
+        out.writeObject(clinic.getAppointments());
+        out.writeObject(clinic.getInsurances());
+        out.writeObject(clinic.getPatients());
+        out.writeObject(clinic.getPayments());
+        out.writeObject(clinic.getProcedures());
         out.close();
         out.flush();
         fileOutputStream.close();
@@ -547,13 +612,34 @@ public class App {
     private void load() throws IOException, ClassNotFoundException {
         ObjectInputStream in = new ObjectInputStream(new FileInputStream(directory + "\\save.db"));
         clinic.setUsers((List<User>) in.readObject());
+
+        if (!clinic.getProviders().isEmpty()) {
+            clinic.setProviders((List<Provider>) in.readObject());
+        }
+        if (!clinic.getAppointments().isEmpty()) {
+            clinic.setAppointments((List<Appointment>) in.readObject());
+        }
+        //if (!clinic.getInsurances().isEmpty()) {
+            clinic.setInsurances((List<Insurance>) in.readObject());
+        //}
+        if (!clinic.getPatients().isEmpty()) {
+            clinic.setPatients((List<Patient>) in.readObject());
+        }
+        if (!clinic.getPayments().isEmpty()) {
+            clinic.setPayments((List<Payment>) in.readObject());
+        }
+        if (!clinic.getProcedures().isEmpty()) {
+            clinic.setProcedures((List<Procedure>) in.readObject());
+        }
+
         for (int i = 0; i < clinic.getUsers().size(); i++) {
             loginCredentials.put(clinic.getUsers().get(i).getUsername(), clinic.getUsers().get(i).getPassword());
         }
         in.close();
     }
 
+
     private void notFoundMessage(String type) {
-        userInteraction.println("There are no " + type + "s in record. Please add a patient first");
+        userInteraction.println("There are no " + type + "s in record. Please add a " + type + " first");
     }
 }

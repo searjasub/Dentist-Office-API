@@ -43,13 +43,14 @@ public class UserMenuInteraction {
     }
 
     private String[] fillCreateAdminMenu() {
-        String[] menuOptions = new String[6];
+        String[] menuOptions = new String[7];
         menuOptions[0] = "User";
         menuOptions[1] = "Provider";
         menuOptions[2] = "Patient";
         menuOptions[3] = "Appointment";
         menuOptions[4] = "Procedure";
-        menuOptions[5] = "Exit";
+        menuOptions[5] = "Insurance Company";
+        menuOptions[6] = "Exit";
         return menuOptions;
     }
 
@@ -58,12 +59,13 @@ public class UserMenuInteraction {
     }
 
     private String[] fillCreateStandardMenu() {
-        String[] menuOptions = new String[5];
+        String[] menuOptions = new String[6];
         menuOptions[0] = "Provider";
         menuOptions[1] = "Patient";
         menuOptions[2] = "Appointment";
         menuOptions[3] = "Procedure";
-        menuOptions[4] = "Exit";
+        menuOptions[4] = "Insurance Company";
+        menuOptions[5] = "Exit";
         return menuOptions;
     }
 
@@ -232,4 +234,18 @@ public class UserMenuInteraction {
         return (FutureAppointment) list[ConsoleUI.promptForMenuSelection(options, message)];
     }
 
+    public Procedure selectProcedure(List<Procedure> procedures, String message) throws IOException {
+        Object[] list = procedures.toArray();
+        if (procedures.isEmpty()) {
+            throw new NullPointerException();
+        }
+        String[] options = new String[list.length];
+        for (int i = 0; i < options.length; i++) {
+            options[i] = "Patient: " + procedures.get(i).getPatient().getName()
+                    + " " + procedures.get(i).getPatient().getLastName()
+                    + " | Code: " + procedures.get(i).getCode();
+        }
+        return (Procedure) list[ConsoleUI.promptForMenuSelection(options, message)];
+
+    }
 }

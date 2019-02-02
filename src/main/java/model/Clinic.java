@@ -12,6 +12,7 @@ public class Clinic implements Serializable {
     private List<Appointment> appointments = new ArrayList<>();
     private List<Procedure> procedures = new ArrayList<>();
     private List<User> users = new ArrayList<>();
+    private List<Insurance> insurances = new ArrayList<>();
 
 
 //    public List<Provider> searchProviders(ProviderSearchCriteria criteria){
@@ -91,5 +92,13 @@ public class Clinic implements Serializable {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public List<Insurance> getInsurances() {
+        return insurances;
+    }
+
+    public void setInsurances(List<Insurance> insurances) {
+        this.insurances = insurances;
     }
 }
