@@ -13,7 +13,6 @@ import java.util.List;
 
 public class App {
 
-
     private static final String directory = "savables";
     private User currentUser;
     private UserInteraction userInteraction = new UserInteraction();
@@ -21,10 +20,7 @@ public class App {
     private Clinic clinic = new Clinic();
     private HashMap<String, String> loginCredentials = new HashMap<>();
 
-
-
     public void start() throws IOException, ClassNotFoundException {
-
         load();
         if (clinic.getUsers().isEmpty()) {
             addAdmin();
@@ -60,7 +56,6 @@ public class App {
     }
 
     private boolean mainMenuHandler(int selection) throws IOException, ClassNotFoundException {
-
         switch (selection) {
             case 0:
                 //view
@@ -230,6 +225,7 @@ public class App {
 
     private void addPatient() {
 
+
     }
 
     private void addAppointment() {
@@ -237,7 +233,6 @@ public class App {
     }
 
     private void addProcedure() throws IOException, ClassNotFoundException {
-
         try {
 
             Procedure procedure = new Procedure(
@@ -248,7 +243,7 @@ public class App {
                     userMenuInteraction.selectProvider(clinic.getProviders(), "Choose a provider"));
             clinic.getProcedures().add(procedure);
             autoSaveLoad();
-        } catch (NullPointerException ex){
+        } catch (NullPointerException ex) {
             notFoundMessage();
 
         }
@@ -267,8 +262,7 @@ public class App {
                 save();
                 break;
             case 2: //EDIT PROVIDER
-            	Provider provider = userMenuInteraction.selectProvider(clinic.getProviders(), "Which Provider Would you like to Change?");
-            	userMenuInteraction.ChangeProviderInformation(provider);
+                editProviderMenu();
                 break;
             case 3:
                 //patients
@@ -280,7 +274,7 @@ public class App {
                 //procedure
                 break;
             case 6:
-            	userInteraction.println("You have exited the Edit Menu\n");
+                userInteraction.println("You have exited the Edit Menu\n");
                 //exit
                 break;
             default:
@@ -314,16 +308,26 @@ public class App {
         }
     }
 
-    private void editProviderMenu() throws IOException {
+    private void editProviderMenu() throws IOException, ClassNotFoundException {
 
-        try{
-        Provider selectedProvider = userMenuInteraction.selectProvider(clinic.getProviders(), "Select a Provider To Edit");
+        try {
+            Provider provider = userMenuInteraction.selectProvider(clinic.getProviders(), "Which Provider Would you like to Change?");
+            int selection = userMenuInteraction.changeProviderInformation(provider);
+            switch (selection) {
+                case 0:
+                    String name = userInteraction.getName();
+                    provider.setName(name);
+                    autoSaveLoad();
+                    break;
+                case 1:
+                    String lastName = userInteraction.getLastName();
+                    provider.setLastName(lastName);
+                    autoSaveLoad();
+                default:
+                    break;
+            }
 
-
-
-
-
-        } catch (NullPointerException ex){
+        } catch (NullPointerException ex) {
             notFoundMessage();
         }
     }
@@ -466,7 +470,7 @@ public class App {
         in.close();
     }
 
-    private void notFoundMessage(){
+    private void notFoundMessage() {
         userInteraction.println("There are no patients in record. Please add a patient first");
     }
 }

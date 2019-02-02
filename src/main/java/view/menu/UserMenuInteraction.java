@@ -141,12 +141,17 @@ public class UserMenuInteraction {
         menuOptions[3] = "Exit";
         return menuOptions;
     }
+
+    public int changeProviderInformation(Provider provider) throws IOException {
+        return ConsoleUI.promptForMenuSelection(fillChangeProviderInformation(), defaultQuestion);
+    }
     
-    public String[] ChangeProviderInformation(Provider p) {
-    	String[] options = {"First Name","Last Name","Phone-Number","E-Mail","Provider Type","Exit"};
-    	for(int i = 0; i < options.length; i++) {
-    		System.out.println(options[i]);
-    	}
+    public String[] fillChangeProviderInformation() {
+    	String[] options = new String[6];
+    	options[0] = "First Name";
+
+                //{"First Name","Last Name","Phone-Number","E-Mail","Provider Type","Exit"};
+
     	return options;
     }
 
