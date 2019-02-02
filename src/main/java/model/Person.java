@@ -25,7 +25,7 @@ public class Person implements Serializable {
     }
 
     public void setName(String name) {
-    	if(name == null || name.trim() == "") {
+    	if(name == null || (name.trim()).isEmpty()) {
     		throw new IllegalArgumentException("Name cannot be nothing.");
     	}
         this.name = name;
@@ -36,7 +36,7 @@ public class Person implements Serializable {
     }
 
     public void setLastName(String lastName) {
-    	if(lastName == null || lastName.trim() == "") {
+    	if(lastName == null || (lastName.trim()).isEmpty()) {
     		throw new IllegalArgumentException("Last Name cannot be nothing.");
     	}
         this.lastName = lastName;
@@ -51,7 +51,7 @@ public class Person implements Serializable {
     }
 
     public void setEmail(String email) {
-    	if(email == null || email.trim() == "") {
+    	if(email == null || (email.trim()).isEmpty()) {
     		throw new IllegalArgumentException("You cannot have nothing for an email");
     	}
         this.email = email;

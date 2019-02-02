@@ -17,7 +17,7 @@ public class Insurance {
     }
 
     public void setName(String name) {
-    	if(name == null || name.trim() == "") {
+    	if(name == null || (name.trim()).isEmpty()) {
     		throw new IllegalArgumentException("Name cannot be nothing");
     	}
         this.name = name;
@@ -28,7 +28,7 @@ public class Insurance {
     }
 
     public void setGroupId(String groupId) {
-    	if(groupId == null || groupId.trim() == "") {
+    	if(groupId == null || (groupId.trim()).isEmpty()) {
     		throw new IllegalArgumentException("This is not a valid Group ID");
     	}
         this.groupId = groupId;
@@ -39,7 +39,7 @@ public class Insurance {
     }
 
     public void setMemberId(String memberId) {
-    	if(memberId == null || memberId.trim() == "") {
+    	if(memberId == null || (memberId.trim()).isEmpty()) {
     		throw new IllegalArgumentException("This is not a valid Member ID");
     	}
         this.memberId = memberId;
