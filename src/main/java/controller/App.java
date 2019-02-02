@@ -591,53 +591,112 @@ public class App {
     }
 
     private void save() throws IOException {
-        Path path = Paths.get(directory);
-        if (!Files.exists(path)) {
-            Files.createDirectories(path);
-        }
+        makeDirectory();
         FileOutputStream fileOutputStream = new FileOutputStream(directory + "\\save.db");
         ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
         out.writeObject(clinic.getUsers());
-        out.writeObject(clinic.getProviders());
-        out.writeObject(clinic.getAppointments());
-        out.writeObject(clinic.getInsurances());
-        out.writeObject(clinic.getPatients());
-        out.writeObject(clinic.getPayments());
-        out.writeObject(clinic.getProcedures());
         out.close();
         out.flush();
         fileOutputStream.close();
+
+        FileOutputStream fosInsurance = new FileOutputStream(directory + "\\insurance.db");
+        ObjectOutputStream outInsurance = new ObjectOutputStream(fosInsurance);
+        outInsurance.writeObject(clinic.getInsurances());
+        outInsurance.close();
+        outInsurance.flush();
+        fosInsurance.close();
+
+        FileOutputStream fosProvider = new FileOutputStream(directory + "\\providers.db");
+        ObjectOutputStream outProvider = new ObjectOutputStream(fosProvider);
+        outProvider.writeObject(clinic.getProviders());
+        outProvider.close();
+        outProvider.flush();
+        fosProvider.close();
+
+        FileOutputStream fosAppointment = new FileOutputStream(directory + "\\appointments.db");
+        ObjectOutputStream outAppointment = new ObjectOutputStream(fosAppointment);
+        outAppointment.writeObject(clinic.getAppointments());
+        outAppointment.close();
+        outAppointment.flush();
+        fosAppointment.close();
+
+        FileOutputStream fosPatient = new FileOutputStream(directory + "\\patients.db");
+        ObjectOutputStream outPatient = new ObjectOutputStream(fosPatient);
+        outPatient.writeObject(clinic.getPatients());
+        outPatient.close();
+        outPatient.flush();
+        fosPatient.close();
+
+        FileOutputStream fosPayment = new FileOutputStream(directory + "\\payments.db");
+        ObjectOutputStream outPayment = new ObjectOutputStream(fosPayment);
+        outPayment.writeObject(clinic.getPayments());
+        outPayment.close();
+        outPayment.flush();
+        fosPayment.close();
+
+        FileOutputStream fosProcedure = new FileOutputStream(directory + "\\procedures.db");
+        ObjectOutputStream outProcedure = new ObjectOutputStream(fosProcedure);
+        outProcedure.writeObject(clinic.getProcedures());
+        outProcedure.close();
+        outProcedure.flush();
+        fosProcedure.close();
+
+
+
+//        out.writeObject(clinic.getProviders());
+//        out.writeObject(clinic.getAppointments());
+//        out.writeObject(clinic.getPatients());
+//        out.writeObject(clinic.getPayments());
+//        out.writeObject(clinic.getProcedures());
+
     }
 
     private void load() throws IOException, ClassNotFoundException {
+
         ObjectInputStream in = new ObjectInputStream(new FileInputStream(directory + "\\save.db"));
         clinic.setUsers((List<User>) in.readObject());
-
-        if (!clinic.getProviders().isEmpty()) {
-            clinic.setProviders((List<Provider>) in.readObject());
-        }
-        if (!clinic.getAppointments().isEmpty()) {
-            clinic.setAppointments((List<Appointment>) in.readObject());
-        }
-        //if (!clinic.getInsurances().isEmpty()) {
-            clinic.setInsurances((List<Insurance>) in.readObject());
-        //}
-        if (!clinic.getPatients().isEmpty()) {
-            clinic.setPatients((List<Patient>) in.readObject());
-        }
-        if (!clinic.getPayments().isEmpty()) {
-            clinic.setPayments((List<Payment>) in.readObject());
-        }
-        if (!clinic.getProcedures().isEmpty()) {
-            clinic.setProcedures((List<Procedure>) in.readObject());
-        }
-
         for (int i = 0; i < clinic.getUsers().size(); i++) {
             loginCredentials.put(clinic.getUsers().get(i).getUsername(), clinic.getUsers().get(i).getPassword());
         }
         in.close();
+
+        ObjectInputStream inInsurance = new ObjectInputStream(new FileInputStream(directory + "\\insurance.db"));
+        clinic.setInsurances((List<Insurance>) inInsurance.readObject());
+        inInsurance.close();
+
+
+        ObjectInputStream inProvider = new ObjectInputStream(new FileInputStream(directory + "\\providers.db"));
+        clinic.setProviders((List<Provider>) inProvider.readObject());
+        inProvider.close();
+
+
+        ObjectInputStream inAppointment = new ObjectInputStream(new FileInputStream(directory + "\\appointments.db"));
+        clinic.setAppointments((List<Appointment>) inAppointment.readObject());
+        inAppointment.close();
+
+
+
+        ObjectInputStream inPatient = new ObjectInputStream(new FileInputStream(directory + "\\patients.db"));
+        clinic.setPatients((List<Patient>) inPatient.readObject());
+        inPatient.close();
+
+
+        ObjectInputStream inPayment = new ObjectInputStream(new FileInputStream(directory + "\\payments.db"));
+        clinic.setPayments((List<Payment>) inPayment.readObject());
+        inPayment.close();
+
+
+        ObjectInputStream inProcedures = new ObjectInputStream(new FileInputStream(directory + "\\procedures.db"));
+        clinic.setProcedures((List<Procedure>) inInsurance.readObject());
+        inInsurance.close();
     }
 
+    private void makeDirectory() throws IOException {
+        Path path = Paths.get(directory);
+        if (!Files.exists(path)) {
+            Files.createDirectories(path);
+        }
+    }
 
     private void notFoundMessage(String type) {
         userInteraction.println("There are no " + type + "s in record. Please add a " + type + " first");
