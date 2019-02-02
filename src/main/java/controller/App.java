@@ -249,7 +249,7 @@ public class App {
         }
     }
 
-    private void editAdminMenuHandler(int choice) throws IOException {
+    private void editAdminMenuHandler(int choice) throws IOException, ClassNotFoundException {
         switch (choice) {
             case 0:
                 currentUser.changePassword(passwordVerified(false));
