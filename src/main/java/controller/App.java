@@ -323,7 +323,7 @@ public class App {
                     provider.setLastName(lastName);
                     autoSaveLoad();
                 case 2:
-                    long phoneNumber = ConsoleUI.promptForLong("Please Enter A New Phone Number", 1000000000, Long.MAX_VALUE);
+                    String phoneNumber = ConsoleUI.promptForInput("Please Enter A New Phone Number", false, false);
                     provider.setPhoneNumber(phoneNumber);
                     autoSaveLoad();
                 case 3:
@@ -367,7 +367,7 @@ public class App {
                 autoSaveLoad();
                 break;
             case 3:
-            	long phoneNumber = ConsoleUI.promptForLong("Please Enter a Phone number (1000000000-9999999999)", 1000000000, Long.MAX_VALUE);
+                String phoneNumber = ConsoleUI.promptForInput("Please Enter a Phone number (1000000000-9999999999)", false, false);
                 patient.setPhoneNumber(phoneNumber);
                 autoSaveLoad();
                 break;
@@ -414,7 +414,7 @@ public class App {
     		
     		
     	} catch (NullPointerException ex) {
-    		notFoundMessage();
+    		notFoundMessage("It was not found");
     	}
 
     	
