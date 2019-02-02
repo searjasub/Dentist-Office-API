@@ -2,10 +2,10 @@ package view;
 
 
 import interfaces.ConsoleUI;
-import model.*;
+import model.ProviderType;
+import model.UserRole;
 
 import java.io.IOException;
-import java.util.List;
 
 public class UserInteraction {
 
@@ -13,7 +13,35 @@ public class UserInteraction {
         ConsoleUI.displayMessage("Welcome to the managment office", false);
     }
 
+    public String changePassword() throws IOException {
+        return ConsoleUI.promptForInput("Enter new password", false, false);
+    }
 
+    public String changePasswordSameLine() throws IOException {
+        return ConsoleUI.promptForInput("enter new password\n", false, true);
+    }
+
+    public String verifyPassword() throws IOException {
+        return ConsoleUI.promptForInput("Re-enter password", false, false);
+    }
+
+    public String getLoginUsername() throws IOException {
+        ConsoleUI.displayMessage("Username:", true);
+        return ConsoleUI.promptForInput(" ", false, true);
+    }
+
+    public String getLoginPassword() throws IOException {
+        ConsoleUI.displayMessage("Password:", true);
+        return ConsoleUI.promptForInput(" ", false, true);
+    }
+
+    public void println(String message) {
+        System.out.println(message);
+    }
+
+    public void print(String message) {
+        System.out.print(message);
+    }
 
     public String getName() throws IOException {
         return ConsoleUI.promptForInput("Enter the name: ", false, true);
@@ -25,10 +53,6 @@ public class UserInteraction {
 
     public String getUsername() throws IOException {
         return ConsoleUI.promptForInput("Enter the username: ", false, true);
-    }
-
-    public String getPassword() throws IOException {
-        return ConsoleUI.promptForInput("Enter the password: ", false, true);
     }
 
     public UserRole getUserType() throws IOException {
@@ -65,41 +89,33 @@ public class UserInteraction {
         return 0;
     }
 
-    public String changePassword() throws IOException {
-        return ConsoleUI.promptForInput("Enter new password", false, false);
-    }
-
-    public String changePasswordSameLine() throws IOException {
-        return ConsoleUI.promptForInput("enter new password\n", false, true);
-    }
-
-    public String verifyPassword() throws IOException {
-        return ConsoleUI.promptForInput("Re-enter password", false, false);
-    }
-
-    public String getLoginUsername() throws IOException {
-        ConsoleUI.displayMessage("Username:", true);
-        return ConsoleUI.promptForInput(" ", false, true);
-    }
-
-    public String getLoginPassword() throws IOException {
-        ConsoleUI.displayMessage("Password:", true);
-        return ConsoleUI.promptForInput(" ", false, true);
-    }
-
-    public void println(String message) {
-        System.out.println(message);
-    }
-
-    public void print(String message) {
-        System.out.print(message);
-    }
-
     public String getEmail() {
         return null;
     }
 
     public int getPhoneNumber() {
         return 0;
+    }
+
+    public String getCode() throws IOException {
+        String code;
+
+        while (true) {
+
+            code = ConsoleUI.promptForInput("Please enter code\nD", false, true);
+            if (code.length() > 5) {
+                println("The code is too long, please try again.");
+            } else if (code.length() < 5) {
+                println("The code is too short, please try again.");
+            } else if(code.contains("['a-z']") || code.contains("[A-Z]")){
+                println("Only numbers allowed");
+            } else {
+                return code;
+            }
+        }
+    }
+
+    public String getDescription() throws IOException {
+        return ConsoleUI.promptForInput("Description", false, false);
     }
 }
