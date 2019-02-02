@@ -178,6 +178,9 @@ public class UserMenuInteraction {
 
     public Insurance selectInsurance(List<Insurance> insurances, String message)throws IOException{
         Object[] list = insurances.toArray();
+        if(insurances.isEmpty()){
+            throw new NullPointerException();
+        }
         String[] options = new String[list.length];
         for (int i = 0; i < options.length; i++) {
             options[i] = insurances.get(i).getName() + " | Group ID: " + insurances.get(i).getGroupId();
@@ -200,8 +203,12 @@ public class UserMenuInteraction {
 
     public FutureAppointment selectFutureAppointment(List<FutureAppointment> appointments, String message)throws IOException{
         Object[] list = appointments.toArray();
+        if(appointments.isEmpty()){
+            throw new NullPointerException();
+        }
         String[] options = new String[list.length];
         for (int i = 0; i < options.length; i++) {
+            //TODO set the toString for the menu to show appointment properties
 //            options[i] = appointments.get(i)
         }
         return (FutureAppointment) list[ConsoleUI.promptForMenuSelection(options, message)];

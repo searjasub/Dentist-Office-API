@@ -211,15 +211,14 @@ public class App {
 
 
     private void addProvider() throws IOException, ClassNotFoundException {
-        Provider newProvider = new Provider(
+
+        clinic.getProviders().add(new Provider(
                 userInteraction.getName(),
                 userInteraction.getLastName(),
                 userInteraction.getProviderID(),
                 userInteraction.getEmail(),
                 userInteraction.getPhoneNumber(),
-                userInteraction.getProviderType());
-
-        clinic.getProviders().add(newProvider);
+                userInteraction.getProviderType()));
         autoSaveLoad();
     }
 
@@ -234,7 +233,6 @@ public class App {
 
     private void addProcedure() throws IOException, ClassNotFoundException {
         try {
-
             Procedure procedure = new Procedure(
                     userMenuInteraction.selectPatient(clinic.getPatients(), "Select a patient."),
                     userInteraction.getCode(),
@@ -244,7 +242,7 @@ public class App {
             clinic.getProcedures().add(procedure);
             autoSaveLoad();
         } catch (NullPointerException ex) {
-            notFoundMessage();
+            notFoundMessage("patient");
 
         }
     }
@@ -328,7 +326,7 @@ public class App {
             }
 
         } catch (NullPointerException ex) {
-            notFoundMessage();
+            notFoundMessage("provider");
         }
     }
 
@@ -470,7 +468,7 @@ public class App {
         in.close();
     }
 
-    private void notFoundMessage() {
-        userInteraction.println("There are no patients in record. Please add a patient first");
+    private void notFoundMessage(String type) {
+        userInteraction.println("There are no " + type +" in record. Please add a patient first");
     }
 }

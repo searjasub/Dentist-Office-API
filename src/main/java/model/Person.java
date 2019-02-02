@@ -1,8 +1,6 @@
 package model;
 
-import java.io.Serializable;
-
-public class Person implements Serializable {
+public class Person {
 
     private String name, lastName;
     private int uniqueId;
@@ -62,9 +60,9 @@ public class Person implements Serializable {
     }
 
     public void setPhoneNumber(long phoneNumber) {
-    	if(phoneNumber < 1000000000 || phoneNumber > Long.MAX_VALUE) {
-    		
-    	}
+//    	if(phoneNumber < 1000000000 || phoneNumber > Long.MAX_VALUE) {
+//
+//    	}
         this.phoneNumber = phoneNumber;
     }
 

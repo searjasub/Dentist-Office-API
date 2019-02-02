@@ -7,6 +7,7 @@ import model.Source;
 import model.UserRole;
 
 import java.io.IOException;
+import java.math.BigInteger;
 
 public class UserInteraction {
 
@@ -86,7 +87,7 @@ public class UserInteraction {
         }
     }
 
-    public Source getSource() throws IOException{
+    public Source getSource() throws IOException {
         String[] menuOptions = new String[2];
         menuOptions[0] = "Insurance";
         menuOptions[1] = "Patient";
@@ -98,16 +99,47 @@ public class UserInteraction {
         }
     }
 
-    public int getProviderID() {
-        return 0;
+    public int getProviderID() throws IOException {
+        int id;
+        while (true) {
+            id = ConsoleUI.promptForInt("Please enter unique ID number", 0, 99999);
+            if (id < 9999) {
+                println("The id is too short, please try again. (minimum 5 digits)");
+            } else {
+                return id;
+            }
+        }
     }
 
-    public String getEmail() {
-        return null;
+    public String getEmail() throws IOException {
+        String email;
+        while (true) {
+            email = ConsoleUI.promptForInput("Enter email", false, false);
+            for (int i = email.length() - 1; i > 0; i--) {
+                if(email.charAt(i) == '@'){
+                    for (int j = email.length() - 1; j > i; j--) {
+                        if(email.charAt(j) == '.'){
+                            return email;
+                        }
+                    }
+                }
+            }
+            println("The email does not looks like \"example@email.com\"");
+        }
     }
 
-    public int getPhoneNumber() {
-        return 0;
+    public long getPhoneNumber() throws IOException {
+        long phoneNumber;
+
+        return ConsoleUI.promptForLong("Please enter phone number", 0,Long.MAX_VALUE);
+//        while (true) {
+//            phoneNumber = ConsoleUI.promptForLong("Please enter Phone number", 0, 99999999);
+//            if (phoneNumber < 9999999) {
+//                println("The code is too short, please try again. (minimum 5 digits)");
+//            } else {
+//                return phoneNumber;
+//            }
+//        }
     }
 
     public String getCode() throws IOException {
@@ -116,10 +148,10 @@ public class UserInteraction {
         while (true) {
             code = ConsoleUI.promptForInput("Please enter code\nD", false, true);
             if (code.length() > 5) {
-                println("The code is too long, please try again.");
+                println("The code is too long, please try again. (maximum 5 digits)");
             } else if (code.length() < 5) {
-                println("The code is too short, please try again.");
-            } else if(code.matches("[a-zA-z]+")){
+                println("The code is too short, please try again. (minimum 5 digits)");
+            } else if (code.matches("[a-zA-z]+")) {
                 println("Only numbers allowed");
             } else {
                 return code;
@@ -132,6 +164,6 @@ public class UserInteraction {
     }
 
     public double getCost() throws IOException {
-        return ConsoleUI.promptForDouble("How much did it cost?",0, Double.MAX_VALUE);
+        return ConsoleUI.promptForDouble("How much did it cost?", 0, Double.MAX_VALUE);
     }
 }
