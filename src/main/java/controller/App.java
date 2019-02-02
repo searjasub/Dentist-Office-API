@@ -288,7 +288,7 @@ public class App {
         }
     }
     
-    private void editProviderMnu() throws IOException {
+    private void editProviderMenu() throws IOException {
     	Provider selectedProvider = userInteraction.selectProvider(clinic.getProviders(), "Select a Provider To Edit");
     	
     	
