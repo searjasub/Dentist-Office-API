@@ -141,6 +141,14 @@ public class UserMenuInteraction {
         menuOptions[3] = "Exit";
         return menuOptions;
     }
+    
+    public String[] ChangeProviderInformation(Provider p) {
+    	String[] options = {"First Name","Last Name","Phone-Number","E-Mail","Provider Type","Exit"};
+    	for(int i = 0; i < options.length; i++) {
+    		System.out.println(options[i]);
+    	}
+    	return options;
+    }
 
     public User selectUser(List<User> users, String message) throws IOException {
         Object[] list = users.toArray();
@@ -194,12 +202,4 @@ public class UserMenuInteraction {
         return (FutureAppointment) list[ConsoleUI.promptForMenuSelection(options, message)];
     }
     
-    public String[] ChangeProviderInformation(Provider p) {
-    	String[] options = {"First Name","Last Name","Phone-Number","E-Mail","Provider Type","Exit"};
-    	for(int i = 0; i < options.length; i++) {
-    		System.out.println(options[i]);
-    	}
-    	return options;
-    }
-
 }
