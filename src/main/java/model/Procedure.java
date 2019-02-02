@@ -40,7 +40,7 @@ public class Procedure {
     	if(code == null || code.trim() == "") {
     		throw new IllegalArgumentException("You cannot have nothing for the code");
     	}
-        this.code = code;
+        this.code += code;
     }
 
     public String getDescription() {

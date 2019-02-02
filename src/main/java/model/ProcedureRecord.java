@@ -7,8 +7,16 @@ public class ProcedureRecord {
     private FutureAppointment futureAppointment;
     private Procedure procedure;
     private double cost;
-	
-    public Patient getPatient() {
+
+	public ProcedureRecord(Patient patient, Provider provider, FutureAppointment futureAppointment, Procedure procedure, double cost) {
+		this.setPatient(patient);
+		this.setProvider(provider);
+		this.setFutureAppointment(futureAppointment);
+		this.setProcedure(procedure);
+		this.setCost(cost);
+	}
+
+	public Patient getPatient() {
 		return patient;
 	}
 	public void setPatient(Patient patient) {

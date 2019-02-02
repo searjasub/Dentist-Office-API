@@ -3,12 +3,10 @@ package model;
 public class Provider extends Person {
 
     private ProviderType title;
-    private int uniqueId;
 
-    public Provider(String name, String lastName, int uniqueId, String email, int phoneNumber, ProviderType title, int uniqueId1) {
+    public Provider(String name, String lastName, int uniqueId, String email, int phoneNumber, ProviderType title) {
         super(name, lastName, uniqueId, email, phoneNumber);
         this.setTitle(title);
-        this.uniqueId = uniqueId1;
     }
 
     public ProviderType getTitle() {
@@ -20,10 +18,6 @@ public class Provider extends Person {
         	throw new IllegalArgumentException("This is not an allowed ProviderType");
         }
         this.title = title;
-    }
-
-    public int getUniqueId() {
-        return uniqueId;
     }
 
     @Override
