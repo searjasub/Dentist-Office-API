@@ -153,6 +153,9 @@ public class UserMenuInteraction {
 
     public Provider selectProvider(List<Provider> providers, String message) throws IOException{
         Object[] list = providers.toArray();
+        if(providers.isEmpty()){
+            throw new NullPointerException();
+        }
         String[] options = new String[list.length];
         for (int i = 0; i < options.length; i++) {
             options[i] = providers.get(i).getName() + " " + providers.get(i).getLastName() + " (" + providers.get(i).getTitle().getType() + ")";
@@ -175,7 +178,6 @@ public class UserMenuInteraction {
         if (patients.isEmpty()){
             throw new NullPointerException();
         }
-
         String[] options = new String[list.length];
         for (int i = 0; i < options.length; i++) {
             options[i] = patients.get(i).getName();
