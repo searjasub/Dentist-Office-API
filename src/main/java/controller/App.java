@@ -323,7 +323,7 @@ public class App {
 
 
 
-        } catch (IllegalArgumentException ex){
+        } catch (NullPointerException ex){
             notFoundMessage();
         }
     }
