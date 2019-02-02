@@ -3,6 +3,7 @@ package view;
 
 import interfaces.ConsoleUI;
 import model.ProviderType;
+import model.Source;
 import model.UserRole;
 
 import java.io.IOException;
@@ -10,7 +11,7 @@ import java.io.IOException;
 public class UserInteraction {
 
     public void welcome() {
-        ConsoleUI.displayMessage("Welcome to the managment office", false);
+        ConsoleUI.displayMessage("Welcome to the management office", false);
     }
 
     public String changePassword() throws IOException {
@@ -71,7 +72,7 @@ public class UserInteraction {
         String[] menuOptions = new String[3];
         menuOptions[0] = "Dentist";
         menuOptions[1] = "Assistant";
-        menuOptions[2] = "Hygenist";
+        menuOptions[2] = "Hygienist";
         int selection = ConsoleUI.promptForMenuSelection(menuOptions, "Who is the provider?");
         switch (selection) {
             case 0:
@@ -82,6 +83,18 @@ public class UserInteraction {
                 return ProviderType.HYGIENIST;
             default:
                 throw new IllegalArgumentException("Something went wrong in the UserMenuInteraction Class (You should not see me)");
+        }
+    }
+
+    public Source getSource() throws IOException{
+        String[] menuOptions = new String[2];
+        menuOptions[0] = "Insurance";
+        menuOptions[1] = "Patient";
+        int selection = ConsoleUI.promptForMenuSelection(menuOptions, "What type of user?");
+        if (selection == 0) {
+            return Source.INSURANCE;
+        } else {
+            return Source.PATIENT;
         }
     }
 
