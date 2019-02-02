@@ -6,13 +6,11 @@ import java.util.List;
 
 public class Clinic implements Serializable {
 
-    private List<Provider> providers;
-    private List<Patient> patients;
-    private List<Payment> payments;
-    private List<Appointment> appointments;
-
-
-    private List<Procedure> procedures;
+    private List<Provider> providers = new ArrayList<>();
+    private List<Patient> patients = new ArrayList<>();
+    private List<Payment> payments = new ArrayList<>();
+    private List<Appointment> appointments = new ArrayList<>();
+    private List<Procedure> procedures = new ArrayList<>();
     private List<User> users = new ArrayList<>();
 
 

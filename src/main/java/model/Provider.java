@@ -4,7 +4,7 @@ public class Provider extends Person {
 
     private ProviderType title;
 
-    public Provider(String name, String lastName, int uniqueId, String email, int phoneNumber, ProviderType title) {
+    public Provider(String name, String lastName, int uniqueId, String email, String phoneNumber, ProviderType title) {
         super(name, lastName, uniqueId, email, phoneNumber);
         this.setTitle(title);
     }
