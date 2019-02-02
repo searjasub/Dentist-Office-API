@@ -2,14 +2,14 @@ package model;
 
 public class PaymentCard {
 
-    private long number;
+    private String number;
     private int expMonth;
     private int expYear;
     private String name;
     private int cvv;
     private int zipCode;
 
-    public PaymentCard(long number, int expMonth, int expYear, String name, int cvv, int zipCode) {
+    public PaymentCard(String number, int expMonth, int expYear, String name, int cvv, int zipCode) {
         this.setNumber(number);
         this.setExpMonth(expMonth);
         this.setExpYear(expYear);
@@ -18,14 +18,14 @@ public class PaymentCard {
         this.setZipCode(zipCode);
     }
 
-    public long getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(long number) {
-    	if(number < 0 || number > Long.MAX_VALUE) {
-    		throw new IllegalArgumentException("Number cannot be negative or bigger than max value");
-    	}
+    public void setNumber(String number) {
+//    	if(number < 0 || number > Long.MAX_VALUE) {
+//    		throw new IllegalArgumentException("Number cannot be negative or bigger than max value");
+//    	}
         this.number = number;
     }
 

@@ -11,6 +11,8 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 
+import interfaces.ConsoleUI;
+
 public class App {
 
     private static final String directory = "savables";
@@ -264,8 +266,8 @@ public class App {
             case 2: //EDIT PROVIDER
                 editProviderMenu();
                 break;
-            case 3:
-                //patients
+            case 3://EDIT PATIENTS
+                
                 break;
             case 4:
                 //appointments
@@ -309,20 +311,34 @@ public class App {
     }
 
     private void editProviderMenu() throws IOException, ClassNotFoundException {
-
         try {
             Provider provider = userMenuInteraction.selectProvider(clinic.getProviders(), "Which Provider Would you like to Change?");
-            int selection = userMenuInteraction.changeProviderInformation(provider);
+            int selection = userMenuInteraction.changeProviderInformation();
             switch (selection) {
                 case 0:
-                    String name = userInteraction.getName();
-                    provider.setName(name);
+                    String firstName = ConsoleUI.promptForInput("Please Enter A New First name", false, false);
+                    provider.setName(firstName);
                     autoSaveLoad();
                     break;
                 case 1:
-                    String lastName = userInteraction.getLastName();
+                    String lastName = ConsoleUI.promptForInput("Please Enter A New Last name", false, false);
                     provider.setLastName(lastName);
                     autoSaveLoad();
+                case 2:
+                    long phoneNumber = ConsoleUI.promptForLong("Please Enter A New Phone Number", 1000000000, Long.MAX_VALUE);
+                    provider.setPhoneNumber(phoneNumber);
+                    autoSaveLoad();
+                case 3:
+                    String email = ConsoleUI.promptForInput("Please Enter A New E-Mail", false, false);
+                    provider.setEmail(email);
+                    autoSaveLoad();
+                case 4:
+                    ProviderType type = provider.getTitle();
+                    provider.setTitle(type);
+                    autoSaveLoad();
+                case 5:
+                    userInteraction.println("\nReturning to Main Menu...\n");
+                	;
                 default:
                     break;
             }
@@ -332,6 +348,82 @@ public class App {
         }
     }
 
+    private void editPatientMenu() throws IOException, ClassNotFoundException{
+    	try {
+    		Patient patient = userMenuInteraction.selectPatient(clinic.getPatients(), "Choose A Patient to Edit");
+    		int selection = userMenuInteraction.changePatientInformation();
+    		switch(selection) {
+    		case 0:
+                String firstName = ConsoleUI.promptForInput("Please Enter A New Last name", false, false);
+                patient.setName(firstName);
+                autoSaveLoad();
+                break;
+            case 1:
+                String lastName = ConsoleUI.promptForInput("Please Enter A New Last name", false, false);
+                patient.setLastName(lastName);
+                autoSaveLoad(); 
+                break;
+            case 2:
+            	String email = ConsoleUI.promptForInput("Please Enter a New E-Mail", false, false);
+                patient.setEmail(email);
+                autoSaveLoad();
+                break;
+            case 3:
+            	long phoneNumber = ConsoleUI.promptForLong("Please Enter a Phone number (1000000000-9999999999)", 1000000000, Long.MAX_VALUE);
+                patient.setPhoneNumber(phoneNumber);
+                autoSaveLoad();
+                break;
+            case 4:
+                Insurance insurance = new Insurance(ConsoleUI.promptForInput("Input an Insurance Name", false, false),
+                ConsoleUI.promptForInput("Input a GroupID", false, false), ConsoleUI.promptForInput("Input a MemberID", false, false));
+                patient.setInsurance(insurance);
+                autoSaveLoad();
+                break;
+            case 5:
+            	PaymentCard card = new PaymentCard(ConsoleUI.promptForInput("Please Enter A New Card Number", false, false), ConsoleUI.promptForInt("Please Enter An Expiration Month", 1, 12),
+            	ConsoleUI.promptForInt("Please Enter an Expiration Year", 1, 9999), ConsoleUI.promptForInput("Please Input a New Name On Card", false, false),
+            	ConsoleUI.promptForInt("Please Enter a New CVV Number", 0, 999), ConsoleUI.promptForInt("Please Enter A New Zip Code", 10000, 99999));
+            	patient.setPaymentCard(card);
+            	autoSaveLoad();
+            	break;
+            case 6:
+                userInteraction.println("\nReturning to Main Menu...\n");
+            	break;
+            default:
+                break;
+    		}
+    		
+    		
+    		
+    		
+    		
+    		
+    		
+    		
+    		
+    		
+    		
+    		
+    		
+    		
+    		
+    		
+    		
+    		
+    		
+    		
+    		
+    		
+    		
+    	} catch (NullPointerException ex) {
+    		notFoundMessage();
+    	}
+
+    	
+    	
+    	
+    }
+    
     private void deleteAdminMenuHandler(int choice) {
         switch (choice) {
             case 0:
