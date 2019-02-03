@@ -389,37 +389,12 @@ public class App {
             	break;
             default:
                 break;
-    		}
-    		
-    		
-    		
-    		
-    		
-    		
-    		
-    		
-    		
-    		
-    		
-    		
-    		
-    		
-    		
-    		
-    		
-    		
-    		
-    		
-    		
-    		
-    		
+    		} 		
+	
     	} catch (NullPointerException ex) {
     		notFoundMessage("It was not found");
     	}
 
-    	
-    	
-    	
     }
     
     private void deleteAdminMenuHandler(int choice) {
