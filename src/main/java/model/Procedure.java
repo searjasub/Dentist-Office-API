@@ -1,8 +1,6 @@
 package model;
 
-import java.io.Serializable;
-
-public class Procedure implements Serializable {
+public class Procedure {
 
     private Patient patient;
     private String code = "D";
@@ -39,9 +37,9 @@ public class Procedure implements Serializable {
     }
 
     public void setCode(String code) {
-    	if(code == null || (code.trim()).isEmpty()) {
-    		throw new IllegalArgumentException("You cannot have nothing for the code");
-    	}
+        if (code == null || (code.trim()).isEmpty()) {
+            throw new IllegalArgumentException("You cannot have nothing for the code");
+        }
         this.code += code;
     }
 
@@ -50,9 +48,9 @@ public class Procedure implements Serializable {
     }
 
     public void setDescription(String description) {
-    	if(description == null || (description.trim()).isEmpty()) {
-    		throw new IllegalArgumentException("Please add a description");
-    	}
+        if (description == null || (description.trim()).isEmpty()) {
+            throw new IllegalArgumentException("Please add a description");
+        }
         this.description = description;
     }
 
@@ -61,9 +59,9 @@ public class Procedure implements Serializable {
     }
 
     public void setCost(double cost) {
-    	if(cost < 0 || cost > Double.MAX_VALUE) {
-    		throw new IllegalArgumentException("Cost cannot be negative or bigger than max value");
-    	}
+        if (cost < 0 || cost > Double.MAX_VALUE) {
+            throw new IllegalArgumentException("Cost cannot be negative or bigger than max value");
+        }
         this.cost = cost;
     }
 }

@@ -9,7 +9,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.List;
 
 public class App {
 
@@ -21,7 +20,6 @@ public class App {
     private HashMap<String, String> loginCredentials = new HashMap<>();
 
     public void start() throws IOException, ClassNotFoundException {
-
         if (makeDirectory()) {
             save();
         }
@@ -106,6 +104,7 @@ public class App {
                 searchMenuHandler(choice4);
                 return false;
             case 5:
+                //LOG OUT
                 userInteraction.println("You have successfully logged out\n\n");
                 currentUser = null;
                 save();
@@ -121,7 +120,6 @@ public class App {
         switch (selection) {
             case 0:
                 //production
-
                 break;
             case 1:
                 //patient balance
@@ -141,14 +139,12 @@ public class App {
     private void createAdminMenuHandler(int choice) throws IOException, ClassNotFoundException {
         switch (choice) {
             case 0:
-                //user
                 User newUser = new User(
                         userInteraction.getName(),
                         userInteraction.getLastName(),
                         checkUniqueUsername(),
                         passwordVerified(false),
                         userInteraction.getUserType());
-
                 clinic.getUsers().add(newUser);
                 autoSaveLoad();
                 break;
@@ -165,9 +161,6 @@ public class App {
                 addProcedure();
                 break;
             case 5:
-                addInsurance();
-                break;
-            case 6:
                 //exit
                 break;
             default:
@@ -202,9 +195,6 @@ public class App {
                 addProcedure();
                 break;
             case 4:
-                addInsurance();
-                break;
-            case 5:
                 //exit
                 break;
             default:
@@ -224,33 +214,25 @@ public class App {
         autoSaveLoad();
     }
 
-    private void addPatient() throws IOException {
-        try {
-            clinic.getPatients().add(new Patient(
-                    userInteraction.getName(),
-                    userInteraction.getLastName(),
-                    userInteraction.getUniqueID(),
-                    userInteraction.getEmail(),
-                    userInteraction.getPhoneNumber(),
-                    addInsuranceCompany(),
-                    new PaymentCard(
-                            userInteraction.getCardNumber(),
-                            userInteraction.getExpMonth(),
-                            userInteraction.getExpYear(),
-                            userInteraction.getCardName(),
-                            userInteraction.getCvv(),
-                            userInteraction.getZipCode()
-                    )));
-        } catch (NullPointerException ex) {
-            notFoundMessage("insurance");
-        }
-
-    }
-
-    private Insurance addInsuranceCompany() throws IOException {
-        Insurance temp = userMenuInteraction.selectInsurance(clinic.getInsurances(), "Choose Insurance Company");
-        temp.setGroupId(userInteraction.getMemberId());
-        return temp;
+    private void addPatient() throws IOException, ClassNotFoundException {
+        clinic.getPatients().add(new Patient(
+                userInteraction.getName(),
+                userInteraction.getLastName(),
+                userInteraction.getUniqueID(),
+                userInteraction.getEmail(),
+                userInteraction.getPhoneNumber(),
+                new Insurance(
+                        userInteraction.getInsuranceName(),
+                        userInteraction.getGroupId(),
+                        userInteraction.getMemberId()),
+                new PaymentCard(
+                        userInteraction.getCardNumber(),
+                        userInteraction.getExpMonth(),
+                        userInteraction.getExpYear(),
+                        userInteraction.getCardName(),
+                        userInteraction.getCvv(),
+                        userInteraction.getZipCode())));
+        autoSaveLoad();
     }
 
     private void addAppointment() throws IOException, ClassNotFoundException {
@@ -261,7 +243,6 @@ public class App {
 
         clinic.getAppointments().add(fa);
         autoSaveLoad();
-
     }
 
     private HashMap<Provider, Procedure> getProcedureByProvider() throws IOException {
@@ -288,13 +269,6 @@ public class App {
             notFoundMessage("patient");
 
         }
-    }
-
-    private void addInsurance() throws IOException, ClassNotFoundException {
-        clinic.getInsurances().add(new Insurance(
-                userInteraction.getInsuranceName(),
-                userInteraction.getGroupId()));
-        autoSaveLoad();
     }
 
     private void editAdminMenuHandler(int choice) throws IOException, ClassNotFoundException {
@@ -337,10 +311,10 @@ public class App {
                 autoSaveLoad();
                 break;
             case 1:
-                //provider
+                editProviderMenu();
                 break;
             case 2:
-                //patients
+                editPatientMenu();
                 break;
             case 3:
                 //appointments
@@ -570,12 +544,9 @@ public class App {
     private void loginScreen() throws IOException {
         boolean isValid = false;
         while (!isValid) {
-
             String username = userInteraction.getLoginUsername();
             String password = userInteraction.getLoginPassword();
-
             if (password.equals(loginCredentials.get(username))) {
-
                 for (int i = 0; i < clinic.getUsers().size(); i++) {
                     if (clinic.getUsers().get(i).getUsername().equals(username)) {
                         currentUser = clinic.getUsers().get(i);
@@ -591,7 +562,6 @@ public class App {
     private void autoSaveLoad() throws IOException, ClassNotFoundException {
         save();
         load();
-
     }
 
     private void save() throws IOException {
@@ -605,9 +575,8 @@ public class App {
     }
 
     private void load() throws IOException, ClassNotFoundException {
-
         ObjectInputStream in = new ObjectInputStream(new FileInputStream(directory + "\\save.db"));
-        clinic = (Clinic)in.readObject();
+        clinic = (Clinic) in.readObject();
         for (int i = 0; i < clinic.getUsers().size(); i++) {
             loginCredentials.put(clinic.getUsers().get(i).getUsername(), clinic.getUsers().get(i).getPassword());
         }

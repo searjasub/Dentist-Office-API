@@ -1,14 +1,12 @@
 package model;
 
-import java.io.Serializable;
-
-public class Insurance implements Serializable {
+public class Insurance {
 
     private String name;
     private String groupId;
     private String memberId;
 
-    public Insurance(String name, String groupId){
+    public Insurance(String name, String groupId) {
         this.setName(name);
         this.setGroupId(groupId);
     }
@@ -24,9 +22,9 @@ public class Insurance implements Serializable {
     }
 
     public void setName(String name) {
-    	if(name == null || (name.trim()).isEmpty()) {
-    		throw new IllegalArgumentException("Name cannot be nothing");
-    	}
+        if (name == null || (name.trim()).isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be nothing");
+        }
         this.name = name;
     }
 
@@ -35,9 +33,9 @@ public class Insurance implements Serializable {
     }
 
     public void setGroupId(String groupId) {
-    	if(groupId == null || (groupId.trim()).isEmpty()) {
-    		throw new IllegalArgumentException("This is not a valid Group ID");
-    	}
+        if (groupId == null || (groupId.trim()).isEmpty()) {
+            throw new IllegalArgumentException("This is not a valid Group ID");
+        }
         this.groupId = groupId;
     }
 
@@ -46,9 +44,9 @@ public class Insurance implements Serializable {
     }
 
     public void setMemberId(String memberId) {
-    	if(memberId == null || (memberId.trim()).isEmpty()) {
-    		throw new IllegalArgumentException("This is not a valid Member ID");
-    	}
+        if (memberId == null || (memberId.trim()).isEmpty()) {
+            throw new IllegalArgumentException("This is not a valid Member ID");
+        }
         this.memberId = memberId;
     }
 }

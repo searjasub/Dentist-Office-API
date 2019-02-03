@@ -43,14 +43,13 @@ public class UserMenuInteraction {
     }
 
     private String[] fillCreateAdminMenu() {
-        String[] menuOptions = new String[7];
+        String[] menuOptions = new String[6];
         menuOptions[0] = "User";
         menuOptions[1] = "Provider";
         menuOptions[2] = "Patient";
         menuOptions[3] = "Appointment";
         menuOptions[4] = "Procedure";
-        menuOptions[5] = "Insurance Company";
-        menuOptions[6] = "Exit";
+        menuOptions[5] = "Exit";
         return menuOptions;
     }
 
@@ -59,13 +58,12 @@ public class UserMenuInteraction {
     }
 
     private String[] fillCreateStandardMenu() {
-        String[] menuOptions = new String[6];
+        String[] menuOptions = new String[5];
         menuOptions[0] = "Provider";
         menuOptions[1] = "Patient";
         menuOptions[2] = "Appointment";
         menuOptions[3] = "Procedure";
-        menuOptions[4] = "Insurance Company";
-        menuOptions[5] = "Exit";
+        menuOptions[4] = "Exit";
         return menuOptions;
     }
 
@@ -147,7 +145,7 @@ public class UserMenuInteraction {
         return ConsoleUI.promptForMenuSelection(fillChangeProviderInformation(), defaultQuestion);
     }
 
-    public String[] fillChangeProviderInformation() {
+    private String[] fillChangeProviderInformation() {
         String[] options = new String[6];
         options[0] = "First Name";
         options[1] = "Last Name";
@@ -162,7 +160,7 @@ public class UserMenuInteraction {
         return ConsoleUI.promptForMenuSelection(fillChangePatientInformation(), defaultQuestion);
     }
 
-    public String[] fillChangePatientInformation() {
+    private String[] fillChangePatientInformation() {
         String[] options = new String[7];
         options[0] = "First Name";
         options[1] = "Last Name";
@@ -196,18 +194,6 @@ public class UserMenuInteraction {
         return (Provider) list[ConsoleUI.promptForMenuSelection(options, message)];
     }
 
-    public Insurance selectInsurance(List<Insurance> insurances, String message) throws IOException {
-        Object[] list = insurances.toArray();
-        if (insurances.isEmpty()) {
-            throw new NullPointerException();
-        }
-        String[] options = new String[list.length];
-        for (int i = 0; i < options.length; i++) {
-            options[i] = insurances.get(i).getName() + " | Group ID: " + insurances.get(i).getGroupId();
-        }
-        return (Insurance) list[ConsoleUI.promptForMenuSelection(options, message)];
-    }
-
     public Patient selectPatient(List<Patient> patients, String message) throws IOException {
 
         Object[] list = patients.toArray();
@@ -216,7 +202,7 @@ public class UserMenuInteraction {
         }
         String[] options = new String[list.length];
         for (int i = 0; i < options.length; i++) {
-            options[i] = patients.get(i).getName();
+            options[i] = patients.get(i).getName() + " " + patients.get(i).getLastName();
         }
         return (Patient) list[ConsoleUI.promptForMenuSelection(options, message)];
     }

@@ -1,8 +1,6 @@
 package model;
 
-import java.io.Serializable;
-
-public class Payment implements Serializable {
+public class Payment {
 
     private double amount;
     private Patient patient;

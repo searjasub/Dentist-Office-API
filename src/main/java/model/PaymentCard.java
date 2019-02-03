@@ -1,8 +1,6 @@
 package model;
 
-import java.io.Serializable;
-
-public class PaymentCard implements Serializable {
+public class PaymentCard {
 
     private String number;
     private int expMonth;
