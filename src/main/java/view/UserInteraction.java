@@ -7,7 +7,7 @@ import model.Source;
 import model.UserRole;
 
 import java.io.IOException;
-import java.math.BigInteger;
+import java.time.LocalDateTime;
 
 public class UserInteraction {
 
@@ -91,7 +91,7 @@ public class UserInteraction {
         String[] menuOptions = new String[2];
         menuOptions[0] = "Insurance";
         menuOptions[1] = "Patient";
-        int selection = ConsoleUI.promptForMenuSelection(menuOptions, "What type of user?");
+        int selection = ConsoleUI.promptForMenuSelection(menuOptions, "What type of source?");
         if (selection == 0) {
             return Source.INSURANCE;
         } else {
@@ -99,7 +99,7 @@ public class UserInteraction {
         }
     }
 
-    public int getProviderID() throws IOException {
+    public int getUniqueID() throws IOException {
         int id;
         while (true) {
             id = ConsoleUI.promptForInt("Please enter unique ID number", 0, 99999);
@@ -116,9 +116,9 @@ public class UserInteraction {
         while (true) {
             email = ConsoleUI.promptForInput("Enter email", false, false);
             for (int i = email.length() - 1; i > 0; i--) {
-                if(email.charAt(i) == '@'){
+                if (email.charAt(i) == '@') {
                     for (int j = email.length() - 1; j > i; j--) {
-                        if(email.charAt(j) == '.'){
+                        if (email.charAt(j) == '.') {
                             return email;
                         }
                     }
@@ -129,7 +129,6 @@ public class UserInteraction {
     }
 
     public String getPhoneNumber() throws IOException {
-
         String phone;
         while (true) {
             phone = ConsoleUI.promptForInput("Please enter phone number", false, false);
@@ -137,6 +136,7 @@ public class UserInteraction {
                 println("The phone number is too long, please try again. (maximum 10 digits)");
             } else if (phone.length() < 10) {
                 println("The phone number is too short, please try again. (minimum 10 digits)");
+                //TODO MAKE SURE YOU CAN'T PUT ANY LETTERS
             } else if (phone.matches("[a-zA-Z]")) {
                 println("Only numbers allowed");
             } else {
@@ -154,6 +154,7 @@ public class UserInteraction {
                 println("The code is too long, please try again. (maximum 5 digits)");
             } else if (code.length() < 5) {
                 println("The code is too short, please try again. (minimum 5 digits)");
+                //TODO MAKE SURE YOU CAN'T PUT ANY LETTERS
             } else if (code.matches("[a-zA-Z]+")) {
                 println("Only numbers allowed");
             } else {
@@ -168,5 +169,70 @@ public class UserInteraction {
 
     public double getCost() throws IOException {
         return ConsoleUI.promptForDouble("How much did it cost?", 0, Double.MAX_VALUE);
+    }
+
+    public String getInsuranceName() throws IOException {
+        return ConsoleUI.promptForInput("Enter Insurance Name", false, false);
+    }
+
+    public String getGroupId() throws IOException {
+        return ConsoleUI.promptForInput("Enter GroupID", false, false);
+    }
+
+    public String getMemberId() throws IOException {
+        return ConsoleUI.promptForInput("Enter MemberID", false, false);
+    }
+
+    public String getCardNumber() throws IOException {
+        return ConsoleUI.promptForInput("Please Enter A New Card Number", false, false);
+    }
+
+    public int getExpMonth() throws IOException {
+        return ConsoleUI.promptForInt("Please Enter An Expiration Month", 1, 12);
+    }
+
+    public int getExpYear() throws IOException {
+        return ConsoleUI.promptForInt("Please Enter An Expiration Year", 2019, 2100);
+    }
+
+    public String getCardName() throws IOException {
+        return ConsoleUI.promptForInput("Please Enter The Name On The Car", false, false);
+    }
+
+    public int getCvv() throws IOException {
+        return ConsoleUI.promptForInt("Please Enter a New CVV Number", 0, 999);
+    }
+
+    public int getZipCode() throws IOException {
+        return ConsoleUI.promptForInt("Please Enter A New Zip Code", 10000, 99999);
+    }
+
+    public LocalDateTime getFutureDate() throws IOException {
+        return LocalDateTime.of(
+                getYear(),
+                getMonth(),
+                getDay(),
+                getHour(),
+                getMinute());
+    }
+
+    private int getYear() throws IOException {
+        return ConsoleUI.promptForInt("Enter Year", 2019, 2100);
+    }
+
+    private int getMonth() throws IOException {
+        return ConsoleUI.promptForInt("Enter Month Number", 1, 12);
+    }
+
+    private int getDay() throws IOException {
+        return ConsoleUI.promptForInt("Enter day", 1, 31);
+    }
+
+    private int getHour() throws IOException {
+        return ConsoleUI.promptForInt("Enter Hour", 1, 24);
+    }
+
+    private int getMinute() throws IOException {
+        return ConsoleUI.promptForInt("Enter Minutes", 0, 59);
     }
 }

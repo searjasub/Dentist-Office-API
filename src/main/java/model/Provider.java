@@ -14,8 +14,8 @@ public class Provider extends Person {
     }
 
     public void setTitle(ProviderType title) {
-        if(title == null) {
-        	throw new IllegalArgumentException("This is not an allowed ProviderType");
+        if (title == null) {
+            throw new IllegalArgumentException("This is not an allowed ProviderType");
         }
         this.title = title;
     }

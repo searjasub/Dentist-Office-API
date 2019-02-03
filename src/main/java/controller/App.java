@@ -9,9 +9,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.List;
-
-import interfaces.ConsoleUI;
 
 public class App {
 
@@ -23,11 +20,15 @@ public class App {
     private HashMap<String, String> loginCredentials = new HashMap<>();
 
     public void start() throws IOException, ClassNotFoundException {
+        if (makeDirectory()) {
+            save();
+        }
         load();
         if (clinic.getUsers().isEmpty()) {
             addAdmin();
         } else {
             do {
+                userInteraction.welcome();
                 loginScreen();
                 boolean isDone = false;
                 while (!isDone) {
@@ -60,12 +61,12 @@ public class App {
     private boolean mainMenuHandler(int selection) throws IOException, ClassNotFoundException {
         switch (selection) {
             case 0:
-                //view
+                //VIEW
                 int choice0 = userMenuInteraction.viewMenu();
                 viewMenuHandler(choice0);
                 return false;
             case 1:
-                //create
+                //CREATE
                 int choice1;
                 if (currentUser.getUserRole() == UserRole.ADMINISTRATIVE) {
                     choice1 = userMenuInteraction.createAdminMenu();
@@ -76,7 +77,7 @@ public class App {
                 }
                 return false;
             case 2:
-                //edit
+                //EDIT
                 int choice2;
                 if (currentUser.getUserRole() == UserRole.ADMINISTRATIVE) {
                     choice2 = userMenuInteraction.editAdminMenu();
@@ -87,7 +88,7 @@ public class App {
                 }
                 return false;
             case 3:
-                //delete
+                //DELETE
                 int choice3;
                 if (currentUser.getUserRole() == UserRole.ADMINISTRATIVE) {
                     choice3 = userMenuInteraction.deleteAdminMenu();
@@ -98,11 +99,12 @@ public class App {
                 }
                 return false;
             case 4:
-                //search
+                //SEARCH
                 int choice4 = userMenuInteraction.searchMenu();
                 searchMenuHandler(choice4);
                 return false;
             case 5:
+                //LOG OUT
                 userInteraction.println("You have successfully logged out\n\n");
                 currentUser = null;
                 save();
@@ -114,8 +116,8 @@ public class App {
     }
 
 
-    private void viewMenuHandler(int choice) {
-        switch (choice) {
+    private void viewMenuHandler(int selection) {
+        switch (selection) {
             case 0:
                 //production
                 break;
@@ -137,14 +139,12 @@ public class App {
     private void createAdminMenuHandler(int choice) throws IOException, ClassNotFoundException {
         switch (choice) {
             case 0:
-                //user
                 User newUser = new User(
                         userInteraction.getName(),
                         userInteraction.getLastName(),
                         checkUniqueUsername(),
                         passwordVerified(false),
                         userInteraction.getUserType());
-
                 clinic.getUsers().add(newUser);
                 autoSaveLoad();
                 break;
@@ -168,28 +168,19 @@ public class App {
         }
     }
 
+
     private String checkUniqueUsername() throws IOException {
-        String username = null;
-
-
-        boolean isValid = false;
+        String username;
         while (true) {
-
             username = userInteraction.getUsername();
-
             if (loginCredentials.get(username) == null) {
                 return username;
             }
-
             userInteraction.println("\nUsername already exist. Please choose another one.");
-
         }
-
-        //System.out.println(username);
-        //return username;
     }
 
-    public void createStandardMenuHandler(int choice) throws IOException, ClassNotFoundException {
+    private void createStandardMenuHandler(int choice) throws IOException, ClassNotFoundException {
         switch (choice) {
             case 0:
                 addProvider();
@@ -213,24 +204,55 @@ public class App {
 
 
     private void addProvider() throws IOException, ClassNotFoundException {
-
         clinic.getProviders().add(new Provider(
                 userInteraction.getName(),
                 userInteraction.getLastName(),
-                userInteraction.getProviderID(),
+                userInteraction.getUniqueID(),
                 userInteraction.getEmail(),
                 userInteraction.getPhoneNumber(),
                 userInteraction.getProviderType()));
         autoSaveLoad();
     }
 
-    private void addPatient() {
-
-
+    private void addPatient() throws IOException, ClassNotFoundException {
+        clinic.getPatients().add(new Patient(
+                userInteraction.getName(),
+                userInteraction.getLastName(),
+                userInteraction.getUniqueID(),
+                userInteraction.getEmail(),
+                userInteraction.getPhoneNumber(),
+                new Insurance(
+                        userInteraction.getInsuranceName(),
+                        userInteraction.getGroupId(),
+                        userInteraction.getMemberId()),
+                new PaymentCard(
+                        userInteraction.getCardNumber(),
+                        userInteraction.getExpMonth(),
+                        userInteraction.getExpYear(),
+                        userInteraction.getCardName(),
+                        userInteraction.getCvv(),
+                        userInteraction.getZipCode())));
+        autoSaveLoad();
     }
 
-    private void addAppointment() {
+    private void addAppointment() throws IOException, ClassNotFoundException {
+        FutureAppointment fa = new FutureAppointment(
+                userMenuInteraction.selectPatient(clinic.getPatients(), "Select Patient"),
+                userInteraction.getFutureDate(),
+                getProcedureByProvider());
 
+        clinic.getAppointments().add(fa);
+        autoSaveLoad();
+    }
+
+    private HashMap<Provider, Procedure> getProcedureByProvider() throws IOException {
+        Provider provider = userMenuInteraction.selectProvider(clinic.getProviders(), "Select Provider");
+        Procedure procedure = userMenuInteraction.selectProcedure(clinic.getProcedures(), "Select Procedure");
+
+        HashMap<Provider, Procedure> procedureHashMap = new HashMap<>();
+        procedureHashMap.put(provider, procedure);
+
+        return procedureHashMap;
     }
 
     private void addProcedure() throws IOException, ClassNotFoundException {
@@ -265,10 +287,10 @@ public class App {
                 editProviderMenu();
                 break;
             case 3://EDIT PATIENTS
-                
+                editPatientMenu();
                 break;
             case 4:
-                //appointments
+                editAppointmentsMenu();
                 break;
             case 5:
                 //procedure
@@ -289,10 +311,10 @@ public class App {
                 autoSaveLoad();
                 break;
             case 1:
-                //provider
+                editProviderMenu();
                 break;
             case 2:
-                //patients
+                editPatientMenu();
                 break;
             case 3:
                 //appointments
@@ -314,89 +336,122 @@ public class App {
             int selection = userMenuInteraction.changeProviderInformation();
             switch (selection) {
                 case 0:
-                    String firstName = ConsoleUI.promptForInput("Please Enter A New First name", false, false);
-                    provider.setName(firstName);
-                    autoSaveLoad();
+                    editName(provider);
                     break;
                 case 1:
-                    String lastName = ConsoleUI.promptForInput("Please Enter A New Last name", false, false);
-                    provider.setLastName(lastName);
-                    autoSaveLoad();
+                    editLastName(provider);
                 case 2:
-                    String phoneNumber = ConsoleUI.promptForInput("Please Enter A New Phone Number", false, false);
-                    provider.setPhoneNumber(phoneNumber);
-                    autoSaveLoad();
+                    editPhoneNumber(provider);
                 case 3:
-                    String email = ConsoleUI.promptForInput("Please Enter A New E-Mail", false, false);
-                    provider.setEmail(email);
-                    autoSaveLoad();
+                    editEmail(provider);
                 case 4:
                     ProviderType type = provider.getTitle();
                     provider.setTitle(type);
                     autoSaveLoad();
                 case 5:
                     userInteraction.println("\nReturning to Main Menu...\n");
-                	;
                 default:
                     break;
             }
-
         } catch (NullPointerException ex) {
             notFoundMessage("provider");
         }
     }
 
-    private void editPatientMenu() throws IOException, ClassNotFoundException{
-    	try {
-    		Patient patient = userMenuInteraction.selectPatient(clinic.getPatients(), "Choose A Patient to Edit");
-    		int selection = userMenuInteraction.changePatientInformation();
-    		switch(selection) {
-    		case 0:
-                String firstName = ConsoleUI.promptForInput("Please Enter A New Last name", false, false);
-                patient.setName(firstName);
-                autoSaveLoad();
-                break;
-            case 1:
-                String lastName = ConsoleUI.promptForInput("Please Enter A New Last name", false, false);
-                patient.setLastName(lastName);
-                autoSaveLoad(); 
-                break;
-            case 2:
-            	String email = ConsoleUI.promptForInput("Please Enter a New E-Mail", false, false);
-                patient.setEmail(email);
-                autoSaveLoad();
-                break;
-            case 3:
-                String phoneNumber = ConsoleUI.promptForInput("Please Enter a Phone number (1000000000-9999999999)", false, false);
-                patient.setPhoneNumber(phoneNumber);
-                autoSaveLoad();
-                break;
-            case 4:
-                Insurance insurance = new Insurance(ConsoleUI.promptForInput("Input an Insurance Name", false, false),
-                ConsoleUI.promptForInput("Input a GroupID", false, false), ConsoleUI.promptForInput("Input a MemberID", false, false));
-                patient.setInsurance(insurance);
-                autoSaveLoad();
-                break;
-            case 5:
-            	PaymentCard card = new PaymentCard(ConsoleUI.promptForInput("Please Enter A New Card Number", false, false), ConsoleUI.promptForInt("Please Enter An Expiration Month", 1, 12),
-            	ConsoleUI.promptForInt("Please Enter an Expiration Year", 1, 9999), ConsoleUI.promptForInput("Please Input a New Name On Card", false, false),
-            	ConsoleUI.promptForInt("Please Enter a New CVV Number", 0, 999), ConsoleUI.promptForInt("Please Enter A New Zip Code", 10000, 99999));
-            	patient.setPaymentCard(card);
-            	autoSaveLoad();
-            	break;
-            case 6:
-                userInteraction.println("\nReturning to Main Menu...\n");
-            	break;
-            default:
-                break;
-    		} 		
-	
-    	} catch (NullPointerException ex) {
-    		notFoundMessage("It was not found");
-    	}
+
+    private void editPatientMenu() throws IOException, ClassNotFoundException {
+        try {
+            Patient patient = userMenuInteraction.selectPatient(clinic.getPatients(), "Choose A Patient to Edit");
+            int selection = userMenuInteraction.changePatientInformation();
+            switch (selection) {
+                case 0:
+                    editName(patient);
+                    break;
+                case 1:
+                    editLastName(patient);
+                    break;
+                case 2:
+                    editEmail(patient);
+                    break;
+                case 3:
+                    editPhoneNumber(patient);
+                    break;
+                case 4:
+                    Insurance insurance = new Insurance(
+                            userInteraction.getInsuranceName(),
+                            userInteraction.getGroupId(),
+                            userInteraction.getMemberId());
+                    patient.setInsurance(insurance);
+                    autoSaveLoad();
+                    break;
+                case 5:
+                    PaymentCard card = new PaymentCard(
+                            userInteraction.getCardNumber(),
+                            userInteraction.getExpMonth(),
+                            userInteraction.getExpYear(),
+                            userInteraction.getCardName(),
+                            userInteraction.getCvv(),
+                            userInteraction.getZipCode());
+                    patient.setPaymentCard(card);
+                    autoSaveLoad();
+                    break;
+                case 6:
+                    userInteraction.println("\nReturning to Main Menu...\n");
+                    break;
+                default:
+                    break;
+            }
+        } catch (NullPointerException ex) {
+            notFoundMessage("patient");
+        }
+    }
+
+
+    private void editName(Object object) throws IOException, ClassNotFoundException {
+        String firstName = userInteraction.getName();
+        if (object instanceof Provider) {
+            ((Provider) object).setName(firstName);
+        } else if (object instanceof Patient) {
+            ((Patient) object).setName(firstName);
+        }
+        autoSaveLoad();
 
     }
-    
+
+    private void editLastName(Object object) throws IOException, ClassNotFoundException {
+        String lastName = userInteraction.getLastName();
+        if (object instanceof Provider) {
+            ((Provider) object).setLastName(lastName);
+        } else if (object instanceof Patient) {
+            ((Patient) object).setLastName(lastName);
+        }
+        autoSaveLoad();
+    }
+
+    private void editPhoneNumber(Object object) throws IOException, ClassNotFoundException {
+        String phoneNumber = userInteraction.getPhoneNumber();
+        if (object instanceof Provider) {
+            ((Provider) object).setPhoneNumber(phoneNumber);
+        } else if (object instanceof Patient) {
+            ((Patient) object).setPhoneNumber(phoneNumber);
+        }
+        autoSaveLoad();
+    }
+
+    private void editEmail(Object object) throws IOException, ClassNotFoundException {
+        String email = userInteraction.getEmail();
+        if (object instanceof Provider) {
+            ((Provider) object).setEmail(email);
+        } else if (object instanceof Patient) {
+            ((Patient) object).setEmail(email);
+        }
+        autoSaveLoad();
+    }
+
+    private void editAppointmentsMenu() {
+
+    }
+
     private void deleteAdminMenuHandler(int choice) {
         switch (choice) {
             case 0:
@@ -466,7 +521,6 @@ public class App {
         }
     }
 
-
     private String passwordVerified(boolean isFirstTime) throws IOException {
         String newPassword = null;
         boolean isValid = false;
@@ -490,12 +544,9 @@ public class App {
     private void loginScreen() throws IOException {
         boolean isValid = false;
         while (!isValid) {
-
             String username = userInteraction.getLoginUsername();
             String password = userInteraction.getLoginPassword();
-
             if (password.equals(loginCredentials.get(username))) {
-
                 for (int i = 0; i < clinic.getUsers().size(); i++) {
                     if (clinic.getUsers().get(i).getUsername().equals(username)) {
                         currentUser = clinic.getUsers().get(i);
@@ -514,13 +565,10 @@ public class App {
     }
 
     private void save() throws IOException {
-        Path path = Paths.get(directory);
-        if (!Files.exists(path)) {
-            Files.createDirectories(path);
-        }
+        makeDirectory();
         FileOutputStream fileOutputStream = new FileOutputStream(directory + "\\save.db");
         ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
-        out.writeObject(clinic.getUsers());
+        out.writeObject(clinic);
         out.close();
         out.flush();
         fileOutputStream.close();
@@ -528,14 +576,23 @@ public class App {
 
     private void load() throws IOException, ClassNotFoundException {
         ObjectInputStream in = new ObjectInputStream(new FileInputStream(directory + "\\save.db"));
-        clinic.setUsers((List<User>) in.readObject());
+        clinic = (Clinic) in.readObject();
         for (int i = 0; i < clinic.getUsers().size(); i++) {
             loginCredentials.put(clinic.getUsers().get(i).getUsername(), clinic.getUsers().get(i).getPassword());
         }
         in.close();
     }
 
+    private boolean makeDirectory() throws IOException {
+        Path path = Paths.get(directory);
+        if (!Files.exists(path)) {
+            Files.createDirectories(path);
+            return true;
+        }
+        return false;
+    }
+
     private void notFoundMessage(String type) {
-        userInteraction.println("There are no " + type +" in record. Please add a patient first");
+        userInteraction.println("There are no " + type + "s in record. Please add a " + type + " first");
     }
 }
