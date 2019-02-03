@@ -21,6 +21,10 @@ public class App {
     private HashMap<String, String> loginCredentials = new HashMap<>();
 
     public void start() throws IOException, ClassNotFoundException {
+
+        if (makeDirectory()) {
+            save();
+        }
         load();
         if (clinic.getUsers().isEmpty()) {
             addAdmin();
@@ -641,6 +645,12 @@ public class App {
         outProcedure.flush();
         fosProcedure.close();
 
+        FileOutputStream fosPaymentCard = new FileOutputStream(directory + "\\paymentCards.db");
+        ObjectOutputStream outPaymentCard = new ObjectOutputStream(fosPaymentCard);
+        outPaymentCard.writeObject(clinic.getCardPayments());
+        outPaymentCard.close();
+        outPaymentCard.flush();
+        fosPaymentCard.close();
 
 
 //        out.writeObject(clinic.getProviders());
@@ -675,7 +685,6 @@ public class App {
         inAppointment.close();
 
 
-
         ObjectInputStream inPatient = new ObjectInputStream(new FileInputStream(directory + "\\patients.db"));
         clinic.setPatients((List<Patient>) inPatient.readObject());
         inPatient.close();
@@ -687,15 +696,21 @@ public class App {
 
 
         ObjectInputStream inProcedures = new ObjectInputStream(new FileInputStream(directory + "\\procedures.db"));
-        clinic.setProcedures((List<Procedure>) inInsurance.readObject());
-        inInsurance.close();
+        clinic.setProcedures((List<Procedure>) inProcedures.readObject());
+        inProcedures.close();
+
+        ObjectInputStream inCardPayments = new ObjectInputStream(new FileInputStream(directory + "\\paymentCards.db"));
+        clinic.setCardPayments(((List<PaymentCard>) inCardPayments.readObject()));
+        inCardPayments.close();
     }
 
-    private void makeDirectory() throws IOException {
+    private boolean makeDirectory() throws IOException {
         Path path = Paths.get(directory);
         if (!Files.exists(path)) {
             Files.createDirectories(path);
+            return true;
         }
+        return false;
     }
 
     private void notFoundMessage(String type) {
