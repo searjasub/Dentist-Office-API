@@ -91,7 +91,7 @@ public class UserInteraction {
         String[] menuOptions = new String[2];
         menuOptions[0] = "Insurance";
         menuOptions[1] = "Patient";
-        int selection = ConsoleUI.promptForMenuSelection(menuOptions, "What type of user?");
+        int selection = ConsoleUI.promptForMenuSelection(menuOptions, "What type of source?");
         if (selection == 0) {
             return Source.INSURANCE;
         } else {
@@ -208,14 +208,12 @@ public class UserInteraction {
     }
 
     public LocalDateTime getFutureDate() throws IOException {
-
         return LocalDateTime.of(
                 getYear(),
                 getMonth(),
                 getDay(),
                 getHour(),
                 getMinute());
-
     }
 
     private int getYear() throws IOException {
