@@ -457,9 +457,9 @@ public class App {
     private void editPhoneNumber(Object object) throws IOException, ClassNotFoundException {
         String phoneNumber = userInteraction.getPhoneNumber();
         if (object instanceof Provider) {
-            ((Provider) object).setName(phoneNumber);
+            ((Provider) object).setPhoneNumber(phoneNumber);
         } else if (object instanceof Patient) {
-            ((Patient) object).setName(phoneNumber);
+            ((Patient) object).setPhoneNumber(phoneNumber);
         }
         autoSaveLoad();
     }
@@ -467,9 +467,9 @@ public class App {
     private void editEmail(Object object) throws IOException, ClassNotFoundException {
         String email = userInteraction.getEmail();
         if (object instanceof Provider) {
-            ((Provider) object).setName(email);
+            ((Provider) object).setEmail(email);
         } else if (object instanceof Patient) {
-            ((Patient) object).setName(email);
+            ((Patient) object).setEmail(email);
         }
         autoSaveLoad();
     }
