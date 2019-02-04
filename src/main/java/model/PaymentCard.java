@@ -58,7 +58,7 @@ public class PaymentCard implements Serializable {
     }
 
     public void setCardName(String cardName) {
-        if (cardName == null || cardName.trim() == "") {
+        if (cardName == null || cardName.trim().isEmpty()) {
             throw new IllegalArgumentException("Name cannot be nothing");
         }
         this.cardName = cardName;
@@ -84,5 +84,15 @@ public class PaymentCard implements Serializable {
             throw new IllegalArgumentException("Zip Code cannot be smaller than 10000 or bigger than 99999");
         }
         this.zipCode = zipCode;
+    }
+
+    @Override
+    public String toString() {
+        if (!getCardName().isEmpty()) {
+            return "Card on file";
+        } else {
+            return "No card in file";
+
+        }
     }
 }

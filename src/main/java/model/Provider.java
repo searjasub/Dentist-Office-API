@@ -22,6 +22,6 @@ public class Provider extends Person {
 
     @Override
     public String toString() {
-        return super.toString() + "Title: " + getTitle() + "ID: " + getUniqueId();
+        return super.toString() + " | Title: " + getTitle() + "ID: " + getUniqueId();
     }
 }

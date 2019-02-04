@@ -1,6 +1,8 @@
 package model;
 
-public class Patient extends Person {
+import java.io.Serializable;
+
+public class Patient extends Person implements Serializable {
 
     private Insurance insurance;
     private PaymentCard paymentCard;
@@ -26,5 +28,10 @@ public class Patient extends Person {
 
     public void setPaymentCard(PaymentCard paymentCard) {
         this.paymentCard = paymentCard;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + " | Insurance: " + getInsurance().getName() + " | Payment " + getPaymentCard().toString();
     }
 }

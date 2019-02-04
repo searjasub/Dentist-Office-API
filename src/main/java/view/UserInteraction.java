@@ -70,11 +70,7 @@ public class UserInteraction {
     }
 
     public ProviderType getProviderType() throws IOException {
-        String[] menuOptions = new String[3];
-        menuOptions[0] = "Dentist";
-        menuOptions[1] = "Assistant";
-        menuOptions[2] = "Hygienist";
-        int selection = ConsoleUI.promptForMenuSelection(menuOptions, "Who is the provider?");
+        int selection = ConsoleUI.promptForMenuSelection(fillProviderType(), "Who is the provider?");
         switch (selection) {
             case 0:
                 return ProviderType.DENTIST;
@@ -85,6 +81,32 @@ public class UserInteraction {
             default:
                 throw new IllegalArgumentException("Something went wrong in the UserMenuInteraction Class (You should not see me)");
         }
+    }
+
+    public ProviderType getProviderTypeWithEmptyEntry() throws IOException{
+        String[] newOne = fillProviderType();
+        newOne[3] = "All of them";
+        int selection = ConsoleUI.promptForMenuSelection(newOne, "Select a criteria to search for?");
+        switch (selection) {
+            case 0:
+                return ProviderType.DENTIST;
+            case 1:
+                return ProviderType.ASSISTANT;
+            case 2:
+                return ProviderType.HYGIENIST;
+            case 3:
+                return null;
+            default:
+                throw new IllegalArgumentException("Something went wrong in the UserMenuInteraction Class (You should not see me)");
+        }
+    }
+
+    private String[] fillProviderType(){
+        String[] menuOptions = new String[4];
+        menuOptions[0] = "Dentist";
+        menuOptions[1] = "Assistant";
+        menuOptions[2] = "Hygienist";
+        return menuOptions;
     }
 
     public Source getSource() throws IOException {
@@ -238,5 +260,13 @@ public class UserInteraction {
 
     public String getInput(String msg, boolean allowEmpty) throws IOException {
         return ConsoleUI.promptForInput(msg,allowEmpty,false);
+    }
+
+    public String removeCharacters(String content){
+        String clean;
+        clean = content.replace("[", "");
+        clean = clean.replace("]", "");
+        clean = clean.replace(",", "\n");
+        return clean;
     }
 }
