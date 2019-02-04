@@ -1,6 +1,7 @@
 package controller;
 
 import model.*;
+import view.DentistOfficeUserInteraction;
 import view.UserInteraction;
 
 import java.io.*;
@@ -17,8 +18,13 @@ public class ClinicController {
     private static final String directory = "savables";
     private Clinic clinic = new Clinic();
     private User currentUser;
-    private UserInteraction userInteraction = new UserInteraction();
+    //private UserInteraction userInteraction = new UserInteraction();
+    private DentistOfficeUserInteraction userInteraction;
     private HashMap<String, String> loginCredentials = new HashMap<>();
+
+    public ClinicController(DentistOfficeUserInteraction ui){
+        this.userInteraction = ui;
+    }
 
     public void start() throws IOException, ClassNotFoundException {
         if (makeDirectory()) {
