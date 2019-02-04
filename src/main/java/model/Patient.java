@@ -4,6 +4,7 @@ public class Patient extends Person {
 
     private Insurance insurance;
     private PaymentCard paymentCard;
+    private AppointmentRecord appointmentRecords;
 
     public Patient(String name, String lastName, int uniqueId, String email, String phoneNumber, Insurance insurance, PaymentCard paymentCard) {
         super(name, lastName, uniqueId, email, phoneNumber);
