@@ -213,6 +213,35 @@ public class UserMenuInteraction {
         return options;
     }
 
+    public int changeUserInformationMenu() throws IOException {
+        return ConsoleUI.promptForMenuSelection(fillChangeUserInformationMenu(), editQuestion);
+    }
+
+    private String[] fillChangeUserInformationMenu() {
+        String[] options = new String[6];
+        options[0] = "Name";
+        options[1] = "Last Name";
+        options[2] = "Username";
+        options[3] = "Password";
+        options[4] = "User Role";
+        options[5] = "Exit";
+        return options;
+    }
+
+    public int changeUserOwnInformation() throws IOException {
+        return ConsoleUI.promptForMenuSelection(fillChangeOwnInformation(), editQuestion);
+    }
+
+    private String[] fillChangeOwnInformation() {
+        String[] options = new String[5];
+        options[0] = "Name";
+        options[1] = "Last Name";
+        options[2] = "Username";
+        options[3] = "Password";
+        options[4] = "Exit";
+        return options;
+    }
+
 
     public User selectUser(List<User> users, String message) throws IOException {
         Object[] list = users.toArray();
@@ -289,6 +318,23 @@ public class UserMenuInteraction {
                 options[i + 1] = "Include all insurances";
             }
         }
-            return (Insurance) list[ConsoleUI.promptForMenuSelection(options, message)];
+        return (Insurance) list[ConsoleUI.promptForMenuSelection(options, message)];
+    }
+
+    public UserRole selectRole() throws IOException {
+        UserRole role = null;
+        String[] roleMenu = new String[2];
+        roleMenu[0] = "Administrative";
+        roleMenu[1] = "Standard";
+        int selection = ConsoleUI.promptForMenuSelection(roleMenu, "Select new role");
+        switch (selection){
+            case  0:
+                role = UserRole.ADMINISTRATIVE;
+                break;
+            case 1:
+                role = UserRole.STANDARD;
+                break;
+        }
+        return role;
     }
 }
