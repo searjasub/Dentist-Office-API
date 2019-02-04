@@ -629,7 +629,6 @@ public class App {
                 String patientLastName = userInteraction.getLastName(true);
                 Insurance insurance = null;
                 try {
-
                     insurance = userMenuInteraction.selectInsurance(clinic.getInsurances(), "Select insurance to search for");
                 } catch (ArrayIndexOutOfBoundsException ex) {
                     userInteraction.println("");
@@ -649,11 +648,10 @@ public class App {
                     userInteraction.println(userInteraction.removeCharacters(patientList.toString()));
                 }
                 break;
-            case 2:
-                //SEARCH APPOINTMENTS
+            case 2://SEARCH APPOINTMENTS
+                //By time frame(all appointments between), by provider, by patient, by procedure code
                 break;
-            case 3:
-                //EXIT
+            case 3://EXIT
                 break;
             default:
                 break;
