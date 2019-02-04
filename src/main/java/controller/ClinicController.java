@@ -697,6 +697,8 @@ public class ClinicController {
                 String providerName = userInteraction.getName(true);
                 String providerLastName = userInteraction.getLastName(true);
                 ProviderType titleSelected = userInteraction.getProviderTypeWithEmptyEntry();
+
+
                 for (int i = 0; i < clinic.getProviders().size(); i++) {
                     if (providerName.equals(clinic.getProviders().get(i).getName())) {
                         providerList.add(clinic.getProviders().get(i));

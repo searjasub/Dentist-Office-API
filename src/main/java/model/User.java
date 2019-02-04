@@ -78,7 +78,8 @@ public class User implements Serializable {
         if (password == null || password.isEmpty()) {
             throw new IllegalArgumentException("You cannot have nothing as a password");
         }
-
         this.setPassword(password);
     }
+
+
 }
