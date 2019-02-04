@@ -70,7 +70,7 @@ public class Person implements Serializable {
 
     @Override
     public String toString() {
-        return "Name: " + getName() + " " + getLastName();
+        return "\tName: " + getName() + " " + getLastName() + " | ID: " + getUniqueId() + " | Email: " + getEmail() + " | Phone: " + getPhoneNumber();
     }
 
 

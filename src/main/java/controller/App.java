@@ -122,16 +122,16 @@ public class App {
     private void viewMenuHandler(int selection) {
         switch (selection) {
             case 0:
-                //production
+                //PRODUCTION
                 break;
             case 1:
-                //patient balance
+                //PATIENT BALANCE
                 break;
             case 2:
-                //Collections
+                //COLLECTIONS
                 break;
             case 3:
-                //exit
+                //EXIT
                 break;
             default:
                 break;
@@ -163,7 +163,7 @@ public class App {
                 addProcedure();
                 break;
             case 5:
-                //exit
+                //EXIT
                 break;
             default:
                 break;
@@ -197,7 +197,7 @@ public class App {
                 addProcedure();
                 break;
             case 4:
-                //exit
+                //EXIT
                 break;
             default:
                 break;
@@ -503,7 +503,7 @@ public class App {
             switch (selection) {
                 case 0:
                     //PATIENT
-                    Patient patientSelected = userMenuInteraction.selectPatient(clinic.getPatients(),"Select new patient");
+                    Patient patientSelected = userMenuInteraction.selectPatient(clinic.getPatients(), "Select new patient");
                     procedure.setPatient(patientSelected);
                     autoSaveLoad();
                     break;
@@ -527,7 +527,7 @@ public class App {
                     break;
                 case 4:
                     //PROVIDER
-                    Provider provider = userMenuInteraction.selectProvider(clinic.getProviders(),"Select a provider");
+                    Provider provider = userMenuInteraction.selectProvider(clinic.getProviders(), "Select a provider");
                     procedure.setProvider(provider);
                     autoSaveLoad();
                     break;
@@ -593,30 +593,36 @@ public class App {
 
     private void searchMenuHandler(int choice) throws IOException {
         switch (choice) {
-            case 0:
+            case 0://SEARCH PROVIDER
                 List<Provider> found = new ArrayList<>();
-                //firt, last, title
                 userInteraction.println("Instructions: If you leave any field blank it will not be consider for the search");
                 String name = userInteraction.getName(true);
                 String lastName = userInteraction.getLastName(true);
-                String rawTitle = userInteraction.getInput("Type the title you are looking for\nExamples: Hygienist, Assistant, Dentist",true);
-                ProviderType title;
-                if(rawTitle.equals(ProviderType.ASSISTANT.getType())){
-                    title = ProviderType.ASSISTANT;
-                } else if (rawTitle.equals(ProviderType.DENTIST.getType())){
-                    title = ProviderType.DENTIST;
-                } else if(rawTitle.equals(ProviderType.HYGIENIST.getType())){
-                    title = ProviderType.HYGIENIST;
-                } 
+                ProviderType titleSelected = userInteraction.getProviderTypeWithEmptyEntry();
+
+                for (int i = 0; i < clinic.getProviders().size(); i++) {
+                    if (name.equals(clinic.getProviders().get(i).getName())) {
+                        found.add(clinic.getProviders().get(i));
+                    } else if (lastName.equals(clinic.getProviders().get(i).getLastName())) {
+                        found.add(clinic.getProviders().get(i));
+                    } else if (titleSelected == clinic.getProviders().get(i).getTitle()) {
+                        found.add(clinic.getProviders().get(i));
+                    }
+                }
+                if (found.isEmpty()) {
+                    userInteraction.println(userInteraction.removeCharacters(clinic.getProviders().toString()));
+                } else {
+                    userInteraction.println(userInteraction.removeCharacters(found.toString()));
+                }
                 break;
             case 1:
-                //search patients
+                //SEARCH PATIENTS
                 break;
             case 2:
-                //appointments
+                //SEARCH APPOINTMENTS
                 break;
             case 3:
-                //exit
+                //EXIT
                 break;
             default:
                 break;
