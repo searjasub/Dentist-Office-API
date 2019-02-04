@@ -19,4 +19,6 @@ public class AppointmentRecord extends Appointment{
     public void setProcedures(List<ProcedureRecord> procedures) {
         this.procedures = procedures;
     }
+
+
 }

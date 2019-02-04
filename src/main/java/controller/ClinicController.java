@@ -18,7 +18,7 @@ public class ClinicController {
     private static final String directory = "savables";
     private Clinic clinic = new Clinic();
     private User currentUser;
-    //private UserInteraction userInteraction = new UserInteraction();
+    private UserInteraction userInteraction = new UserInteraction();
     private DentistOfficeUserInteraction userInteraction;
     private HashMap<String, String> loginCredentials = new HashMap<>();
 
@@ -609,7 +609,6 @@ public class ClinicController {
     private void deleteAdminMenuHandler(int choice) throws IOException, ClassNotFoundException {
         switch (choice) {
             case 0:
-                //user
                 User user = userInteraction.selectUser(clinic.getUsers(),"Select an User to delete");
                 for (int i = 0; i < clinic.getUsers().size(); i++) {
                     if(user.getUsername().equals(clinic.getUsers().get(i).getUsername())){
@@ -625,18 +624,36 @@ public class ClinicController {
 
                 break;
             case 2:
-                //provider
                 Provider provider = userInteraction.selectProvider(clinic.getProviders(),"Select a Provider to delete");
-
+                for (int i = 0; i < clinic.getProviders().size(); i++) {
+                    if(provider.getUniqueId() == clinic.getProviders().get(i).getUniqueId()){
+                        clinic.getProviders().remove(provider);
+                    }
+                }
+                //TODO remove this print line, only for testing purposes only
+                userInteraction.println("\nSuccessfully delete " + provider.getName() + " user.\n");
+                autoSaveLoad();
                 break;
             case 3:
-                //patients
+                Patient patient = userInteraction.selectPatient(clinic.getPatients(), "Select a Patient to delete");
+                for (int i = 0; i < clinic.getPatients().size(); i++) {
+                    if(patient.getUniqueId() == clinic.getPatients().get(i).getUniqueId()){
+                        clinic.getPatients().remove(patient);
+                    }
+                }
+                autoSaveLoad();
                 break;
-            case 4:
-                //appointments
+            case 4://Appointment
+
                 break;
             case 5:
-                //procedure
+                Procedure procedure = userInteraction.selectProcedure(clinic.getProcedures(),"Select a Procedure to delete");
+                for (int i = 0; i < clinic.getProcedures().size(); i++) {
+                    if(procedure.getCode().equals(clinic.getProcedures().get(i).getCode())){
+                        clinic.getProcedures().remove(procedure);
+                    }
+                }
+                autoSaveLoad();
                 break;
             case 6:
                 //exit
