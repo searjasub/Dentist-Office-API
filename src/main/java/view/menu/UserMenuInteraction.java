@@ -321,4 +321,20 @@ public class UserMenuInteraction {
         return (Insurance) list[ConsoleUI.promptForMenuSelection(options, message)];
     }
 
+    public UserRole selectRole() throws IOException {
+        UserRole role = null;
+        String[] roleMenu = new String[2];
+        roleMenu[0] = "Administrative";
+        roleMenu[1] = "Standard";
+        int selection = ConsoleUI.promptForMenuSelection(roleMenu, "Select new role");
+        switch (selection){
+            case  0:
+                role = UserRole.ADMINISTRATIVE;
+                break;
+            case 1:
+                role = UserRole.STANDARD;
+                break;
+        }
+        return role;
+    }
 }

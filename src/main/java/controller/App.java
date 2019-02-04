@@ -282,8 +282,7 @@ public class App {
     private void editAdminMenuHandler(int choice) throws IOException, ClassNotFoundException {
         switch (choice) {
             case 0://CHANGE OWN PASSWORD
-                currentUser.changePassword(passwordVerified(false));
-                save();
+                editUserMenu_standardView();
                 break;
             case 1://EDIT USERS
                 editUserMenu_adminView();
@@ -309,38 +308,10 @@ public class App {
         }
     }
 
-    private void editStandardMenuHandler(int choice) throws IOException, ClassNotFoundException {
-        switch (choice) {
-            case 0:
-                currentUser.changePassword(passwordVerified(false));
-                autoSaveLoad();
-                break;
-            case 1:
-                editProviderMenu();
-                break;
-            case 2:
-                editPatientMenu();
-                break;
-            case 3:
-                //appointments
-                editAppointmentsMenu();
-                break;
-            case 4:
-                //procedure
-                editProcedure();
-                break;
-            case 5:
-                userInteraction.println("You have exited the Edit Menu\n");
-                break;
-            default:
-                break;
-        }
-    }
-
     private void editUserMenu_adminView() throws IOException, ClassNotFoundException {
         User user = userMenuInteraction.selectUser(clinic.getUsers(), "Select which user you would like to edit his information");
         int selection = userMenuInteraction.changeUserInformationMenu();
-        switch (selection){
+        switch (selection) {
             case 0:
                 editName(user);
                 break;
@@ -354,15 +325,42 @@ public class App {
                 editPassword(user);
                 break;
             case 4:
-
+                UserRole role = userMenuInteraction.selectRole();
+                user.setUserRole(role);
+                autoSaveLoad();
             case 5:
+                break;
+        }
+    }
+
+    private void editStandardMenuHandler(int choice) throws IOException, ClassNotFoundException {
+        switch (choice) {
+            case 0:
+                editUserMenu_standardView();
+                break;
+            case 1:
+                editProviderMenu();
+                break;
+            case 2:
+                editPatientMenu();
+                break;
+            case 3:
+                editAppointmentsMenu();
+                break;
+            case 4:
+                editProcedure();
+                break;
+            case 5:
+                userInteraction.println("You have exited the Edit Menu\n");
+                break;
+            default:
                 break;
         }
     }
 
     private void editUserMenu_standardView() throws IOException, ClassNotFoundException {
         int selection = userMenuInteraction.changeUserOwnInformation();
-        switch (selection){
+        switch (selection) {
             case 0:
                 editName(currentUser);
                 break;
@@ -473,7 +471,7 @@ public class App {
             ((Provider) object).setName(firstName);
         } else if (object instanceof Patient) {
             ((Patient) object).setName(firstName);
-        } else if(object instanceof User){
+        } else if (object instanceof User) {
             ((User) object).setName(firstName);
         }
         autoSaveLoad();
@@ -486,7 +484,7 @@ public class App {
             ((Provider) object).setLastName(lastName);
         } else if (object instanceof Patient) {
             ((Patient) object).setLastName(lastName);
-        } else if(object instanceof User){
+        } else if (object instanceof User) {
             ((User) object).setLastName(lastName);
         }
         autoSaveLoad();
@@ -689,15 +687,15 @@ public class App {
                 } catch (ArrayIndexOutOfBoundsException ex) {
                     userInteraction.println("");
                 }
-                    for (int i = 0; i < clinic.getPatients().size(); i++) {
-                        if (patientName.equals(clinic.getPatients().get(i).getName())) {
-                            patientList.add(clinic.getPatients().get(i));
-                        } else if (patientLastName.equals(clinic.getPatients().get(i).getLastName())) {
-                            patientList.add(clinic.getPatients().get(i));
-                        } else if (insurance == clinic.getInsurances().get(i)) {
-                            patientList.add(clinic.getPatients().get(i));
-                        }
+                for (int i = 0; i < clinic.getPatients().size(); i++) {
+                    if (patientName.equals(clinic.getPatients().get(i).getName())) {
+                        patientList.add(clinic.getPatients().get(i));
+                    } else if (patientLastName.equals(clinic.getPatients().get(i).getLastName())) {
+                        patientList.add(clinic.getPatients().get(i));
+                    } else if (insurance == clinic.getInsurances().get(i)) {
+                        patientList.add(clinic.getPatients().get(i));
                     }
+                }
                 if (patientList.isEmpty()) {
                     userInteraction.println(userInteraction.removeCharacters(clinic.getPatients().toString()));
                 } else {
