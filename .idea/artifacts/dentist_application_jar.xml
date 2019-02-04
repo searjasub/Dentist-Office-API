@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="dentist-application:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/dentist_application_jar</output-path>
+    <root id="archive" name="dentist-application.jar">
+      <element id="module-output" name="dentist-application" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../ConsoleUI/out/artifacts/ConsoleIO_jar/ConsoleIO.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
