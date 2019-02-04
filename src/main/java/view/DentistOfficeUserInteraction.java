@@ -1,10 +1,80 @@
 package view;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import model.FutureAppointment;
+import model.Insurance;
+import model.Patient;
+import model.Procedure;
+import model.Provider;
+import model.ProviderType;
+import model.Source;
+import model.User;
+import model.UserRole;
+
 public interface DentistOfficeUserInteraction {
 
     void welcome();
     int mainMenu();
-
-
+    int viewMenu();
+    int createAdminMenu();
+    int createStandardMenu();
+    int editStandardMenu();
+    int editAdminMenu();
+    int deleteAdminMenu();
+    int deleteStandardMenu();
+    int searchMenu();
+    int changeProviderInformationMenu();
+    int changePatientInformationMenu();
+    int changeFutureAppointmentMenu();
+    int changeTimeMenu();
+    int changeProcedureInformation();
+    int changeUserInformationMenu();
+    int changeUserOwnInformation();
+    User selectUser(List<User> users, String message);
+    Provider selectProvider(List<Provider> providers, String message);
+    Patient selectPatient(List<Patient> patients, String message);
+    FutureAppointment selectFutureAppointment(List<FutureAppointment> appointments, String message);
+    Procedure selectProcedure(List<Procedure> procedures, String message);
+    Insurance selectInsurance(List<Insurance> insurances, String message);
+    UserRole selectRole();
+    String changePassword();
+    String changePasswordSameLine();
+    String verifyPassword();
+    String getLoginUsername();
+    String getLoginPassword();
+    void println(String message);
+    void print(String message);
+    String getName(boolean allowEmpty);
+    String getLastName(boolean allowEmpty);
+    String getUsername();
+    UserRole getUserType();
+    ProviderType getProviderType();
+    ProviderType getProviderTypeWithEmptyEntry();
+    Source getSource();
+    int getUniqueID();
+    String getEmail();
+    String getPhoneNumber();
+    String getCode();
+    String getDescription();
+    double getCost();
+    String getInsuranceName();
+    String getGroupId();
+    String getMemberId();
+    String getCardNumber();
+    int getExpMonth();
+    int getExpYear();
+    String getCardName();
+    int getCvv();
+    int getZipCode();
+    LocalDateTime getFutureDate(); 
+    int getYear();
+    int getMonth();
+    int getDay();
+    int getHour();
+    int getMinute();
+    String getInput(String msg, boolean allowEmpty); 
+    String removeCharacters(String content);
 
 }

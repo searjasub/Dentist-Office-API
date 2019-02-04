@@ -1,4 +1,5 @@
 import controller.ClinicController;
+import view.DentistOfficeUserInteraction;
 
 import java.io.IOException;
 
