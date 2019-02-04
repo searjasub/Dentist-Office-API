@@ -8,6 +8,7 @@ public class User implements Serializable {
     private String username;
     private String password;
     private UserRole userRole;
+    private boolean firstTimePassChange;
 
     public User(String name, String lastName, String username, String password, UserRole userRole) {
         this.setName(name);

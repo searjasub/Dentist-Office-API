@@ -51,6 +51,10 @@ public class ClinicController {
                         }
                         int selection = userInteraction.mainMenu();
                         isDone = mainMenuHandler(selection);
+                    } else {
+                        int selection = userInteraction.mainMenu();
+                        isDone = mainMenuHandler(selection);
+
                     }
                 }
             } while (true);
