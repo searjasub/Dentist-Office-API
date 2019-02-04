@@ -8,7 +8,10 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class App {
 
@@ -139,8 +142,8 @@ public class App {
         switch (choice) {
             case 0:
                 User newUser = new User(
-                        userInteraction.getName(),
-                        userInteraction.getLastName(),
+                        userInteraction.getName(false),
+                        userInteraction.getLastName(false),
                         checkUniqueUsername(),
                         passwordVerified(false),
                         userInteraction.getUserType());
@@ -203,8 +206,8 @@ public class App {
 
     private void addProvider() throws IOException, ClassNotFoundException {
         clinic.getProviders().add(new Provider(
-                userInteraction.getName(),
-                userInteraction.getLastName(),
+                userInteraction.getName(false),
+                userInteraction.getLastName(false),
                 userInteraction.getUniqueID(),
                 userInteraction.getEmail(),
                 userInteraction.getPhoneNumber(),
@@ -214,8 +217,8 @@ public class App {
 
     private void addPatient() throws IOException, ClassNotFoundException {
         clinic.getPatients().add(new Patient(
-                userInteraction.getName(),
-                userInteraction.getLastName(),
+                userInteraction.getName(false),
+                userInteraction.getLastName(false),
                 userInteraction.getUniqueID(),
                 userInteraction.getEmail(),
                 userInteraction.getPhoneNumber(),
@@ -330,11 +333,10 @@ public class App {
         }
     }
 
-
     private void editProviderMenu() throws IOException, ClassNotFoundException {
         try {
             Provider provider = userMenuInteraction.selectProvider(clinic.getProviders(), "Which Provider Would you like to Change?");
-            int selection = userMenuInteraction.changeProviderInformation();
+            int selection = userMenuInteraction.changeProviderInformationMenu();
             switch (selection) {
                 case 0:
                     editName(provider);
@@ -362,7 +364,7 @@ public class App {
     private void editPatientMenu() throws IOException, ClassNotFoundException {
         try {
             Patient patient = userMenuInteraction.selectPatient(clinic.getPatients(), "Choose A Patient to Edit");
-            int selection = userMenuInteraction.changePatientInformation();
+            int selection = userMenuInteraction.changePatientInformationMenu();
             switch (selection) {
                 case 0:
                     editName(patient);
@@ -407,7 +409,7 @@ public class App {
     }
 
     private void editName(Object object) throws IOException, ClassNotFoundException {
-        String firstName = userInteraction.getName();
+        String firstName = userInteraction.getName(false);
         if (object instanceof Provider) {
             ((Provider) object).setName(firstName);
         } else if (object instanceof Patient) {
@@ -418,7 +420,7 @@ public class App {
     }
 
     private void editLastName(Object object) throws IOException, ClassNotFoundException {
-        String lastName = userInteraction.getLastName();
+        String lastName = userInteraction.getLastName(false);
         if (object instanceof Provider) {
             ((Provider) object).setLastName(lastName);
         } else if (object instanceof Patient) {
@@ -447,14 +449,98 @@ public class App {
         autoSaveLoad();
     }
 
-    private void editAppointmentsMenu() {
-
+    private void editAppointmentsMenu() throws IOException, ClassNotFoundException {
+        try {
+            FutureAppointment appointment = userMenuInteraction.selectFutureAppointment(clinic.getAppointments(), "Select an appointment");
+            int selection = userMenuInteraction.changeFutureAppointmentMenu();
+            switch (selection) {
+                case 0:
+                    Patient selected = userMenuInteraction.selectPatient(clinic.getPatients(), "Select new a new patient");
+                    appointment.setPatient(selected);
+                    autoSaveLoad();
+                    break;
+                case 1:
+                    int choice = userMenuInteraction.changeTimeMenu();
+                    switch (choice) {
+                        case 0:
+                            LocalDateTime newTime = LocalDateTime.of(
+                                    appointment.getDateTime().getYear(),
+                                    appointment.getDateTime().getMonth(),
+                                    appointment.getDateTime().getDayOfMonth(),
+                                    userInteraction.getHour(),
+                                    userInteraction.getMinute());
+                            appointment.setDateTime(newTime);
+                            autoSaveLoad();
+                            break;
+                        case 1:
+                            LocalDateTime newDay = LocalDateTime.of(
+                                    userInteraction.getYear(),
+                                    userInteraction.getMonth(),
+                                    userInteraction.getDay(),
+                                    appointment.getDateTime().getHour(),
+                                    appointment.getDateTime().getMinute());
+                            appointment.setDateTime(newDay);
+                            autoSaveLoad();
+                            break;
+                        case 2:
+                            break;
+                    }
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+            }
+        } catch (NotFoundException ex) {
+            userInteraction.println(ex.getObject());
+        }
     }
 
-    private void editProcedure() {
-
+    private void editProcedure() throws IOException, ClassNotFoundException {
+        try {
+            Procedure procedure = userMenuInteraction.selectProcedure(clinic.getProcedures(), "Select a procedure");
+            int selection = userMenuInteraction.changeProcedureInformation();
+            switch (selection) {
+                case 0:
+                    //PATIENT
+                    Patient patientSelected = userMenuInteraction.selectPatient(clinic.getPatients(),"Select new patient");
+                    procedure.setPatient(patientSelected);
+                    autoSaveLoad();
+                    break;
+                case 1:
+                    //CODE
+                    String code = userInteraction.getCode();
+                    procedure.setCode(code);
+                    autoSaveLoad();
+                    break;
+                case 2:
+                    //DESCRIPTION
+                    String description = userInteraction.getDescription();
+                    procedure.setDescription(description);
+                    autoSaveLoad();
+                    break;
+                case 3:
+                    //COST
+                    double cost = userInteraction.getCost();
+                    procedure.setCost(cost);
+                    autoSaveLoad();
+                    break;
+                case 4:
+                    //PROVIDER
+                    Provider provider = userMenuInteraction.selectProvider(clinic.getProviders(),"Select a provider");
+                    procedure.setProvider(provider);
+                    autoSaveLoad();
+                    break;
+                case 5:
+                    //EXIT
+                    break;
+            }
+        } catch (NotFoundException ex) {
+            userInteraction.println(ex.getObject());
+        }
     }
 
+    //TODO DELETE
     private void deleteAdminMenuHandler(int choice) {
         switch (choice) {
             case 0:
@@ -505,10 +591,23 @@ public class App {
         }
     }
 
-    private void searchMenuHandler(int choice) {
+    private void searchMenuHandler(int choice) throws IOException {
         switch (choice) {
             case 0:
-                //providers
+                List<Provider> found = new ArrayList<>();
+                //firt, last, title
+                userInteraction.println("Instructions: If you leave any field blank it will not be consider for the search");
+                String name = userInteraction.getName(true);
+                String lastName = userInteraction.getLastName(true);
+                String rawTitle = userInteraction.getInput("Type the title you are looking for\nExamples: Hygienist, Assistant, Dentist",true);
+                ProviderType title;
+                if(rawTitle.equals(ProviderType.ASSISTANT.getType())){
+                    title = ProviderType.ASSISTANT;
+                } else if (rawTitle.equals(ProviderType.DENTIST.getType())){
+                    title = ProviderType.DENTIST;
+                } else if(rawTitle.equals(ProviderType.HYGIENIST.getType())){
+                    title = ProviderType.HYGIENIST;
+                } 
                 break;
             case 1:
                 //search patients

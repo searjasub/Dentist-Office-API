@@ -45,12 +45,12 @@ public class UserInteraction {
         System.out.print(message);
     }
 
-    public String getName() throws IOException {
-        return ConsoleUI.promptForInput("Enter the name: ", false, true);
+    public String getName(boolean allowEmpty) throws IOException {
+        return ConsoleUI.promptForInput("Enter the name: ", allowEmpty, true);
     }
 
-    public String getLastName() throws IOException {
-        return ConsoleUI.promptForInput("Enter the last name: ", false, true);
+    public String getLastName(boolean allowEmpty) throws IOException {
+        return ConsoleUI.promptForInput("Enter the last name: ", allowEmpty, true);
     }
 
     public String getUsername() throws IOException {
@@ -216,23 +216,27 @@ public class UserInteraction {
                 getMinute());
     }
 
-    private int getYear() throws IOException {
+    public int getYear() throws IOException {
         return ConsoleUI.promptForInt("Enter Year", 2019, 2100);
     }
 
-    private int getMonth() throws IOException {
+    public int getMonth() throws IOException {
         return ConsoleUI.promptForInt("Enter Month Number", 1, 12);
     }
 
-    private int getDay() throws IOException {
+    public int getDay() throws IOException {
         return ConsoleUI.promptForInt("Enter day", 1, 31);
     }
 
-    private int getHour() throws IOException {
+    public int getHour() throws IOException {
         return ConsoleUI.promptForInt("Enter Hour", 1, 24);
     }
 
-    private int getMinute() throws IOException {
+    public int getMinute() throws IOException {
         return ConsoleUI.promptForInt("Enter Minutes", 0, 59);
+    }
+
+    public String getInput(String msg, boolean allowEmpty) throws IOException {
+        return ConsoleUI.promptForInput(msg,allowEmpty,false);
     }
 }

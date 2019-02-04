@@ -9,6 +9,7 @@ import java.util.List;
 public class UserMenuInteraction {
 
     private final String defaultQuestion = "\nWhat would you like to do?";
+    private final String editQuestion = "\nWhat would you like to change?";
 
     public int mainMenu() throws IOException {
         return ConsoleUI.promptForMenuSelection(fillMainMenu(), defaultQuestion);
@@ -141,7 +142,7 @@ public class UserMenuInteraction {
         return menuOptions;
     }
 
-    public int changeProviderInformation() throws IOException {
+    public int changeProviderInformationMenu() throws IOException {
         return ConsoleUI.promptForMenuSelection(fillChangeProviderInformation(), defaultQuestion);
     }
 
@@ -156,8 +157,8 @@ public class UserMenuInteraction {
         return options;
     }
 
-    public int changePatientInformation() throws IOException {
-        return ConsoleUI.promptForMenuSelection(fillChangePatientInformation(), defaultQuestion);
+    public int changePatientInformationMenu() throws IOException {
+        return ConsoleUI.promptForMenuSelection(fillChangePatientInformation(), editQuestion);
     }
 
     private String[] fillChangePatientInformation() {
@@ -169,6 +170,46 @@ public class UserMenuInteraction {
         options[4] = "Insurance";
         options[5] = "Payment Card";
         options[6] = "Exit";
+        return options;
+    }
+
+    public int changeFutureAppointmentMenu() throws IOException{
+        return ConsoleUI.promptForMenuSelection(fillChangeFutureAppointment(), editQuestion);
+    }
+
+    private String[] fillChangeFutureAppointment() {
+        String[] options = new String[4];
+        options[0] = "Patient";
+        options[1] = "Time";
+        options[2] = "Procedure by provider";
+        options[3] = "Exit";
+        return options;
+    }
+
+    public int changeTimeMenu() throws IOException{
+        return ConsoleUI.promptForMenuSelection(fillChangeTimeMenu(), editQuestion);
+    }
+
+    private String[] fillChangeTimeMenu() {
+        String[] options = new String[3];
+        options[0] = "Time";
+        options[1] = "Day";
+        options[2] = "Exit";
+        return options;
+    }
+
+    public int changeProcedureInformation() throws IOException {
+        return ConsoleUI.promptForMenuSelection(fillChangeProcedureInformation(),editQuestion);
+    }
+
+    private String[] fillChangeProcedureInformation() {
+        String[] options = new String[6];
+        options[0] = "Patient";
+        options[1] = "Code";
+        options[2] = "Description";
+        options[3] = "Cost";
+        options[4] = "Provider";
+        options[5] = "Exit";
         return options;
     }
 
@@ -215,7 +256,8 @@ public class UserMenuInteraction {
         }
         String[] options = new String[list.length];
         for (int i = 0; i < options.length; i++) {
-//            options[i] = appointments.get(i)
+            options[i] = appointments.get(i).getPatient().getName() + appointments.get(i).getPatient().getLastName()
+                    + "@ [" +appointments.get(i).getDateTime().toString() + "]";
         }
         return (FutureAppointment) list[ConsoleUI.promptForMenuSelection(options, message)];
     }
