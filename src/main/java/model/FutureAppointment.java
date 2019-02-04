@@ -1,13 +1,14 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FutureAppointment extends Appointment {
+public class FutureAppointment extends Appointment{
 
     //    private List<Provider> providers;
-//    private List<Procedure> procedures;
+    //    private List<Procedure> procedures;
     private HashMap<Provider, Procedure> procedureByProvider = new HashMap<>();
 
     public FutureAppointment(Patient patient, LocalDateTime dateTime, HashMap<Provider, Procedure> procedureByProvider) {

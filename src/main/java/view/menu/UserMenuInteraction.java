@@ -184,7 +184,7 @@ public class UserMenuInteraction {
     public Provider selectProvider(List<Provider> providers, String message) throws IOException {
         Object[] list = providers.toArray();
         if (providers.isEmpty()) {
-            throw new NullPointerException();
+            throw new NotFoundException("There are no providers in record. Please add a provider first");
         }
         String[] options = new String[list.length];
         for (int i = 0; i < options.length; i++) {
@@ -198,7 +198,7 @@ public class UserMenuInteraction {
 
         Object[] list = patients.toArray();
         if (patients.isEmpty()) {
-            throw new NullPointerException();
+            throw new NotFoundException("There are no patients in record. Please add a patient first");
         }
         String[] options = new String[list.length];
         for (int i = 0; i < options.length; i++) {
@@ -211,7 +211,7 @@ public class UserMenuInteraction {
             throws IOException {
         Object[] list = appointments.toArray();
         if (appointments.isEmpty()) {
-            throw new NullPointerException();
+            throw new NotFoundException("There are no appointments in record. Please add an appointment first");
         }
         String[] options = new String[list.length];
         for (int i = 0; i < options.length; i++) {
@@ -223,7 +223,7 @@ public class UserMenuInteraction {
     public Procedure selectProcedure(List<Procedure> procedures, String message) throws IOException {
         Object[] list = procedures.toArray();
         if (procedures.isEmpty()) {
-            throw new NullPointerException();
+            throw new NotFoundException("There are no procedures in record. Please add a procedure first");
         }
         String[] options = new String[list.length];
         for (int i = 0; i < options.length; i++) {

@@ -135,7 +135,6 @@ public class App {
         }
     }
 
-
     private void createAdminMenuHandler(int choice) throws IOException, ClassNotFoundException {
         switch (choice) {
             case 0:
@@ -168,7 +167,6 @@ public class App {
         }
     }
 
-
     private String checkUniqueUsername() throws IOException {
         String username;
         while (true) {
@@ -190,6 +188,7 @@ public class App {
                 break;
             case 2:
                 addAppointment();
+                autoSaveLoad();
                 break;
             case 3:
                 addProcedure();
@@ -201,7 +200,6 @@ public class App {
                 break;
         }
     }
-
 
     private void addProvider() throws IOException, ClassNotFoundException {
         clinic.getProviders().add(new Provider(
@@ -235,21 +233,22 @@ public class App {
         autoSaveLoad();
     }
 
-    private void addAppointment() throws IOException, ClassNotFoundException {
-        FutureAppointment fa = new FutureAppointment(
-                userMenuInteraction.selectPatient(clinic.getPatients(), "Select Patient"),
-                userInteraction.getFutureDate(),
-                getProcedureByProvider());
-
-        clinic.getAppointments().add(fa);
-        autoSaveLoad();
+    private void addAppointment() throws IOException {
+        try {
+            FutureAppointment fa = new FutureAppointment(
+                    userMenuInteraction.selectPatient(clinic.getPatients(), "Select Patient"),
+                    userInteraction.getFutureDate(),
+                    getProcedureByProvider());
+            clinic.getAppointments().add(fa);
+        } catch (NotFoundException ex) {
+            userInteraction.println(ex.getObject());
+        }
     }
 
     private HashMap<Provider, Procedure> getProcedureByProvider() throws IOException {
+        HashMap<Provider, Procedure> procedureHashMap = new HashMap<>();
         Provider provider = userMenuInteraction.selectProvider(clinic.getProviders(), "Select Provider");
         Procedure procedure = userMenuInteraction.selectProcedure(clinic.getProcedures(), "Select Procedure");
-
-        HashMap<Provider, Procedure> procedureHashMap = new HashMap<>();
         procedureHashMap.put(provider, procedure);
 
         return procedureHashMap;
@@ -265,15 +264,14 @@ public class App {
                     userMenuInteraction.selectProvider(clinic.getProviders(), "Choose a provider"));
             clinic.getProcedures().add(procedure);
             autoSaveLoad();
-        } catch (NullPointerException ex) {
-            notFoundMessage("patient");
-
+        } catch (NotFoundException ex) {
+            userInteraction.println(ex.getObject());
         }
     }
 
     private void editAdminMenuHandler(int choice) throws IOException, ClassNotFoundException {
         switch (choice) {
-            case 0:
+            case 0://CHANGE OWN PASSWORD
                 currentUser.changePassword(passwordVerified(false));
                 save();
                 break;
@@ -289,11 +287,11 @@ public class App {
             case 3://EDIT PATIENTS
                 editPatientMenu();
                 break;
-            case 4:
+            case 4://EDIT APPOINTMENTS
                 editAppointmentsMenu();
                 break;
-            case 5:
-                //procedure
+            case 5://EDIT PROCEDURES
+                editProcedure();
                 break;
             case 6:
                 userInteraction.println("You have exited the Edit Menu\n");
@@ -318,9 +316,11 @@ public class App {
                 break;
             case 3:
                 //appointments
+                editAppointmentsMenu();
                 break;
             case 4:
                 //procedure
+                editProcedure();
                 break;
             case 5:
                 userInteraction.println("You have exited the Edit Menu\n");
@@ -329,6 +329,7 @@ public class App {
                 break;
         }
     }
+
 
     private void editProviderMenu() throws IOException, ClassNotFoundException {
         try {
@@ -353,11 +354,10 @@ public class App {
                 default:
                     break;
             }
-        } catch (NullPointerException ex) {
-            notFoundMessage("provider");
+        } catch (NotFoundException ex) {
+            userInteraction.println(ex.getObject());
         }
     }
-
 
     private void editPatientMenu() throws IOException, ClassNotFoundException {
         try {
@@ -401,11 +401,10 @@ public class App {
                 default:
                     break;
             }
-        } catch (NullPointerException ex) {
-            notFoundMessage("patient");
+        } catch (NotFoundException ex) {
+            userInteraction.println(ex.getObject());
         }
     }
-
 
     private void editName(Object object) throws IOException, ClassNotFoundException {
         String firstName = userInteraction.getName();
@@ -449,6 +448,10 @@ public class App {
     }
 
     private void editAppointmentsMenu() {
+
+    }
+
+    private void editProcedure() {
 
     }
 
@@ -590,9 +593,5 @@ public class App {
             return true;
         }
         return false;
-    }
-
-    private void notFoundMessage(String type) {
-        userInteraction.println("There are no " + type + "s in record. Please add a " + type + " first");
     }
 }

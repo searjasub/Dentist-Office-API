@@ -10,7 +10,7 @@ public class Clinic implements Serializable {
     private List<Patient> patients = new ArrayList<>();
     private List<Payment> payments = new ArrayList<>();
     private List<PaymentCard> cardPayments = new ArrayList<>();
-    private List<Appointment> appointments = new ArrayList<>();
+    private List<FutureAppointment> appointments = new ArrayList<>();
     private List<Procedure> procedures = new ArrayList<>();
     private List<User> users = new ArrayList<>();
     private List<Insurance> insurances = new ArrayList<>();
@@ -79,11 +79,11 @@ public class Clinic implements Serializable {
         this.cardPayments = cardPayments;
     }
 
-    public List<Appointment> getAppointments() {
+    public List<FutureAppointment> getAppointments() {
         return appointments;
     }
 
-    public void setAppointments(List<Appointment> appointments) {
+    public void setAppointments(List<FutureAppointment> appointments) {
         this.appointments = appointments;
     }
 

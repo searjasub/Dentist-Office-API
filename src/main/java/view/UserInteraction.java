@@ -184,7 +184,7 @@ public class UserInteraction {
     }
 
     public String getCardNumber() throws IOException {
-        return ConsoleUI.promptForInput("Please Enter A New Card Number", false, false);
+        return ConsoleUI.promptForInput("Please Enter A New Credit/Debit Card Number", false, false);
     }
 
     public int getExpMonth() throws IOException {
