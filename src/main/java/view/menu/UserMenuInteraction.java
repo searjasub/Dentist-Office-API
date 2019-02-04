@@ -173,7 +173,7 @@ public class UserMenuInteraction {
         return options;
     }
 
-    public int changeFutureAppointmentMenu() throws IOException{
+    public int changeFutureAppointmentMenu() throws IOException {
         return ConsoleUI.promptForMenuSelection(fillChangeFutureAppointment(), editQuestion);
     }
 
@@ -186,7 +186,7 @@ public class UserMenuInteraction {
         return options;
     }
 
-    public int changeTimeMenu() throws IOException{
+    public int changeTimeMenu() throws IOException {
         return ConsoleUI.promptForMenuSelection(fillChangeTimeMenu(), editQuestion);
     }
 
@@ -199,7 +199,7 @@ public class UserMenuInteraction {
     }
 
     public int changeProcedureInformation() throws IOException {
-        return ConsoleUI.promptForMenuSelection(fillChangeProcedureInformation(),editQuestion);
+        return ConsoleUI.promptForMenuSelection(fillChangeProcedureInformation(), editQuestion);
     }
 
     private String[] fillChangeProcedureInformation() {
@@ -212,6 +212,7 @@ public class UserMenuInteraction {
         options[5] = "Exit";
         return options;
     }
+
 
     public User selectUser(List<User> users, String message) throws IOException {
         Object[] list = users.toArray();
@@ -257,7 +258,7 @@ public class UserMenuInteraction {
         String[] options = new String[list.length];
         for (int i = 0; i < options.length; i++) {
             options[i] = appointments.get(i).getPatient().getName() + appointments.get(i).getPatient().getLastName()
-                    + "@ [" +appointments.get(i).getDateTime().toString() + "]";
+                    + "@ [" + appointments.get(i).getDateTime().toString() + "]";
         }
         return (FutureAppointment) list[ConsoleUI.promptForMenuSelection(options, message)];
     }
@@ -274,6 +275,20 @@ public class UserMenuInteraction {
                     + " | Code: " + procedures.get(i).getCode();
         }
         return (Procedure) list[ConsoleUI.promptForMenuSelection(options, message)];
+    }
 
+    public Insurance selectInsurance(List<Insurance> insurances, String message) throws IOException {
+        Object[] list = insurances.toArray();
+        if (insurances.isEmpty()) {
+            throw new NotFoundException("There are no insurances in record. Please add an insurance first");
+        }
+        String[] options = new String[list.length + 1];
+        for (int i = 0; i < options.length - 1; i++) {
+            options[i] = "Insurance Name: " + insurances.get(i).getName() + " | Group ID: " + insurances.get(i).getGroupId();
+            if (i == options.length - 2) {
+                options[i + 1] = "Include all insurances";
+            }
+        }
+            return (Insurance) list[ConsoleUI.promptForMenuSelection(options, message)];
     }
 }

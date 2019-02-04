@@ -16,10 +16,10 @@ import java.util.List;
 public class App {
 
     private static final String directory = "savables";
+    private Clinic clinic = new Clinic();
     private User currentUser;
     private UserInteraction userInteraction = new UserInteraction();
     private UserMenuInteraction userMenuInteraction = new UserMenuInteraction();
-    private Clinic clinic = new Clinic();
     private HashMap<String, String> loginCredentials = new HashMap<>();
 
     public void start() throws IOException, ClassNotFoundException {
@@ -219,13 +219,11 @@ public class App {
         clinic.getPatients().add(new Patient(
                 userInteraction.getName(false),
                 userInteraction.getLastName(false),
+                //TODO MAKE SURE IS A UNIQUE ID
                 userInteraction.getUniqueID(),
                 userInteraction.getEmail(),
                 userInteraction.getPhoneNumber(),
-                new Insurance(
-                        userInteraction.getInsuranceName(),
-                        userInteraction.getGroupId(),
-                        userInteraction.getMemberId()),
+                getInsuranceInfo(),
                 new PaymentCard(
                         userInteraction.getCardNumber(),
                         userInteraction.getExpMonth(),
@@ -234,6 +232,15 @@ public class App {
                         userInteraction.getCvv(),
                         userInteraction.getZipCode())));
         autoSaveLoad();
+    }
+
+    private Insurance getInsuranceInfo() throws IOException {
+        Insurance insurance = new Insurance(
+                userInteraction.getInsuranceName(),
+                userInteraction.getGroupId(),
+                userInteraction.getMemberId());
+        clinic.getInsurances().add(insurance);
+        return insurance;
     }
 
     private void addAppointment() throws IOException {
@@ -592,31 +599,55 @@ public class App {
     }
 
     private void searchMenuHandler(int choice) throws IOException {
+        String defaultMessage = "Instructions: If you leave any field blank it will not be consider for the search. If you leave all of them it will search everything";
         switch (choice) {
             case 0://SEARCH PROVIDER
-                List<Provider> found = new ArrayList<>();
-                userInteraction.println("Instructions: If you leave any field blank it will not be consider for the search");
-                String name = userInteraction.getName(true);
-                String lastName = userInteraction.getLastName(true);
+                List<Provider> providerList = new ArrayList<>();
+                userInteraction.println(defaultMessage);
+                String providerName = userInteraction.getName(true);
+                String providerLastName = userInteraction.getLastName(true);
                 ProviderType titleSelected = userInteraction.getProviderTypeWithEmptyEntry();
-
                 for (int i = 0; i < clinic.getProviders().size(); i++) {
-                    if (name.equals(clinic.getProviders().get(i).getName())) {
-                        found.add(clinic.getProviders().get(i));
-                    } else if (lastName.equals(clinic.getProviders().get(i).getLastName())) {
-                        found.add(clinic.getProviders().get(i));
+                    if (providerName.equals(clinic.getProviders().get(i).getName())) {
+                        providerList.add(clinic.getProviders().get(i));
+                    } else if (providerLastName.equals(clinic.getProviders().get(i).getLastName())) {
+                        providerList.add(clinic.getProviders().get(i));
                     } else if (titleSelected == clinic.getProviders().get(i).getTitle()) {
-                        found.add(clinic.getProviders().get(i));
+                        providerList.add(clinic.getProviders().get(i));
                     }
                 }
-                if (found.isEmpty()) {
+                if (providerList.isEmpty()) {
                     userInteraction.println(userInteraction.removeCharacters(clinic.getProviders().toString()));
                 } else {
-                    userInteraction.println(userInteraction.removeCharacters(found.toString()));
+                    userInteraction.println(userInteraction.removeCharacters(providerList.toString()));
                 }
                 break;
-            case 1:
-                //SEARCH PATIENTS
+            case 1://SEARCH PATIENTS
+                List<Patient> patientList = new ArrayList<>();
+                userInteraction.println(defaultMessage);
+                String patientName = userInteraction.getName(true);
+                String patientLastName = userInteraction.getLastName(true);
+                Insurance insurance = null;
+                try {
+
+                    insurance = userMenuInteraction.selectInsurance(clinic.getInsurances(), "Select insurance to search for");
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                    userInteraction.println("");
+                }
+                    for (int i = 0; i < clinic.getPatients().size(); i++) {
+                        if (patientName.equals(clinic.getPatients().get(i).getName())) {
+                            patientList.add(clinic.getPatients().get(i));
+                        } else if (patientLastName.equals(clinic.getPatients().get(i).getLastName())) {
+                            patientList.add(clinic.getPatients().get(i));
+                        } else if (insurance == clinic.getInsurances().get(i)) {
+                            patientList.add(clinic.getPatients().get(i));
+                        }
+                    }
+                if (patientList.isEmpty()) {
+                    userInteraction.println(userInteraction.removeCharacters(clinic.getPatients().toString()));
+                } else {
+                    userInteraction.println(userInteraction.removeCharacters(patientList.toString()));
+                }
                 break;
             case 2:
                 //SEARCH APPOINTMENTS

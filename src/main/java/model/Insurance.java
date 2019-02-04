@@ -8,11 +8,6 @@ public class Insurance implements Serializable {
     private String groupId;
     private String memberId;
 
-    public Insurance(String name, String groupId) {
-        this.setName(name);
-        this.setGroupId(groupId);
-    }
-
     public Insurance(String name, String groupId, String memberId) {
         this.setName(name);
         this.setGroupId(groupId);
