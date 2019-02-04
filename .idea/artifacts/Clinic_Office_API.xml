@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Clinic-Office-API">
+    <output-path>$PROJECT_DIR$/out/artifacts/Clinic_Office_API</output-path>
+    <root id="archive" name="Clinic-Office-API.jar" />
+  </artifact>
+</component>
