@@ -285,11 +285,8 @@ public class App {
                 currentUser.changePassword(passwordVerified(false));
                 save();
                 break;
-            case 1: //CHANGE PASSWORD FOR A SPECIFIED USER
-                User who = userMenuInteraction.selectUser(clinic.getUsers(), "Who do you want to change the password");
-                String newPassword = passwordVerified(false);
-                who.setPassword(newPassword);
-                save();
+            case 1://EDIT USERS
+                editUserMenu_adminView();
                 break;
             case 2: //EDIT PROVIDER
                 editProviderMenu();
@@ -338,6 +335,61 @@ public class App {
             default:
                 break;
         }
+    }
+
+    private void editUserMenu_adminView() throws IOException, ClassNotFoundException {
+        User user = userMenuInteraction.selectUser(clinic.getUsers(), "Select which user you would like to edit his information");
+        int selection = userMenuInteraction.changeUserInformationMenu();
+        switch (selection){
+            case 0:
+                editName(user);
+                break;
+            case 1:
+                editLastName(user);
+                break;
+            case 2:
+                editUsername(user);
+                break;
+            case 3:
+                editPassword(user);
+                break;
+            case 4:
+
+            case 5:
+                break;
+        }
+    }
+
+    private void editUserMenu_standardView() throws IOException, ClassNotFoundException {
+        int selection = userMenuInteraction.changeUserOwnInformation();
+        switch (selection){
+            case 0:
+                editName(currentUser);
+                break;
+            case 1:
+                editLastName(currentUser);
+                break;
+            case 2:
+                editUsername(currentUser);
+                break;
+            case 3:
+                editPassword(currentUser);
+                break;
+            case 4:
+                break;
+        }
+    }
+
+    private void editUsername(User user) throws IOException, ClassNotFoundException {
+        String newUsername = userInteraction.getUsername();
+        user.setUsername(newUsername);
+        autoSaveLoad();
+    }
+
+    private void editPassword(User user) throws IOException, ClassNotFoundException {
+        String newPassword = passwordVerified(false);
+        user.setPassword(newPassword);
+        autoSaveLoad();
     }
 
     private void editProviderMenu() throws IOException, ClassNotFoundException {
@@ -421,6 +473,8 @@ public class App {
             ((Provider) object).setName(firstName);
         } else if (object instanceof Patient) {
             ((Patient) object).setName(firstName);
+        } else if(object instanceof User){
+            ((User) object).setName(firstName);
         }
         autoSaveLoad();
 
@@ -432,6 +486,8 @@ public class App {
             ((Provider) object).setLastName(lastName);
         } else if (object instanceof Patient) {
             ((Patient) object).setLastName(lastName);
+        } else if(object instanceof User){
+            ((User) object).setLastName(lastName);
         }
         autoSaveLoad();
     }
