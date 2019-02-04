@@ -2,7 +2,6 @@ package controller;
 
 import model.*;
 import view.UserInteraction;
-import view.menu.UserMenuInteraction;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -13,13 +12,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class App {
+public class ClinicController {
 
     private static final String directory = "savables";
     private Clinic clinic = new Clinic();
     private User currentUser;
     private UserInteraction userInteraction = new UserInteraction();
-    private UserMenuInteraction userMenuInteraction = new UserMenuInteraction();
     private HashMap<String, String> loginCredentials = new HashMap<>();
 
     public void start() throws IOException, ClassNotFoundException {
@@ -37,7 +35,7 @@ public class App {
                 while (!isDone) {
                     if (currentUser.getUserRole() == UserRole.ADMINISTRATIVE) {
                         if (currentUser.getPassword().equals("1234Password")) {
-                            userInteraction.print("Welcome to the Dentist Office App, since is your first login please ");
+                            userInteraction.print("Welcome to the Dentist Office ClinicController, since is your first login please ");
                             String newPass = passwordVerified(true);
                             for (User u : clinic.getUsers()) {
                                 if (u.getUsername().equals(currentUser.getUsername())) {
@@ -46,7 +44,7 @@ public class App {
                             }
                             save();
                         }
-                        int selection = userMenuInteraction.mainMenu();
+                        int selection = userInteraction.mainMenu();
                         isDone = mainMenuHandler(selection);
                     }
                 }
@@ -65,17 +63,17 @@ public class App {
         switch (selection) {
             case 0:
                 //VIEW
-                int choice0 = userMenuInteraction.viewMenu();
+                int choice0 = userInteraction.viewMenu();
                 viewMenuHandler(choice0);
                 return false;
             case 1:
                 //CREATE
                 int choice1;
                 if (currentUser.getUserRole() == UserRole.ADMINISTRATIVE) {
-                    choice1 = userMenuInteraction.createAdminMenu();
+                    choice1 = userInteraction.createAdminMenu();
                     createAdminMenuHandler(choice1);
                 } else {
-                    choice1 = userMenuInteraction.createStandardMenu();
+                    choice1 = userInteraction.createStandardMenu();
                     createStandardMenuHandler(choice1);
                 }
                 return false;
@@ -83,10 +81,10 @@ public class App {
                 //EDIT
                 int choice2;
                 if (currentUser.getUserRole() == UserRole.ADMINISTRATIVE) {
-                    choice2 = userMenuInteraction.editAdminMenu();
+                    choice2 = userInteraction.editAdminMenu();
                     editAdminMenuHandler(choice2);
                 } else {
-                    choice2 = userMenuInteraction.editStandardMenu();
+                    choice2 = userInteraction.editStandardMenu();
                     editStandardMenuHandler(choice2);
                 }
                 return false;
@@ -94,16 +92,16 @@ public class App {
                 //DELETE
                 int choice3;
                 if (currentUser.getUserRole() == UserRole.ADMINISTRATIVE) {
-                    choice3 = userMenuInteraction.deleteAdminMenu();
+                    choice3 = userInteraction.deleteAdminMenu();
                     deleteAdminMenuHandler(choice3);
                 } else {
-                    choice3 = userMenuInteraction.deleteStandardMenu();
+                    choice3 = userInteraction.deleteStandardMenu();
                     deleteStandardMenuHandler(choice3);
                 }
                 return false;
             case 4:
                 //SEARCH
-                int choice4 = userMenuInteraction.searchMenu();
+                int choice4 = userInteraction.searchMenu();
                 searchMenuHandler(choice4);
                 return false;
             case 5:
@@ -246,7 +244,7 @@ public class App {
     private void addAppointment() throws IOException {
         try {
             FutureAppointment fa = new FutureAppointment(
-                    userMenuInteraction.selectPatient(clinic.getPatients(), "Select Patient"),
+                    userInteraction.selectPatient(clinic.getPatients(), "Select Patient"),
                     userInteraction.getFutureDate(),
                     getProcedureByProvider());
             clinic.getAppointments().add(fa);
@@ -257,8 +255,8 @@ public class App {
 
     private HashMap<Provider, Procedure> getProcedureByProvider() throws IOException {
         HashMap<Provider, Procedure> procedureHashMap = new HashMap<>();
-        Provider provider = userMenuInteraction.selectProvider(clinic.getProviders(), "Select Provider");
-        Procedure procedure = userMenuInteraction.selectProcedure(clinic.getProcedures(), "Select Procedure");
+        Provider provider = userInteraction.selectProvider(clinic.getProviders(), "Select Provider");
+        Procedure procedure = userInteraction.selectProcedure(clinic.getProcedures(), "Select Procedure");
         procedureHashMap.put(provider, procedure);
 
         return procedureHashMap;
@@ -267,11 +265,11 @@ public class App {
     private void addProcedure() throws IOException, ClassNotFoundException {
         try {
             Procedure procedure = new Procedure(
-                    userMenuInteraction.selectPatient(clinic.getPatients(), "Select a patient."),
+                    userInteraction.selectPatient(clinic.getPatients(), "Select a patient."),
                     userInteraction.getCode(),
                     userInteraction.getDescription(),
                     userInteraction.getCost(),
-                    userMenuInteraction.selectProvider(clinic.getProviders(), "Choose a provider"));
+                    userInteraction.selectProvider(clinic.getProviders(), "Choose a provider"));
             clinic.getProcedures().add(procedure);
             autoSaveLoad();
         } catch (NotFoundException ex) {
@@ -309,8 +307,8 @@ public class App {
     }
 
     private void editUserMenu_adminView() throws IOException, ClassNotFoundException {
-        User user = userMenuInteraction.selectUser(clinic.getUsers(), "Select which user you would like to edit his information");
-        int selection = userMenuInteraction.changeUserInformationMenu();
+        User user = userInteraction.selectUser(clinic.getUsers(), "Select which user you would like to edit his information");
+        int selection = userInteraction.changeUserInformationMenu();
         switch (selection) {
             case 0:
                 editName(user);
@@ -325,7 +323,7 @@ public class App {
                 editPassword(user);
                 break;
             case 4:
-                UserRole role = userMenuInteraction.selectRole();
+                UserRole role = userInteraction.selectRole();
                 user.setUserRole(role);
                 autoSaveLoad();
             case 5:
@@ -359,7 +357,7 @@ public class App {
     }
 
     private void editUserMenu_standardView() throws IOException, ClassNotFoundException {
-        int selection = userMenuInteraction.changeUserOwnInformation();
+        int selection = userInteraction.changeUserOwnInformation();
         switch (selection) {
             case 0:
                 editName(currentUser);
@@ -392,8 +390,8 @@ public class App {
 
     private void editProviderMenu() throws IOException, ClassNotFoundException {
         try {
-            Provider provider = userMenuInteraction.selectProvider(clinic.getProviders(), "Which Provider Would you like to Change?");
-            int selection = userMenuInteraction.changeProviderInformationMenu();
+            Provider provider = userInteraction.selectProvider(clinic.getProviders(), "Which Provider Would you like to Change?");
+            int selection = userInteraction.changeProviderInformationMenu();
             switch (selection) {
                 case 0:
                     editName(provider);
@@ -420,8 +418,8 @@ public class App {
 
     private void editPatientMenu() throws IOException, ClassNotFoundException {
         try {
-            Patient patient = userMenuInteraction.selectPatient(clinic.getPatients(), "Choose A Patient to Edit");
-            int selection = userMenuInteraction.changePatientInformationMenu();
+            Patient patient = userInteraction.selectPatient(clinic.getPatients(), "Choose A Patient to Edit");
+            int selection = userInteraction.changePatientInformationMenu();
             switch (selection) {
                 case 0:
                     editName(patient);
@@ -512,16 +510,16 @@ public class App {
 
     private void editAppointmentsMenu() throws IOException, ClassNotFoundException {
         try {
-            FutureAppointment appointment = userMenuInteraction.selectFutureAppointment(clinic.getAppointments(), "Select an appointment");
-            int selection = userMenuInteraction.changeFutureAppointmentMenu();
+            FutureAppointment appointment = userInteraction.selectFutureAppointment(clinic.getAppointments(), "Select an appointment");
+            int selection = userInteraction.changeFutureAppointmentMenu();
             switch (selection) {
                 case 0:
-                    Patient selected = userMenuInteraction.selectPatient(clinic.getPatients(), "Select new a new patient");
+                    Patient selected = userInteraction.selectPatient(clinic.getPatients(), "Select new a new patient");
                     appointment.setPatient(selected);
                     autoSaveLoad();
                     break;
                 case 1:
-                    int choice = userMenuInteraction.changeTimeMenu();
+                    int choice = userInteraction.changeTimeMenu();
                     switch (choice) {
                         case 0:
                             LocalDateTime newTime = LocalDateTime.of(
@@ -559,12 +557,12 @@ public class App {
 
     private void editProcedure() throws IOException, ClassNotFoundException {
         try {
-            Procedure procedure = userMenuInteraction.selectProcedure(clinic.getProcedures(), "Select a procedure");
-            int selection = userMenuInteraction.changeProcedureInformation();
+            Procedure procedure = userInteraction.selectProcedure(clinic.getProcedures(), "Select a procedure");
+            int selection = userInteraction.changeProcedureInformation();
             switch (selection) {
                 case 0:
                     //PATIENT
-                    Patient patientSelected = userMenuInteraction.selectPatient(clinic.getPatients(), "Select new patient");
+                    Patient patientSelected = userInteraction.selectPatient(clinic.getPatients(), "Select new patient");
                     procedure.setPatient(patientSelected);
                     autoSaveLoad();
                     break;
@@ -588,7 +586,7 @@ public class App {
                     break;
                 case 4:
                     //PROVIDER
-                    Provider provider = userMenuInteraction.selectProvider(clinic.getProviders(), "Select a provider");
+                    Provider provider = userInteraction.selectProvider(clinic.getProviders(), "Select a provider");
                     procedure.setProvider(provider);
                     autoSaveLoad();
                     break;
@@ -602,16 +600,28 @@ public class App {
     }
 
     //TODO DELETE
-    private void deleteAdminMenuHandler(int choice) {
+    private void deleteAdminMenuHandler(int choice) throws IOException, ClassNotFoundException {
         switch (choice) {
             case 0:
                 //user
+                User user = userInteraction.selectUser(clinic.getUsers(),"Select an User to delete");
+                for (int i = 0; i < clinic.getUsers().size(); i++) {
+                    if(user.getUsername().equals(clinic.getUsers().get(i).getUsername())){
+                        clinic.getUsers().remove(user);
+                    }
+                }
+                //TODO remove this print line, only for testing purposes only
+                userInteraction.println("\nSuccessfully delete " + user.getName() + " user.\n");
+                autoSaveLoad();
                 break;
             case 1:
                 //all users
+
                 break;
             case 2:
                 //provider
+                Provider provider = userInteraction.selectProvider(clinic.getProviders(),"Select a Provider to delete");
+
                 break;
             case 3:
                 //patients
@@ -683,7 +693,7 @@ public class App {
                 String patientLastName = userInteraction.getLastName(true);
                 Insurance insurance = null;
                 try {
-                    insurance = userMenuInteraction.selectInsurance(clinic.getInsurances(), "Select insurance to search for");
+                    insurance = userInteraction.selectInsurance(clinic.getInsurances(), "Select insurance to search for");
                 } catch (ArrayIndexOutOfBoundsException ex) {
                     userInteraction.println("");
                 }
@@ -704,6 +714,7 @@ public class App {
                 break;
             case 2://SEARCH APPOINTMENTS
                 //By time frame(all appointments between), by provider, by patient, by procedure code
+
                 break;
             case 3://EXIT
                 break;
