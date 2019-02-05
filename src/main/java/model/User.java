@@ -10,12 +10,14 @@ public class User implements Serializable {
     private UserRole userRole;
     private boolean firstTimePassChange;
 
-    public User(String name, String lastName, String username, String password, UserRole userRole) {
+    public User(String name, String lastName, String username, String password, UserRole userRole, boolean firstTimePassChange) {
         this.setName(name);
         this.setLastName(lastName);
         this.setUsername(username);
         this.setPassword(password);
         this.setUserRole(userRole);
+        this.setFirstTimePassChange(firstTimePassChange);
+
     }
 
     public String getName() {
@@ -74,12 +76,11 @@ public class User implements Serializable {
         this.userRole = userRole;
     }
 
-    public void changePassword(String password) {
-        if (password == null || password.isEmpty()) {
-            throw new IllegalArgumentException("You cannot have nothing as a password");
-        }
-        this.setPassword(password);
+    public boolean isFirstTimePassChange() {
+        return firstTimePassChange;
     }
 
-
+    public void setFirstTimePassChange(boolean firstTimePassChange) {
+        this.firstTimePassChange = firstTimePassChange;
+    }
 }

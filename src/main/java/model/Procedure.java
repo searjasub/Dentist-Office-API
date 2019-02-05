@@ -4,27 +4,19 @@ import java.io.Serializable;
 
 public class Procedure implements Serializable {
 
-    private Patient patient;
+
     private String code = "D";
     private String description;
     private double cost;
     private Provider provider;
 
-    public Procedure(Patient patient, String code, String description, double cost, Provider provider) {
+    public Procedure(String code, String description, double cost, Provider provider) {
         this.setProvider(provider);
-        this.setPatient(patient);
         this.setCode(code);
         this.setDescription(description);
         this.setCost(cost);
     }
 
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
 
     public Provider getProvider() {
         return provider;

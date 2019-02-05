@@ -7,6 +7,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +22,7 @@ public class ClinicController {
     private DentistOfficeUserInteraction userInteraction;
     private HashMap<String, String> loginCredentials = new HashMap<>();
 
-    public ClinicController(DentistOfficeUserInteraction ui){
+    public ClinicController(DentistOfficeUserInteraction ui) {
         this.userInteraction = ui;
     }
 
@@ -38,17 +39,17 @@ public class ClinicController {
                 loginScreen();
                 boolean isDone = false;
                 while (!isDone) {
-                    if (currentUser.getUserRole() == UserRole.ADMINISTRATIVE) {
-                        if (currentUser.getPassword().equals("1234Password")) {
-                            userInteraction.print("Welcome to the Dentist Office ClinicController, since is your first login please ");
-                            String newPass = passwordVerified(true);
-                            for (User u : clinic.getUsers()) {
-                                if (u.getUsername().equals(currentUser.getUsername())) {
-                                    u.setPassword(newPass);
-                                }
+                    if (currentUser.isFirstTimePassChange()) {
+                        userInteraction.print("Welcome to the Dentist Office, since is your first login please ");
+                        String newPass = passwordVerified(true);
+                        for (User u : clinic.getUsers()) {
+                            if (u.getUsername().equals(currentUser.getUsername())) {
+                                u.setPassword(newPass);
+                                u.setFirstTimePassChange(false);
                             }
-                            save();
                         }
+                        save();
+
                         int selection = userInteraction.mainMenu();
                         isDone = mainMenuHandler(selection);
                     } else {
@@ -62,7 +63,7 @@ public class ClinicController {
     }
 
     private void addAdmin() throws IOException, ClassNotFoundException {
-        User admin = new User("Administrator", "one", "admin", "1234Password", UserRole.ADMINISTRATIVE);
+        User admin = new User("Administrator", "one", "admin", "1234Password", UserRole.ADMINISTRATIVE, true);
         clinic.getUsers().add(admin);
         autoSaveLoad();
         start();
@@ -126,10 +127,34 @@ public class ClinicController {
     }
 
 
-    private void viewMenuHandler(int selection) {
+    private void viewMenuHandler(int selection) throws IOException {
         switch (selection) {
             case 0:
                 //PRODUCTION
+                int totalAmount = 0;
+
+                userInteraction.print("Select the time range for the production\nFrom:");
+                LocalDate start = userInteraction.getLocalDate();
+                userInteraction.print("\nUntil:");
+                LocalDate end = userInteraction.getLocalDate();
+                for (int i = 0; i < clinic.getPastAppointments().size(); i++) {
+                    LocalDate tmp = LocalDate.of(
+                            clinic.getPastAppointments().get(i).getDateTime().getYear(),
+                            clinic.getPastAppointments().get(i).getDateTime().getMonth(),
+                            clinic.getPastAppointments().get(i).getDateTime().getDayOfMonth());
+
+                    if (tmp.isAfter(start) && tmp.isBefore(end)) {
+                        if (clinic.getPastAppointments().get(i).isCompleted()) {
+                            for (int j = 0; j < clinic.getPastAppointments().get(i).getProcedures().size(); j++) {
+                                totalAmount += clinic.getPastAppointments().get(i).getProcedures().get(j).getCost();
+                            }
+                        }
+                    }
+                }
+
+                userInteraction.print("The total amount collected by the clinic from\n" + start + "  -  " + end + "\n is: " + totalAmount);
+
+
                 break;
             case 1:
                 //PATIENT BALANCE
@@ -138,12 +163,56 @@ public class ClinicController {
                 //COLLECTIONS
                 break;
             case 3:
-                //EXIT
+                //APPOINTMENTS
+                int selection2 = userInteraction.appointmentsMenu();
+                switch (selection2) {
+                    case 0://SHOW PAST APPOINTMENT
+                        break;
+                    case 1://MARK APPOINTMENTS AS COMPLETED
+                        FutureAppointment tmp = userInteraction.selectFutureAppointment(clinic.getFutureAppointments(), "Select an appointment to mark as complete");
+                        if (userInteraction.isCompleted("Would you like to mark this appointment as complete")) {
+                            tmp.setCompleted(true);
+
+                            HashMap<Provider, Procedure> whoDidWhat = tmp.getProcedureByProvider();
+                            userInteraction.println(whoDidWhat.toString());
+
+
+
+//                            clinic.getPastAppointments().add(new AppointmentRecord(
+//                                    tmp.getPatient(),
+//                                    tmp.getDateTime(),
+//                                    true,
+//                                    getProcedureRecords(tmp.getPatient())
+//                            ));
+                        }
+                        break;
+                    case 2:
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case 4:
                 break;
             default:
                 break;
         }
     }
+
+    private List<ProcedureRecord> getProcedureRecords(Patient patient) throws IOException {
+        List<ProcedureRecord> list = new ArrayList<>();
+
+        ProcedureRecord procedureRecord = new ProcedureRecord(
+                patient,
+                userInteraction.selectProvider(clinic.getProviders(), "Select Provider"),
+                userInteraction.selectProcedure(clinic.getProcedures(), "Select Procedure"),
+                userInteraction.getCost());
+        list.add(procedureRecord);
+
+
+        return list;
+    }
+
 
     private void createAdminMenuHandler(int choice) throws IOException, ClassNotFoundException {
         switch (choice) {
@@ -153,7 +222,8 @@ public class ClinicController {
                         userInteraction.getLastName(false),
                         checkUniqueUsername(),
                         passwordVerified(false),
-                        userInteraction.getUserType());
+                        userInteraction.getUserType(),
+                        true);
                 clinic.getUsers().add(newUser);
                 autoSaveLoad();
                 break;
@@ -238,6 +308,8 @@ public class ClinicController {
                         userInteraction.getCardName(),
                         userInteraction.getCvv(),
                         userInteraction.getZipCode())));
+
+
         autoSaveLoad();
     }
 
@@ -255,8 +327,9 @@ public class ClinicController {
             FutureAppointment fa = new FutureAppointment(
                     userInteraction.selectPatient(clinic.getPatients(), "Select Patient"),
                     userInteraction.getFutureDate(),
+                    false,
                     getProcedureByProvider());
-            clinic.getAppointments().add(fa);
+            clinic.getFutureAppointments().add(fa);
         } catch (NotFoundException ex) {
             userInteraction.println(ex.getObject());
         }
@@ -265,6 +338,13 @@ public class ClinicController {
     private HashMap<Provider, Procedure> getProcedureByProvider() throws IOException {
         HashMap<Provider, Procedure> procedureHashMap = new HashMap<>();
         Provider provider = userInteraction.selectProvider(clinic.getProviders(), "Select Provider");
+        //TODO show procedures by provider
+        for (int i = 0; i < clinic.getProcedures().size(); i++) {
+            if (clinic.getProcedures().get(i).getProvider().getName().equals(provider.getName())){
+
+            }
+        }
+
         Procedure procedure = userInteraction.selectProcedure(clinic.getProcedures(), "Select Procedure");
         procedureHashMap.put(provider, procedure);
 
@@ -274,7 +354,6 @@ public class ClinicController {
     private void addProcedure() throws IOException, ClassNotFoundException {
         try {
             Procedure procedure = new Procedure(
-                    userInteraction.selectPatient(clinic.getPatients(), "Select a patient."),
                     userInteraction.getCode(),
                     userInteraction.getDescription(),
                     userInteraction.getCost(),
@@ -299,6 +378,7 @@ public class ClinicController {
                 break;
             case 3://EDIT PATIENTS
                 editPatientMenu();
+
                 break;
             case 4://EDIT APPOINTMENTS
                 editAppointmentsMenu();
@@ -519,7 +599,7 @@ public class ClinicController {
 
     private void editAppointmentsMenu() throws IOException, ClassNotFoundException {
         try {
-            FutureAppointment appointment = userInteraction.selectFutureAppointment(clinic.getAppointments(), "Select an appointment");
+            FutureAppointment appointment = userInteraction.selectFutureAppointment(clinic.getFutureAppointments(), "Select an appointment");
             int selection = userInteraction.changeFutureAppointmentMenu();
             switch (selection) {
                 case 0:
@@ -555,6 +635,8 @@ public class ClinicController {
                     }
                     break;
                 case 2:
+
+
                     break;
                 case 3:
                     break;
@@ -570,12 +652,6 @@ public class ClinicController {
             int selection = userInteraction.changeProcedureInformation();
             switch (selection) {
                 case 0:
-                    //PATIENT
-                    Patient patientSelected = userInteraction.selectPatient(clinic.getPatients(), "Select new patient");
-                    procedure.setPatient(patientSelected);
-                    autoSaveLoad();
-                    break;
-                case 1:
                     //CODE
                     String code = userInteraction.getCode();
                     procedure.setCode(code);
@@ -608,84 +684,90 @@ public class ClinicController {
         }
     }
 
-    //TODO DELETE
     private void deleteAdminMenuHandler(int choice) throws IOException, ClassNotFoundException {
         switch (choice) {
             case 0:
-                User user = userInteraction.selectUser(clinic.getUsers(),"Select an User to delete");
+                User user = userInteraction.selectUser(clinic.getUsers(), "Select an User to delete");
                 for (int i = 0; i < clinic.getUsers().size(); i++) {
-                    if(user.getUsername().equals(clinic.getUsers().get(i).getUsername())){
+                    if (user.getUsername().equals(clinic.getUsers().get(i).getUsername())) {
                         clinic.getUsers().remove(user);
                     }
                 }
-                //TODO remove this print line, only for testing purposes only
-                userInteraction.println("\nSuccessfully delete " + user.getName() + " user.\n");
                 autoSaveLoad();
                 break;
             case 1:
-                //all users
-
+                clinic.getUsers().clear();
+                clinic.getUsers().add(currentUser);
                 break;
             case 2:
-                Provider provider = userInteraction.selectProvider(clinic.getProviders(),"Select a Provider to delete");
-                for (int i = 0; i < clinic.getProviders().size(); i++) {
-                    if(provider.getUniqueId() == clinic.getProviders().get(i).getUniqueId()){
-                        clinic.getProviders().remove(provider);
-                    }
-                }
-                //TODO remove this print line, only for testing purposes only
-                userInteraction.println("\nSuccessfully delete " + provider.getName() + " user.\n");
-                autoSaveLoad();
+                deleteProvider();
                 break;
             case 3:
-                Patient patient = userInteraction.selectPatient(clinic.getPatients(), "Select a Patient to delete");
-                for (int i = 0; i < clinic.getPatients().size(); i++) {
-                    if(patient.getUniqueId() == clinic.getPatients().get(i).getUniqueId()){
-                        clinic.getPatients().remove(patient);
-                    }
-                }
-                autoSaveLoad();
+                deletePatient();
                 break;
-            case 4://Appointment
+            case 4://TODO
+                //Appointment
 
                 break;
             case 5:
-                Procedure procedure = userInteraction.selectProcedure(clinic.getProcedures(),"Select a Procedure to delete");
-                for (int i = 0; i < clinic.getProcedures().size(); i++) {
-                    if(procedure.getCode().equals(clinic.getProcedures().get(i).getCode())){
-                        clinic.getProcedures().remove(procedure);
-                    }
-                }
-                autoSaveLoad();
+                deleteProcedure();
                 break;
-            case 6:
-                //exit
+            case 6://exit
                 break;
             default:
                 break;
         }
     }
 
-    private void deleteStandardMenuHandler(int choice) {
+    private void deleteStandardMenuHandler(int choice) throws IOException, ClassNotFoundException {
         switch (choice) {
             case 0:
-                //delete provider
+                deleteProvider();
                 break;
             case 1:
-                //delete patients
+                deletePatient();
                 break;
             case 2:
                 //appointments
                 break;
             case 3:
-                //procedure
+                deleteProcedure();
                 break;
-            case 4:
-                //exit
+            case 4://exit
                 break;
             default:
                 break;
         }
+    }
+
+    private void deleteProvider() throws IOException, ClassNotFoundException {
+        Provider provider = userInteraction.selectProvider(clinic.getProviders(), "Select a Provider to delete");
+        for (int i = 0; i < clinic.getProviders().size(); i++) {
+            if (provider.getUniqueId() == clinic.getProviders().get(i).getUniqueId()) {
+                clinic.getProviders().remove(provider);
+            }
+        }
+        autoSaveLoad();
+    }
+
+    private void deletePatient() throws IOException, ClassNotFoundException {
+        Patient patient = userInteraction.selectPatient(clinic.getPatients(), "Select a Patient to delete");
+        for (int i = 0; i < clinic.getPatients().size(); i++) {
+            if (patient.getUniqueId() == clinic.getPatients().get(i).getUniqueId()) {
+                clinic.getPatients().remove(patient);
+            }
+        }
+        autoSaveLoad();
+    }
+
+    private void deleteProcedure() throws IOException, ClassNotFoundException {
+        Procedure procedure = userInteraction.selectProcedure(clinic.getProcedures(), "Select a Procedure to delete");
+        for (int i = 0; i < clinic.getProcedures().size(); i++) {
+            if (procedure.getCode().equals(clinic.getProcedures().get(i).getCode())) {
+                clinic.getProcedures().remove(procedure);
+            }
+        }
+        autoSaveLoad();
     }
 
     private void searchMenuHandler(int choice) throws IOException {
@@ -722,8 +804,8 @@ public class ClinicController {
                 Insurance insurance = null;
                 try {
                     insurance = userInteraction.selectInsurance(clinic.getInsurances(), "Select insurance to search for");
-                } catch (ArrayIndexOutOfBoundsException ex) {
-                    userInteraction.println("");
+                } catch (NotFoundException ex) {
+                    System.out.println(ex.getObject());
                 }
                 for (int i = 0; i < clinic.getPatients().size(); i++) {
                     if (patientName.equals(clinic.getPatients().get(i).getName())) {
@@ -740,8 +822,10 @@ public class ClinicController {
                     userInteraction.println(userInteraction.removeCharacters(patientList.toString()));
                 }
                 break;
-            case 2://SEARCH APPOINTMENTS
+            case 2://TODO
+                //SEARCH APPOINTMENTS
                 //By time frame(all appointments between), by provider, by patient, by procedure code
+
 
                 break;
             case 3://EXIT

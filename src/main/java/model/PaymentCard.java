@@ -25,9 +25,9 @@ public class PaymentCard implements Serializable {
     }
 
     public void setNumber(String number) {
-//    	if(number < 0 || number > Long.MAX_VALUE) {
-//    		throw new IllegalArgumentException("Number cannot be negative or bigger than max value");
-//    	}
+        if(number == null){
+            throw new IllegalArgumentException("Input can't be null");
+        }
         this.number = number;
     }
 

@@ -4,14 +4,12 @@ public class ProcedureRecord {
 
     private Patient patient;
     private Provider provider;
-    private FutureAppointment futureAppointment;
     private Procedure procedure;
     private double cost;
 
-	public ProcedureRecord(Patient patient, Provider provider, FutureAppointment futureAppointment, Procedure procedure, double cost) {
+	public ProcedureRecord(Patient patient, Provider provider, Procedure procedure, double cost) {
 		this.setPatient(patient);
 		this.setProvider(provider);
-		this.setFutureAppointment(futureAppointment);
 		this.setProcedure(procedure);
 		this.setCost(cost);
 	}
@@ -27,12 +25,6 @@ public class ProcedureRecord {
 	}
 	public void setProvider(Provider provider) {
 		this.provider = provider;
-	}
-	public FutureAppointment getFutureAppointment() {
-		return futureAppointment;
-	}
-	public void setFutureAppointment(FutureAppointment futureAppointment) {
-		this.futureAppointment = futureAppointment;
 	}
 	public Procedure getProcedure() {
 		return procedure;

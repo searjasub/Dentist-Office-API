@@ -1,6 +1,7 @@
 package view;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public interface DentistOfficeUserInteraction {
     void welcome();
     int mainMenu() throws IOException;
     int viewMenu()throws IOException;
+    int appointmentsMenu() throws IOException;
     int createAdminMenu() throws IOException;
     int createStandardMenu()throws IOException;
     int editStandardMenu()throws IOException;
@@ -70,6 +72,7 @@ public interface DentistOfficeUserInteraction {
     int getCvv()throws IOException;
     int getZipCode()throws IOException;
     LocalDateTime getFutureDate()throws IOException;
+    LocalDate getLocalDate() throws IOException;
     int getYear()throws IOException;
     int getMonth()throws IOException;
     int getDay()throws IOException;
@@ -77,5 +80,6 @@ public interface DentistOfficeUserInteraction {
     int getMinute()throws IOException;
     String getInput(String msg, boolean allowEmpty)throws IOException;
     String removeCharacters(String content)throws IOException;
-
+    boolean isCompleted(String msg) throws IOException;
+    int getHowManyProcedures() throws IOException;
 }

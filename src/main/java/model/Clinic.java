@@ -10,39 +10,17 @@ public class Clinic implements Serializable {
     private List<Patient> patients = new ArrayList<>();
     private List<Payment> payments = new ArrayList<>();
     private List<PaymentCard> cardPayments = new ArrayList<>();
-    private List<FutureAppointment> appointments = new ArrayList<>();
+    private List<FutureAppointment> futureAppointments = new ArrayList<>();
+    private List<AppointmentRecord> pastAppointments = new ArrayList<>();
     private List<Procedure> procedures = new ArrayList<>();
     private List<User> users = new ArrayList<>();
     private List<Insurance> insurances = new ArrayList<>();
 
-
-//    public List<Provider> searchProviders(ProviderSearchCriteria criteria){
-//        return null;
-//    }
-//
-//    public List<Patient> searchPatients(PatientSearchCriteria criteria){
-//        return null;
-//    }
-//
-//    public List<Appointment> searchAppointment(AppointmentSearchCriteria criteria){
-//        return null;
-//    }
-
-
     public void receivePayment(Payment payment) {
-
     }
 
     public double getAccountBalance(int patientId) {
         return 0;
-    }
-
-    public List<Appointment> getFutureAppointment() {
-        return null;
-    }
-
-    public List<Appointment> getPastAppointment() {
-        return null;
     }
 
 
@@ -79,12 +57,12 @@ public class Clinic implements Serializable {
         this.cardPayments = cardPayments;
     }
 
-    public List<FutureAppointment> getAppointments() {
-        return appointments;
+    public List<FutureAppointment> getFutureAppointments() {
+        return futureAppointments;
     }
 
-    public void setAppointments(List<FutureAppointment> appointments) {
-        this.appointments = appointments;
+    public void setFutureAppointments(List<FutureAppointment> futureAppointments) {
+        this.futureAppointments = futureAppointments;
     }
 
     public List<Procedure> getProcedures() {
@@ -109,5 +87,13 @@ public class Clinic implements Serializable {
 
     public void setInsurances(List<Insurance> insurances) {
         this.insurances = insurances;
+    }
+
+    public List<AppointmentRecord> getPastAppointments() {
+        return pastAppointments;
+    }
+
+    public void setPastAppointments(List<AppointmentRecord> pastAppointments) {
+        this.pastAppointments = pastAppointments;
     }
 }

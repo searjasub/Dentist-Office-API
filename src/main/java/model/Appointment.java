@@ -7,10 +7,12 @@ public class Appointment implements Serializable {
 
     private Patient patient;
     private LocalDateTime dateTime;
+    private boolean isCompleted;
 
-    public Appointment(Patient patient, LocalDateTime dateTime) {
+    public Appointment(Patient patient, LocalDateTime dateTime, boolean isCompleted) {
         this.setPatient(patient);
         this.setDateTime(dateTime);
+        this.setCompleted(isCompleted);
     }
 
     public Patient getPatient() {
@@ -27,5 +29,13 @@ public class Appointment implements Serializable {
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
     }
 }
