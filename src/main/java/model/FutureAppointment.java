@@ -1,23 +1,24 @@
 package model;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class FutureAppointment extends Appointment {
 
-    private HashMap<Provider, Procedure> procedureByProvider = new HashMap<>();
+    private List<Procedure> procedures;
 
-    public FutureAppointment(Patient patient, LocalDateTime dateTime, boolean isCompleted, HashMap<Provider, Procedure> procedureByProvider) {
-        super(patient, dateTime, isCompleted);
-        this.setProcedureByProvider(procedureByProvider);
+    public FutureAppointment(Patient patient, LocalDateTime dateTime, boolean isComplete, List<Procedure> procedures) {
+        super(patient, dateTime, isComplete);
+        this.setProcedures(procedures);
     }
 
-    public HashMap<Provider, Procedure> getProcedureByProvider() {
-        return procedureByProvider;
+
+
+    public List<Procedure> getProcedures() {
+        return procedures;
     }
 
-    public void setProcedureByProvider(HashMap<Provider, Procedure> procedureByProvider) {
-        this.procedureByProvider = procedureByProvider;
+    public void setProcedures(List<Procedure> procedures) {
+        this.procedures = procedures;
     }
 }

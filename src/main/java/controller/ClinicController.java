@@ -151,10 +151,7 @@ public class ClinicController {
                         }
                     }
                 }
-
                 userInteraction.print("The total amount collected by the clinic from\n" + start + "  -  " + end + "\n is: " + totalAmount);
-
-
                 break;
             case 1:
                 //PATIENT BALANCE
@@ -169,13 +166,15 @@ public class ClinicController {
                     case 0://SHOW PAST APPOINTMENT
                         break;
                     case 1://MARK APPOINTMENTS AS COMPLETED
-                        FutureAppointment tmp = userInteraction.selectFutureAppointment(clinic.getFutureAppointments(), "Select an appointment to mark as complete");
-                        if (userInteraction.isCompleted("Would you like to mark this appointment as complete")) {
-                            tmp.setCompleted(true);
+                        try {
+                            FutureAppointment tmp = userInteraction.selectFutureAppointment(clinic.getFutureAppointments(), "Select an appointment to mark as complete");
+                            if (!userInteraction.isCompleted("Would you like to mark this appointment as complete")) {
+                                tmp.setCompleted(true);
 
-                            HashMap<Provider, Procedure> whoDidWhat = tmp.getProcedureByProvider();
-                            userInteraction.println(whoDidWhat.toString());
-
+                            }
+                        } catch (NotFoundException ex) {
+                            userInteraction.println(ex.getObject());
+                        }
 
 
 //                            clinic.getPastAppointments().add(new AppointmentRecord(
@@ -184,7 +183,7 @@ public class ClinicController {
 //                                    true,
 //                                    getProcedureRecords(tmp.getPatient())
 //                            ));
-                        }
+
                         break;
                     case 2:
                         break;
@@ -197,6 +196,7 @@ public class ClinicController {
             default:
                 break;
         }
+
     }
 
     private List<ProcedureRecord> getProcedureRecords(Patient patient) throws IOException {
@@ -328,27 +328,22 @@ public class ClinicController {
                     userInteraction.selectPatient(clinic.getPatients(), "Select Patient"),
                     userInteraction.getFutureDate(),
                     false,
-                    getProcedureByProvider());
+                    addProcedures());
             clinic.getFutureAppointments().add(fa);
         } catch (NotFoundException ex) {
             userInteraction.println(ex.getObject());
         }
     }
 
-    private HashMap<Provider, Procedure> getProcedureByProvider() throws IOException {
-        HashMap<Provider, Procedure> procedureHashMap = new HashMap<>();
-        Provider provider = userInteraction.selectProvider(clinic.getProviders(), "Select Provider");
-        //TODO show procedures by provider
-        for (int i = 0; i < clinic.getProcedures().size(); i++) {
-            if (clinic.getProcedures().get(i).getProvider().getName().equals(provider.getName())){
+    private List<Procedure> addProcedures() throws IOException {
+        List<Provider> tmp;
 
+        while (true) {
+            for (int i = 0; i < clinic.getProviders().size(); i++) {
+                Provider provider = userInteraction.selectProvider()
             }
         }
 
-        Procedure procedure = userInteraction.selectProcedure(clinic.getProcedures(), "Select Procedure");
-        procedureHashMap.put(provider, procedure);
-
-        return procedureHashMap;
     }
 
     private void addProcedure() throws IOException, ClassNotFoundException {
