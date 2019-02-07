@@ -164,34 +164,42 @@ public class ClinicController {
                 int selection2 = userInteraction.appointmentsMenu();
                 switch (selection2) {
                     case 0://SHOW PAST APPOINTMENT
+                        for (int i = 0; i < clinic.getPastAppointments().size(); i++) {
+                            userInteraction.println("Patient: " + clinic.getPastAppointments().get(i).getPatient().getName() +" " + clinic.getPastAppointments().get(i).getPatient().getLastName() + " | Time: " + clinic.getPastAppointments().get(i).getDateTime().getMonth() +"/" + clinic.getPastAppointments().get(i).getDateTime().getDayOfMonth() + " " + clinic.getPastAppointments().get(i).getDateTime().getHour()+":"+ clinic.getPastAppointments().get(i).getDateTime().getMinute() + "\n\t\tProcedures performed" + clinic.getPastAppointments().get(i).toString());
+                        }
+
+                        //NOT PRINTING ANYTHING!!! CHECK WHAT'S GOING ON
+
                         break;
                     case 1://MARK APPOINTMENTS AS COMPLETED
                         try {
                             FutureAppointment tmp = userInteraction.selectFutureAppointment(clinic.getFutureAppointments(), "Select an appointment to mark as complete");
                             if (!userInteraction.isCompleted("Would you like to mark this appointment as complete")) {
                                 tmp.setCompleted(true);
+                                Appointment appointment = new Appointment(
+                                        tmp.getPatient(),
+                                        tmp.getDateTime(),
+                                        tmp.isCompleted());
 
+                                AppointmentRecord ap = new AppointmentRecord(
+                                        appointment.getPatient(),
+                                        appointment.getDateTime(),
+                                        appointment.isCompleted(),
+                                        getProcedureRecords(appointment.getPatient()));
+
+                                clinic.getPastAppointments().add(ap);
                             }
                         } catch (NotFoundException ex) {
                             userInteraction.println(ex.getObject());
                         }
-
-
-//                            clinic.getPastAppointments().add(new AppointmentRecord(
-//                                    tmp.getPatient(),
-//                                    tmp.getDateTime(),
-//                                    true,
-//                                    getProcedureRecords(tmp.getPatient())
-//                            ));
-
                         break;
-                    case 2:
+                    case 2://Exit
                         break;
                     default:
                         break;
                 }
                 break;
-            case 4:
+            case 4://Exit
                 break;
             default:
                 break;
@@ -201,14 +209,17 @@ public class ClinicController {
 
     private List<ProcedureRecord> getProcedureRecords(Patient patient) throws IOException {
         List<ProcedureRecord> list = new ArrayList<>();
+        ProcedureRecord procedureRecord = null;
 
-        ProcedureRecord procedureRecord = new ProcedureRecord(
-                patient,
-                userInteraction.selectProvider(clinic.getProviders(), "Select Provider"),
-                userInteraction.selectProcedure(clinic.getProcedures(), "Select Procedure"),
-                userInteraction.getCost());
+        for (int i = 0; i < userInteraction.getHowManyProcedures(); i++) {
+
+            procedureRecord = new ProcedureRecord(
+                    patient,
+                    userInteraction.selectProvider(clinic.getProviders(), "Select Provider"),
+                    userInteraction.selectProcedure(clinic.getProcedures(), "Select Procedure"),
+                    userInteraction.getCost());
+        }
         list.add(procedureRecord);
-
 
         return list;
     }
@@ -229,6 +240,7 @@ public class ClinicController {
                 break;
             case 1:
                 addProvider();
+
                 break;
             case 2:
                 addPatient();
@@ -322,7 +334,7 @@ public class ClinicController {
         return insurance;
     }
 
-    private void addAppointment() throws IOException {
+    private void addAppointment() throws IOException, ClassNotFoundException {
         try {
             FutureAppointment fa = new FutureAppointment(
                     userInteraction.selectPatient(clinic.getPatients(), "Select Patient"),
@@ -330,20 +342,21 @@ public class ClinicController {
                     false,
                     addProcedures());
             clinic.getFutureAppointments().add(fa);
+            autoSaveLoad();
         } catch (NotFoundException ex) {
             userInteraction.println(ex.getObject());
         }
+
     }
 
     private List<Procedure> addProcedures() throws IOException {
-        List<Provider> tmp;
-
-        while (true) {
-            for (int i = 0; i < clinic.getProviders().size(); i++) {
-                Provider provider = userInteraction.selectProvider()
-            }
+        List<Procedure> tmp = new ArrayList<>();
+        int count = userInteraction.getHowManyProcedures();
+        for (int i = 0; i < count; i++) {
+            Procedure procedure = userInteraction.selectProcedure(clinic.getProcedures(),"Select a procedure to add");
+            tmp.add(procedure);
         }
-
+        return tmp;
     }
 
     private void addProcedure() throws IOException, ClassNotFoundException {
