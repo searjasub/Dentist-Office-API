@@ -25,7 +25,7 @@ public class User implements Serializable {
     }
 
     public void setName(String name) {
-        if (name == null || name.isEmpty()) {
+        if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("This is not a valid name input");
         }
         this.name = name;
@@ -36,7 +36,7 @@ public class User implements Serializable {
     }
 
     public void setLastName(String lastName) {
-        if (lastName == null || lastName.isEmpty()) {
+        if (lastName == null || lastName.trim().isEmpty()) {
             throw new IllegalArgumentException("This is not a valid last name input");
         }
         this.lastName = lastName;
@@ -47,7 +47,7 @@ public class User implements Serializable {
     }
 
     public void setUsername(String username) {
-        if (username == null || username.isEmpty()) {
+        if (username == null || username.trim().isEmpty()) {
             throw new IllegalArgumentException("This is not a valid username input");
         }
         this.username = username;
@@ -58,7 +58,7 @@ public class User implements Serializable {
     }
 
     public void setPassword(String password) {
-        if (password == null || password.isEmpty()) {
+        if (password == null || password.trim().isEmpty()) {
             throw new IllegalArgumentException("This is not a valid password input");
         }
         this.password = password;
