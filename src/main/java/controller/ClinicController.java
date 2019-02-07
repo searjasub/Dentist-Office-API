@@ -642,8 +642,8 @@ public class ClinicController {
                     }
                     break;
                 case 2:
-
-
+                	//TODO
+                	//PROCEDURE BY PROVIDER
                     break;
                 case 3:
                     break;
@@ -835,7 +835,8 @@ public class ClinicController {
                 //By time frame(all appointments between), by provider, by patient, by procedure code
 
                 break;
-            case 3://EXIT
+            case 3:
+            	userInteraction.println("Returning to Previous Menu...");
                 break;
             default:
                 break;
