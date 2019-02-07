@@ -173,8 +173,9 @@ public class ClinicController {
                         break;
                     case 1://MARK APPOINTMENTS AS COMPLETED
                         try {
+                            //Still shows appointments completed
                             FutureAppointment tmp = userInteraction.selectFutureAppointment(clinic.getFutureAppointments(), "Select an appointment to mark as complete");
-                            if (!userInteraction.isCompleted("Would you like to mark this appointment as complete")) {
+                            if (userInteraction.isCompleted("Would you like to mark this appointment as complete")) {
                                 tmp.setCompleted(true);
                                 Appointment appointment = new Appointment(
                                         tmp.getPatient(),
@@ -211,10 +212,12 @@ public class ClinicController {
         List<ProcedureRecord> list = new ArrayList<>();
         ProcedureRecord procedureRecord = null;
 
-        for (int i = 0; i < userInteraction.getHowManyProcedures(); i++) {
+        int count = userInteraction.getHowManyProcedures();
+        for (int i = 0; i < count; i++) {
 
             procedureRecord = new ProcedureRecord(
                     patient,
+                    //DIFFERENT WAY TO GET THAT PROVIDER.
                     userInteraction.selectProvider(clinic.getProviders(), "Select Provider"),
                     userInteraction.selectProcedure(clinic.getProcedures(), "Select Procedure"),
                     userInteraction.getCost());
