@@ -18,7 +18,6 @@ public class ClinicController {
     private static final String directory = "savables";
     private Clinic clinic = new Clinic();
     private User currentUser;
-    //private UserInteraction userInteraction = new UserInteraction();
     private DentistOfficeUserInteraction userInteraction;
     private HashMap<String, String> loginCredentials = new HashMap<>();
 
@@ -127,7 +126,7 @@ public class ClinicController {
     }
 
 
-    private void viewMenuHandler(int selection) throws IOException {
+    private void viewMenuHandler(int selection) throws IOException, ClassNotFoundException {
         switch (selection) {
             case 0:
                 //PRODUCTION
@@ -165,7 +164,9 @@ public class ClinicController {
                 switch (selection2) {
                     case 0://SHOW PAST APPOINTMENT
                         for (int i = 0; i < clinic.getPastAppointments().size(); i++) {
-                            userInteraction.println("Patient: " + clinic.getPastAppointments().get(i).getPatient().getName() +" " + clinic.getPastAppointments().get(i).getPatient().getLastName() + " | Time: " + clinic.getPastAppointments().get(i).getDateTime().getMonth() +"/" + clinic.getPastAppointments().get(i).getDateTime().getDayOfMonth() + " " + clinic.getPastAppointments().get(i).getDateTime().getHour()+":"+ clinic.getPastAppointments().get(i).getDateTime().getMinute() + "\n\t\tProcedures performed" + clinic.getPastAppointments().get(i).toString());
+                            if (clinic.getPastAppointments().get(i) != null) {
+                                userInteraction.println("Patient: " + clinic.getPastAppointments().get(i).getPatient().getName() + " " + clinic.getPastAppointments().get(i).getPatient().getLastName() + " | Time: " + clinic.getPastAppointments().get(i).getDateTime().getMonth() + "/" + clinic.getPastAppointments().get(i).getDateTime().getDayOfMonth() + " " + clinic.getPastAppointments().get(i).getDateTime().getHour() + ":" + clinic.getPastAppointments().get(i).getDateTime().getMinute() + "\n\t\tProcedures performed" + clinic.getPastAppointments().get(i).toString());
+                            }
                         }
 
                         //NOT PRINTING ANYTHING!!! CHECK WHAT'S GOING ON
@@ -173,8 +174,9 @@ public class ClinicController {
                         break;
                     case 1://MARK APPOINTMENTS AS COMPLETED
                         try {
-                            //Still shows appointments completed
+                            //SHOWS NULL IF THE APPOINTMENT IS NOT THERE
                             FutureAppointment tmp = userInteraction.selectFutureAppointment(clinic.getFutureAppointments(), "Select an appointment to mark as complete");
+
                             if (userInteraction.isCompleted("Would you like to mark this appointment as complete")) {
                                 tmp.setCompleted(true);
                                 Appointment appointment = new Appointment(
@@ -186,9 +188,11 @@ public class ClinicController {
                                         appointment.getPatient(),
                                         appointment.getDateTime(),
                                         appointment.isCompleted(),
-                                        getProcedureRecords(appointment.getPatient()));
+                                        getProcedureRecords(appointment.getPatient(), tmp));
 
                                 clinic.getPastAppointments().add(ap);
+                                clinic.getFutureAppointments().remove(tmp);
+                                autoSaveLoad();
                             }
                         } catch (NotFoundException ex) {
                             userInteraction.println(ex.getObject());
@@ -208,22 +212,17 @@ public class ClinicController {
 
     }
 
-    private List<ProcedureRecord> getProcedureRecords(Patient patient) throws IOException {
+    private List<ProcedureRecord> getProcedureRecords(Patient patient, FutureAppointment fa) {
         List<ProcedureRecord> list = new ArrayList<>();
-        ProcedureRecord procedureRecord = null;
-
-        int count = userInteraction.getHowManyProcedures();
-        for (int i = 0; i < count; i++) {
-
+        ProcedureRecord procedureRecord;
+        //int count = userInteraction.getHowManyProcedures();
+        for (int i = 0; i < fa.getProcedures().size(); i++) {
             procedureRecord = new ProcedureRecord(
                     patient,
-                    //DIFFERENT WAY TO GET THAT PROVIDER.
-                    userInteraction.selectProvider(clinic.getProviders(), "Select Provider"),
-                    userInteraction.selectProcedure(clinic.getProcedures(), "Select Procedure"),
-                    userInteraction.getCost());
+                    fa.getProcedures().get(i),
+                    fa.getProcedures().get(i).getCost());
+            list.add(procedureRecord);
         }
-        list.add(procedureRecord);
-
         return list;
     }
 
@@ -243,7 +242,6 @@ public class ClinicController {
                 break;
             case 1:
                 addProvider();
-
                 break;
             case 2:
                 addPatient();
@@ -356,7 +354,7 @@ public class ClinicController {
         List<Procedure> tmp = new ArrayList<>();
         int count = userInteraction.getHowManyProcedures();
         for (int i = 0; i < count; i++) {
-            Procedure procedure = userInteraction.selectProcedure(clinic.getProcedures(),"Select a procedure to add");
+            Procedure procedure = userInteraction.selectProcedure(clinic.getProcedures(), "Select a procedure to add");
             tmp.add(procedure);
         }
         return tmp;
@@ -645,8 +643,8 @@ public class ClinicController {
                     }
                     break;
                 case 2:
-                	//TODO
-                	//PROCEDURE BY PROVIDER
+                    //TODO
+                    //PROCEDURE BY PROVIDER
                     break;
                 case 3:
                     break;
@@ -737,14 +735,14 @@ public class ClinicController {
                 deletePatient();
                 break;
             case 2:
-            	//TODO
+                //TODO
                 //Appointment
                 break;
             case 3:
                 deleteProcedure();
                 break;
             case 4://exit
-            	userInteraction.println("Returning to previous menu...\n");
+                userInteraction.println("Returning to previous menu...\n");
                 break;
             default:
                 break;
@@ -839,7 +837,7 @@ public class ClinicController {
 
                 break;
             case 3:
-            	userInteraction.println("Returning to Previous Menu...");
+                userInteraction.println("Returning to Previous Menu...");
                 break;
             default:
                 break;

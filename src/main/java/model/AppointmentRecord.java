@@ -26,7 +26,7 @@ public class AppointmentRecord extends Appointment {
         String string = "";
 
         for (int i = 0; i < this.getProcedures().size(); i++) {
-            string += "Provider: " + procedures.get(i).getProvider().getName() + procedures.get(i).getProvider().getLastName() + " | Description: " + procedures.get(i).getProcedure().getDescription() + " | Cost: " + procedures.get(i).getProcedure().getCost();
+            string += "["+ i +"] Provider: " + procedures.get(i).getProcedure().getProvider().getName() + procedures.get(i).getProcedure().getProvider().getLastName() + " | Description: " + procedures.get(i).getProcedure().getDescription() + " | Cost: " + procedures.get(i).getProcedure().getCost();
         }
         return string;
     }

@@ -12,8 +12,6 @@ public class FutureAppointment extends Appointment {
         this.setProcedures(procedures);
     }
 
-
-
     public List<Procedure> getProcedures() {
         return procedures;
     }
