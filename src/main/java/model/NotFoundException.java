@@ -1,6 +1,9 @@
 package model;
 
 public class NotFoundException extends RuntimeException {
+
+    private static final long serialVersionUID = 2670303903107543800L;
+
     private String object;
 
     public NotFoundException(String object){

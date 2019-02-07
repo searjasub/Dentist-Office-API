@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class Procedure implements Serializable {
 
+    private static final long serialVersionUID = -5055699438924863645L;
+
     private String code = "D";
     private String description;
     private double cost;

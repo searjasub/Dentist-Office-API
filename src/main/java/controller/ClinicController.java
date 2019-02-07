@@ -168,13 +168,9 @@ public class ClinicController {
                                 userInteraction.println("Patient: " + clinic.getPastAppointments().get(i).getPatient().getName() + " " + clinic.getPastAppointments().get(i).getPatient().getLastName() + " | Time: " + clinic.getPastAppointments().get(i).getDateTime().getMonth() + "/" + clinic.getPastAppointments().get(i).getDateTime().getDayOfMonth() + " " + clinic.getPastAppointments().get(i).getDateTime().getHour() + ":" + clinic.getPastAppointments().get(i).getDateTime().getMinute() + "\n\t\tProcedures performed" + clinic.getPastAppointments().get(i).toString());
                             }
                         }
-
-                        //NOT PRINTING ANYTHING!!! CHECK WHAT'S GOING ON
-
                         break;
                     case 1://MARK APPOINTMENTS AS COMPLETED
                         try {
-                            //SHOWS NULL IF THE APPOINTMENT IS NOT THERE
                             FutureAppointment tmp = userInteraction.selectFutureAppointment(clinic.getFutureAppointments(), "Select an appointment to mark as complete");
 
                             if (userInteraction.isCompleted("Would you like to mark this appointment as complete")) {
@@ -209,13 +205,11 @@ public class ClinicController {
             default:
                 break;
         }
-
     }
 
     private List<ProcedureRecord> getProcedureRecords(Patient patient, FutureAppointment fa) {
         List<ProcedureRecord> list = new ArrayList<>();
         ProcedureRecord procedureRecord;
-        //int count = userInteraction.getHowManyProcedures();
         for (int i = 0; i < fa.getProcedures().size(); i++) {
             procedureRecord = new ProcedureRecord(
                     patient,
@@ -309,7 +303,6 @@ public class ClinicController {
         clinic.getPatients().add(new Patient(
                 userInteraction.getName(false),
                 userInteraction.getLastName(false),
-                //TODO MAKE SURE IS A UNIQUE ID
                 userInteraction.getUniqueID(),
                 userInteraction.getEmail(),
                 userInteraction.getPhoneNumber(),
@@ -848,6 +841,11 @@ public class ClinicController {
             case 2://TODO
                 //SEARCH APPOINTMENTS
                 //By time frame(all appointments between), by provider, by patient, by procedure code
+                Li
+
+
+
+
 
                 break;
             case 3:

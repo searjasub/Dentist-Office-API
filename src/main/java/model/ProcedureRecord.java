@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class ProcedureRecord implements Serializable {
 
+    private static final long serialVersionUID = 1108593470942822454L;
+    
     private Patient patient;
     private Procedure procedure;
     private double cost;

@@ -5,6 +5,8 @@ import java.util.List;
 
 public class FutureAppointment extends Appointment {
 
+    private static final long serialVersionUID = -6048462759180827808L;
+
     private List<Procedure> procedures;
 
     public FutureAppointment(Patient patient, LocalDateTime dateTime, boolean isComplete, List<Procedure> procedures) {

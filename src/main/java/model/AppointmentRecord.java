@@ -5,6 +5,8 @@ import java.util.List;
 
 public class AppointmentRecord extends Appointment {
 
+    private static final long serialVersionUID = 8843901474642222173L;
+
     private List<ProcedureRecord> procedures;
 
     public AppointmentRecord(Patient patient, LocalDateTime dateTime, boolean isCompleted, List<ProcedureRecord> procedures) {

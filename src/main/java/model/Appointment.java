@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 public class Appointment implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private Patient patient;
     private LocalDateTime dateTime;
     private boolean isCompleted;

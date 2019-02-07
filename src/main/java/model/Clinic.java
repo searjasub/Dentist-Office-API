@@ -6,6 +6,8 @@ import java.util.List;
 
 public class Clinic implements Serializable {
 
+    private static final long serialVersionUID = -752166931702151527L;
+
     private List<Provider> providers = new ArrayList<>();
     private List<Patient> patients = new ArrayList<>();
     private List<Payment> payments = new ArrayList<>();

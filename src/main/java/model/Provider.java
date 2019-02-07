@@ -2,6 +2,8 @@ package model;
 
 public class Provider extends Person {
 
+    private static final long serialVersionUID = 8291776832764371464L;
+
     private ProviderType title;
 
     public Provider(String name, String lastName, int uniqueId, String email, String phoneNumber, ProviderType title) {

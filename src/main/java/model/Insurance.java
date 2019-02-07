@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class Insurance implements Serializable {
 
+    private static final long serialVersionUID = -8264932588394084499L;
+
     private String name;
     private String groupId;
     private String memberId;

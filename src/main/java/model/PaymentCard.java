@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class PaymentCard implements Serializable {
 
+    private static final long serialVersionUID = -2881834379761508174L;
+
     private String number;
     private int expMonth;
     private int expYear;
