@@ -13,7 +13,7 @@ public class NotFoundException extends RuntimeException {
 
     public void setObject(String object) {
         if(object == null){
-            throw new IllegalArgumentException("Can't be null");
+            throw new IllegalArgumentException("Can't be null and/or incorrect input");
         }
         this.object = object;
     }

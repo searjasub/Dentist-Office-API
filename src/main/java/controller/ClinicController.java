@@ -254,7 +254,7 @@ public class ClinicController {
             if (loginCredentials.get(username) == null) {
                 return username;
             }
-            userInteraction.println("\nUsername already exist. Please choose another one.");
+            userInteraction.println("\nUsername already exist. Please choose another different Username.");
         }
     }
 
@@ -340,7 +340,7 @@ public class ClinicController {
 
         while (true) {
             for (int i = 0; i < clinic.getProviders().size(); i++) {
-                Provider provider = userInteraction.selectProvider()
+                Provider provider = userInteraction.selectProvider();
             }
         }
 
@@ -373,7 +373,6 @@ public class ClinicController {
                 break;
             case 3://EDIT PATIENTS
                 editPatientMenu();
-
                 break;
             case 4://EDIT APPOINTMENTS
                 editAppointmentsMenu();
@@ -391,7 +390,7 @@ public class ClinicController {
     }
 
     private void editUserMenu_adminView() throws IOException, ClassNotFoundException {
-        User user = userInteraction.selectUser(clinic.getUsers(), "Select which user you would like to edit his information");
+        User user = userInteraction.selectUser(clinic.getUsers(), "Select which user's information you would like to edit");
         int selection = userInteraction.changeUserInformationMenu();
         switch (selection) {
             case 0:
@@ -702,7 +701,6 @@ public class ClinicController {
                 break;
             case 4://TODO
                 //Appointment
-
                 break;
             case 5:
                 deleteProcedure();
@@ -723,12 +721,14 @@ public class ClinicController {
                 deletePatient();
                 break;
             case 2:
-                //appointments
+            	//TODO
+                //Appointment
                 break;
             case 3:
                 deleteProcedure();
                 break;
             case 4://exit
+            	userInteraction.println("Returning to previous menu...\n");
                 break;
             default:
                 break;
@@ -820,7 +820,6 @@ public class ClinicController {
             case 2://TODO
                 //SEARCH APPOINTMENTS
                 //By time frame(all appointments between), by provider, by patient, by procedure code
-
 
                 break;
             case 3://EXIT
