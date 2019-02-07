@@ -607,12 +607,12 @@ public class ClinicController {
 
     private void editAppointmentsMenu() throws IOException, ClassNotFoundException {
         try {
-            FutureAppointment appointment = userInteraction.selectFutureAppointment(clinic.getFutureAppointments(), "Select an appointment");
+            FutureAppointment appointmentSelected = userInteraction.selectFutureAppointment(clinic.getFutureAppointments(), "Select an appointment");
             int selection = userInteraction.changeFutureAppointmentMenu();
             switch (selection) {
                 case 0:
                     Patient selected = userInteraction.selectPatient(clinic.getPatients(), "Select new a new patient");
-                    appointment.setPatient(selected);
+                    appointmentSelected.setPatient(selected);
                     autoSaveLoad();
                     break;
                 case 1:
@@ -620,12 +620,12 @@ public class ClinicController {
                     switch (choice) {
                         case 0:
                             LocalDateTime newTime = LocalDateTime.of(
-                                    appointment.getDateTime().getYear(),
-                                    appointment.getDateTime().getMonth(),
-                                    appointment.getDateTime().getDayOfMonth(),
+                                    appointmentSelected.getDateTime().getYear(),
+                                    appointmentSelected.getDateTime().getMonth(),
+                                    appointmentSelected.getDateTime().getDayOfMonth(),
                                     userInteraction.getHour(),
                                     userInteraction.getMinute());
-                            appointment.setDateTime(newTime);
+                            appointmentSelected.setDateTime(newTime);
                             autoSaveLoad();
                             break;
                         case 1:
@@ -633,9 +633,9 @@ public class ClinicController {
                                     userInteraction.getYear(),
                                     userInteraction.getMonth(),
                                     userInteraction.getDay(),
-                                    appointment.getDateTime().getHour(),
-                                    appointment.getDateTime().getMinute());
-                            appointment.setDateTime(newDay);
+                                    appointmentSelected.getDateTime().getHour(),
+                                    appointmentSelected.getDateTime().getMinute());
+                            appointmentSelected.setDateTime(newDay);
                             autoSaveLoad();
                             break;
                         case 2:
@@ -644,10 +644,24 @@ public class ClinicController {
                     break;
                 case 2:
                     //TODO
-                    //PROCEDURE BY PROVIDER
-                    break;
-                case 3:
-                    break;
+                    //PROCEDURE BY PROVIDER  List<Procedure> procedures
+                    Procedure procedure = userInteraction.selectProcedure(appointmentSelected.getProcedures(), "Select which procedure would you like to edit");
+//                    int option = userInteraction.editAppointmentProviderMenu();
+//                    switch (option) {
+//                        case 0:
+//                            break;
+//                        case 1:
+//                            break;
+//                        case 2:
+//                            break;
+//                        default:
+//                            break;
+//                    }
+//
+//
+//                    break;
+//                case 3:
+//                    break;
             }
         } catch (NotFoundException ex) {
             userInteraction.println(ex.getObject());

@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 public class Procedure implements Serializable {
 
-
     private String code = "D";
     private String description;
     private double cost;
@@ -57,5 +56,10 @@ public class Procedure implements Serializable {
             throw new IllegalArgumentException("Cost cannot be negative or bigger than max value");
         }
         this.cost = cost;
+    }
+
+    @Override
+    public String toString() {
+        return "Code: " + getCode() + " | Description: " + getDescription() + " | Cost: " + getCost() + " | Provider: " + getProvider().getName() + " " + getProvider().getLastName();
     }
 }
