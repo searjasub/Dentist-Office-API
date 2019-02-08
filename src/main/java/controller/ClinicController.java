@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Future;
 
 public class ClinicController {
 
@@ -720,8 +721,8 @@ public class ClinicController {
             case 3:
                 deletePatient();
                 break;
-            case 4://TODO
-                //Appointment
+            case 4:
+                deleteAppointment();
                 break;
             case 5:
                 deleteProcedure();
@@ -742,8 +743,7 @@ public class ClinicController {
                 deletePatient();
                 break;
             case 2:
-                //TODO
-                //Appointment
+                deleteAppointment();
                 break;
             case 3:
                 deleteProcedure();
@@ -771,6 +771,17 @@ public class ClinicController {
         for (int i = 0; i < clinic.getPatients().size(); i++) {
             if (patient.getUniqueId() == clinic.getPatients().get(i).getUniqueId()) {
                 clinic.getPatients().remove(patient);
+            }
+        }
+        autoSaveLoad();
+    }
+
+    private void deleteAppointment() throws IOException, ClassNotFoundException {
+        FutureAppointment appointment = userInteraction.selectFutureAppointment(clinic.getFutureAppointments(), "Select appointment to delete");
+        for (int i = 0; i < clinic.getFutureAppointments().size(); i++) {
+            if(appointment.getPatient() == clinic.getFutureAppointments().get(i).getPatient() &&
+            appointment.getDateTime() == clinic.getFutureAppointments().get(i).getDateTime()){
+                clinic.getFutureAppointments().remove(appointment);
             }
         }
         autoSaveLoad();
@@ -841,7 +852,15 @@ public class ClinicController {
             case 2://TODO
                 //SEARCH APPOINTMENTS
                 //By time frame(all appointments between), by provider, by patient, by procedure code
-                Li
+                List<Appointment> appointmentsList = new ArrayList<>();
+                userInteraction.println(defaultMessage);
+                //time fram
+                Provider provider = null;
+                try{
+
+                }catch (NotFoundException ex){
+                    System.out.println(ex.getObject());
+                }
 
 
 
