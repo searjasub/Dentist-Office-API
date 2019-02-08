@@ -85,7 +85,7 @@ public class ClinicController {
     }
 
     private void addAdmin() throws IOException, ClassNotFoundException {
-        User admin = new User("Administrator", "one", "admin", "1234Password", UserRole.ADMINISTRATIVE, true);
+        User admin = new User("Administrator", "one", "Administrator", "1234Password", UserRole.ADMINISTRATIVE, true);
         clinic.getUsers().add(admin);
         autoSaveLoad();
         start();
