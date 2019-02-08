@@ -22,6 +22,8 @@ import java.util.Locale;
 
 /**
  * Controller of the API
+ *
+ * The Clinic controller represents a Dentist Office Management App.
  */
 public class ClinicController {
 
@@ -42,7 +44,9 @@ public class ClinicController {
 
     /**
      * Makes sure there is a directory. If not it will create one with an admin.
-     * It enter
+     * It enters in a infinite loop to run the app until you close it.
+     * The information persist and is automatically saved and load to ensure you are always working wth the current information and not having to restart the app.
+     * Prompts the main menu and everything else depends on that main menu
      */
     public void start() throws IOException, ClassNotFoundException {
         if (makeDirectory()) {
@@ -175,7 +179,7 @@ public class ClinicController {
                     userInteraction.print("The total amount collected by the clinic from during those months is: " + totalAmount);
                 } else {
                     for (int i = 0; i < clinic.getPastAppointments().size(); i++) {
-
+                        //MAP
                     }
 
                 }
