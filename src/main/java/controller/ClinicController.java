@@ -191,6 +191,10 @@ public class ClinicController {
                 userInteraction.println(selected.getName() + "'s balance is: -" + NumberFormat.getCurrencyInstance(new Locale("en", "US")).format(amount));
                 break;
             case 2:
+                //todo
+
+
+
 
                 break;
             case 3:
@@ -299,7 +303,7 @@ public class ClinicController {
     private String checkUniqueUsername() throws IOException {
         String username;
         while (true) {
-            username = userInteraction.getUsername();
+            username = userInteraction.getUsername(false);
             if (loginCredentials.get(username) == null) {
                 return username;
             }
@@ -509,7 +513,7 @@ public class ClinicController {
     }
 
     private void editUsername(User user) throws IOException, ClassNotFoundException {
-        String newUsername = userInteraction.getUsername();
+        String newUsername = userInteraction.getUsername(false);
         user.setUsername(newUsername);
         autoSaveLoad();
     }
@@ -975,6 +979,24 @@ public class ClinicController {
                 }
                 break;
             case 3:
+                //SEARCH USERS
+                List<User> userList = new ArrayList<>();
+                userInteraction.println(defaultMessage);
+                String username = userInteraction.getUsername(true);
+                String firstName = userInteraction.getName(true);
+                String lastName = userInteraction.getLastName(true);
+                for (int i = 0; i < clinic.getUsers().size(); i++) {
+                    if(username.equals(clinic.getUsers().get(i).getUsername())){
+                        userList.add(clinic.getUsers().get(i));
+                    } else if (firstName.equals(clinic.getUsers().get(i).getName())){
+                        userList.add(clinic.getUsers().get(i));
+                    }else if (lastName.equals(clinic.getUsers().get(i).getLastName())){
+                        userList.add(clinic.getUsers().get(i));
+                    }
+                }
+
+                break;
+            case 4:
                 userInteraction.println("Returning to Previous Menu...");
                 break;
             default:

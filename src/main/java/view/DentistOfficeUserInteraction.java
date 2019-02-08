@@ -77,7 +77,7 @@ public interface DentistOfficeUserInteraction {
 
     String getLastName(boolean allowEmpty) throws IOException;
 
-    String getUsername() throws IOException;
+    String getUsername(boolean allowEmpty) throws IOException;
 
     UserRole getUserType() throws IOException;
 
