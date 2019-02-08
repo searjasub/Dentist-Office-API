@@ -24,8 +24,8 @@ public class Appointment implements Serializable {
     }
 
     /**
-     *
-     * @return
+     * 
+     * @return Patient the patient inside of this classs
      */
     public Patient getPatient() {
         return patient;
