@@ -8,7 +8,7 @@ public class Patient extends Person implements Serializable {
 
     private Insurance insurance;
     private PaymentCard paymentCard;
-    private AppointmentRecord appointmentRecords;
+    private double balance;
 
     public Patient(String name, String lastName, int uniqueId, String email, String phoneNumber, Insurance insurance, PaymentCard paymentCard) {
         super(name, lastName, uniqueId, email, phoneNumber);
@@ -35,5 +35,14 @@ public class Patient extends Person implements Serializable {
     @Override
     public String toString() {
         return super.toString() + " | Insurance: " + getInsurance().getName() + " | Payment " + getPaymentCard().toString();
+    }
+
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance += balance;
     }
 }

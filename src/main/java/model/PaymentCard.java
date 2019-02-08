@@ -12,6 +12,7 @@ public class PaymentCard implements Serializable {
     private String cardName;
     private int cvv;
     private int zipCode;
+    //private double initialBalance;
 
     public PaymentCard(String number, int expMonth, int expYear, String cardName, int cvv, int zipCode) {
         this.setNumber(number);

@@ -7,16 +7,19 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Future;
+import java.util.Locale;
 
 public class ClinicController {
 
     private static final String directory = "savables";
+    private final String start = "Select the time range for the production\nFrom:";
+    private final String end = "\nUntil:";
     private Clinic clinic = new Clinic();
     private User currentUser;
     private DentistOfficeUserInteraction userInteraction;
@@ -131,18 +134,16 @@ public class ClinicController {
         switch (selection) {
             case 0:
                 //PRODUCTION
+                userInteraction.print(start);
                 int totalAmount = 0;
-
-                userInteraction.print("Select the time range for the production\nFrom:");
                 LocalDate start = userInteraction.getLocalDate();
-                userInteraction.print("\nUntil:");
+                userInteraction.print(end);
                 LocalDate end = userInteraction.getLocalDate();
                 for (int i = 0; i < clinic.getPastAppointments().size(); i++) {
                     LocalDate tmp = LocalDate.of(
                             clinic.getPastAppointments().get(i).getDateTime().getYear(),
                             clinic.getPastAppointments().get(i).getDateTime().getMonth(),
                             clinic.getPastAppointments().get(i).getDateTime().getDayOfMonth());
-
                     if (tmp.isAfter(start) && tmp.isBefore(end)) {
                         if (clinic.getPastAppointments().get(i).isCompleted()) {
                             for (int j = 0; j < clinic.getPastAppointments().get(i).getProcedures().size(); j++) {
@@ -155,8 +156,12 @@ public class ClinicController {
                 break;
             case 1:
                 //PATIENT BALANCE
+                Patient selected = userInteraction.selectPatient(clinic.getPatients(), "Select a Patient", false);
+                double amount = clinic.getAccountBalance(selected.getUniqueId());
+                userInteraction.println(selected.getName() + "'s balance is: -" + NumberFormat.getCurrencyInstance(new Locale("en", "US")).format(amount));
                 break;
             case 2:
+                //TODO
                 //COLLECTIONS
                 break;
             case 3:
@@ -187,6 +192,13 @@ public class ClinicController {
                                         appointment.isCompleted(),
                                         getProcedureRecords(appointment.getPatient(), tmp));
 
+                                Payment payment = new Payment(
+                                        userInteraction.chargeAmount(),
+                                        appointment.getPatient(),
+                                        userInteraction.getSource());
+
+                                clinic.receivePayment(payment);
+                                appointment.getPatient().setBalance(-payment.getAmount());
                                 clinic.getPastAppointments().add(ap);
                                 clinic.getFutureAppointments().remove(tmp);
                                 autoSaveLoad();
@@ -332,8 +344,8 @@ public class ClinicController {
     private void addAppointment() throws IOException, ClassNotFoundException {
         try {
             FutureAppointment fa = new FutureAppointment(
-                    userInteraction.selectPatient(clinic.getPatients(), "Select Patient"),
-                    userInteraction.getFutureDate(),
+                    userInteraction.selectPatient(clinic.getPatients(), "Select Patient", false),
+                    userInteraction.getFutureDate(false),
                     false,
                     addProcedures());
             clinic.getFutureAppointments().add(fa);
@@ -360,7 +372,7 @@ public class ClinicController {
                     userInteraction.getCode(),
                     userInteraction.getDescription(),
                     userInteraction.getCost(),
-                    userInteraction.selectProvider(clinic.getProviders(), "Choose a provider"));
+                    userInteraction.selectProvider(clinic.getProviders(), "Choose a provider", false));
             clinic.getProcedures().add(procedure);
             autoSaveLoad();
         } catch (NotFoundException ex) {
@@ -481,7 +493,7 @@ public class ClinicController {
 
     private void editProviderMenu() throws IOException, ClassNotFoundException {
         try {
-            Provider provider = userInteraction.selectProvider(clinic.getProviders(), "Which Provider Would you like to Change?");
+            Provider provider = userInteraction.selectProvider(clinic.getProviders(), "Which Provider Would you like to Change?", false);
             int selection = userInteraction.changeProviderInformationMenu();
             switch (selection) {
                 case 0:
@@ -509,7 +521,7 @@ public class ClinicController {
 
     private void editPatientMenu() throws IOException, ClassNotFoundException {
         try {
-            Patient patient = userInteraction.selectPatient(clinic.getPatients(), "Choose A Patient to Edit");
+            Patient patient = userInteraction.selectPatient(clinic.getPatients(), "Choose A Patient to Edit", false);
             int selection = userInteraction.changePatientInformationMenu();
             switch (selection) {
                 case 0:
@@ -605,7 +617,7 @@ public class ClinicController {
             int selection = userInteraction.changeFutureAppointmentMenu();
             switch (selection) {
                 case 0:
-                    Patient selected = userInteraction.selectPatient(clinic.getPatients(), "Select new a new patient");
+                    Patient selected = userInteraction.selectPatient(clinic.getPatients(), "Select new a new patient", false);
                     appointmentSelected.setPatient(selected);
                     autoSaveLoad();
                     break;
@@ -633,29 +645,40 @@ public class ClinicController {
                             autoSaveLoad();
                             break;
                         case 2:
+                            LocalDateTime localDateTime = LocalDateTime.of(
+                                    userInteraction.getYear(),
+                                    userInteraction.getMonth(),
+                                    userInteraction.getDay(),
+                                    userInteraction.getHour(),
+                                    userInteraction.getMinute());
+                            appointmentSelected.setDateTime(localDateTime);
+                            autoSaveLoad();
+                            break;
+                        case 3:
                             break;
                     }
                     break;
                 case 2:
-                    //TODO
-                    //PROCEDURE BY PROVIDER  List<Procedure> procedures
-                    Procedure procedure = userInteraction.selectProcedure(appointmentSelected.getProcedures(), "Select which procedure would you like to edit");
-//                    int option = userInteraction.editAppointmentProviderMenu();
-//                    switch (option) {
-//                        case 0:
-//                            break;
-//                        case 1:
-//                            break;
-//                        case 2:
-//                            break;
-//                        default:
-//                            break;
-//                    }
-//
-//
-//                    break;
-//                case 3:
-//                    break;
+                    int option = userInteraction.editAppointmentProviderMenu();
+                    switch (option) {
+                        case 0:
+                            Procedure procedure = userInteraction.selectProcedure(clinic.getProcedures(), "Select Procedure to add");
+                            appointmentSelected.getProcedures().add(procedure);
+                            autoSaveLoad();
+                            break;
+                        case 1:
+                            Procedure procedureToRemove = userInteraction.selectProcedure(clinic.getProcedures(), "Selece Procedure to delete");
+                            appointmentSelected.getProcedures().remove(procedureToRemove);
+                            autoSaveLoad();
+                            break;
+                        case 2:
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case 3:
+                    break;
             }
         } catch (NotFoundException ex) {
             userInteraction.println(ex.getObject());
@@ -687,7 +710,7 @@ public class ClinicController {
                     break;
                 case 4:
                     //PROVIDER
-                    Provider provider = userInteraction.selectProvider(clinic.getProviders(), "Select a provider");
+                    Provider provider = userInteraction.selectProvider(clinic.getProviders(), "Select a provider", false);
                     procedure.setProvider(provider);
                     autoSaveLoad();
                     break;
@@ -757,7 +780,7 @@ public class ClinicController {
     }
 
     private void deleteProvider() throws IOException, ClassNotFoundException {
-        Provider provider = userInteraction.selectProvider(clinic.getProviders(), "Select a Provider to delete");
+        Provider provider = userInteraction.selectProvider(clinic.getProviders(), "Select a Provider to delete", false);
         for (int i = 0; i < clinic.getProviders().size(); i++) {
             if (provider.getUniqueId() == clinic.getProviders().get(i).getUniqueId()) {
                 clinic.getProviders().remove(provider);
@@ -767,7 +790,7 @@ public class ClinicController {
     }
 
     private void deletePatient() throws IOException, ClassNotFoundException {
-        Patient patient = userInteraction.selectPatient(clinic.getPatients(), "Select a Patient to delete");
+        Patient patient = userInteraction.selectPatient(clinic.getPatients(), "Select a Patient to delete", false);
         for (int i = 0; i < clinic.getPatients().size(); i++) {
             if (patient.getUniqueId() == clinic.getPatients().get(i).getUniqueId()) {
                 clinic.getPatients().remove(patient);
@@ -779,8 +802,8 @@ public class ClinicController {
     private void deleteAppointment() throws IOException, ClassNotFoundException {
         FutureAppointment appointment = userInteraction.selectFutureAppointment(clinic.getFutureAppointments(), "Select appointment to delete");
         for (int i = 0; i < clinic.getFutureAppointments().size(); i++) {
-            if(appointment.getPatient() == clinic.getFutureAppointments().get(i).getPatient() &&
-            appointment.getDateTime() == clinic.getFutureAppointments().get(i).getDateTime()){
+            if (appointment.getPatient() == clinic.getFutureAppointments().get(i).getPatient() &&
+                    appointment.getDateTime() == clinic.getFutureAppointments().get(i).getDateTime()) {
                 clinic.getFutureAppointments().remove(appointment);
             }
         }
@@ -806,7 +829,6 @@ public class ClinicController {
                 String providerName = userInteraction.getName(true);
                 String providerLastName = userInteraction.getLastName(true);
                 ProviderType titleSelected = userInteraction.getProviderTypeWithEmptyEntry();
-
 
                 for (int i = 0; i < clinic.getProviders().size(); i++) {
                     if (providerName.equals(clinic.getProviders().get(i).getName())) {
@@ -849,23 +871,77 @@ public class ClinicController {
                     userInteraction.println(userInteraction.removeCharacters(patientList.toString()));
                 }
                 break;
-            case 2://TODO
-                //SEARCH APPOINTMENTS
+            case 2:
                 //By time frame(all appointments between), by provider, by patient, by procedure code
-                List<Appointment> appointmentsList = new ArrayList<>();
+                List<FutureAppointment> appointmentsList = new ArrayList<>();
+                List<AppointmentRecord> appointmentRecords = new ArrayList<>();
                 userInteraction.println(defaultMessage);
-                //time fram
-                Provider provider = null;
-                try{
+                //time frame
+                //TODO
+                userInteraction.println(start);
+                LocalDateTime rawStart = userInteraction.getFutureDate(true);
+                LocalDate start = rawStart.toLocalDate();
+                userInteraction.println(end);
+                LocalDateTime rawEnd = userInteraction.getFutureDate(true);
+                LocalDate end = rawEnd.toLocalDate();
 
-                }catch (NotFoundException ex){
-                    System.out.println(ex.getObject());
+                for (int i = 0, j = 0; i < clinic.getPastAppointments().size() && j < clinic.getFutureAppointments().size(); i++, j++) {
+                    LocalDate tmp1 = LocalDate.of(
+                            clinic.getPastAppointments().get(i).getDateTime().getYear(),
+                            clinic.getPastAppointments().get(i).getDateTime().getMonth(),
+                            clinic.getPastAppointments().get(i).getDateTime().getDayOfMonth());
+
+                    LocalDate tmp2 = LocalDate.of(
+                            clinic.getFutureAppointments().get(j).getDateTime().getYear(),
+                            clinic.getFutureAppointments().get(j).getDateTime().getMonth(),
+                            clinic.getFutureAppointments().get(j).getDateTime().getDayOfMonth());
+
+                    
                 }
 
+                Provider provider = null;
+                Patient patient = null;
+                try {
+                    provider = userInteraction.selectProvider(clinic.getProviders(), "Select a Provider to search for", true);
+                    patient = userInteraction.selectPatient(clinic.getPatients(), "Select a Patient to search for", true);
+                } catch (NotFoundException ex) {
+                    System.out.println(ex.getObject());
+                }
+                String code = userInteraction.getCode();
 
+                for (int i = 0; i < clinic.getFutureAppointments().size(); i++) {
+                    for (int j = 0; j < clinic.getFutureAppointments().get(i).getProcedures().size(); j++) {
+                        if (clinic.getFutureAppointments().get(i).getProcedures().get(j).getProvider() == provider) {
+                            appointmentsList.add(clinic.getFutureAppointments().get(i));
+                        } else if (patient == clinic.getFutureAppointments().get(i).getPatient()) {
+                            appointmentsList.add(clinic.getFutureAppointments().get(i));
+                        } else if (code.equals(clinic.getFutureAppointments().get(i).getProcedures().get(j).getCode())) {
+                            appointmentsList.add(clinic.getFutureAppointments().get(i));
+                        }
+                    }
+                }
 
+                for (int i = 0; i < clinic.getPastAppointments().size(); i++) {
+                    for (int j = 0; j < clinic.getPastAppointments().get(i).getProcedures().size(); j++) {
+                        if (clinic.getPastAppointments().get(i).getProcedures().get(j).getProcedure().getProvider() == provider) {
+                            appointmentRecords.add(clinic.getPastAppointments().get(i));
+                        } else if (patient == clinic.getPastAppointments().get(i).getPatient()) {
+                            appointmentRecords.add(clinic.getPastAppointments().get(i));
+                        } else if (code.equals(clinic.getPastAppointments().get(i).getProcedures().get(j).getProcedure().getCode())) {
+                            appointmentRecords.add(clinic.getPastAppointments().get(i));
+                        }
+                    }
+                }
 
-
+                if (appointmentsList.isEmpty() && appointmentRecords.isEmpty()) {
+                    userInteraction.println(userInteraction.removeCharacters(clinic.getFutureAppointments().toString()));
+                    userInteraction.println(userInteraction.removeCharacters(clinic.getPastAppointments().toString()));
+                } else if (!appointmentsList.isEmpty() && appointmentRecords.isEmpty()) {
+                    userInteraction.println(userInteraction.removeCharacters(clinic.getFutureAppointments().toString()));
+                } else {
+                    userInteraction.println(userInteraction.removeCharacters(appointmentRecords.toString()));
+                    userInteraction.println(userInteraction.removeCharacters(appointmentsList.toString()));
+                }
                 break;
             case 3:
                 userInteraction.println("Returning to Previous Menu...");
