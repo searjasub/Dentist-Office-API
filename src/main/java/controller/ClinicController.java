@@ -15,20 +15,35 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * @author Searjasub Lopez
+ * @author Daniel Baydak
+ */
+
+/**
+ * Controller of the API
+ */
 public class ClinicController {
 
     private static final String directory = "savables";
-    private final String start = "Select the time range for the production\nFrom:";
+    private final String start = "Enter the time range.\nFrom:";
     private final String end = "\nUntil:";
     private Clinic clinic = new Clinic();
     private User currentUser;
     private DentistOfficeUserInteraction userInteraction;
     private HashMap<String, String> loginCredentials = new HashMap<>();
 
+    /**
+     * @param ui instance of the user interaction calling project
+     */
     public ClinicController(DentistOfficeUserInteraction ui) {
         this.userInteraction = ui;
     }
 
+    /**
+     * Makes sure there is a directory. If not it will create one with an admin.
+     * It enter
+     */
     public void start() throws IOException, ClassNotFoundException {
         if (makeDirectory()) {
             save();
@@ -133,26 +148,37 @@ public class ClinicController {
     private void viewMenuHandler(int selection) throws IOException, ClassNotFoundException {
         switch (selection) {
             case 0:
+                //TODO
                 //PRODUCTION
-                userInteraction.print(start);
                 int totalAmount = 0;
+                userInteraction.print(start);
                 LocalDate start = userInteraction.getLocalDate();
                 userInteraction.print(end);
                 LocalDate end = userInteraction.getLocalDate();
-                for (int i = 0; i < clinic.getPastAppointments().size(); i++) {
-                    LocalDate tmp = LocalDate.of(
-                            clinic.getPastAppointments().get(i).getDateTime().getYear(),
-                            clinic.getPastAppointments().get(i).getDateTime().getMonth(),
-                            clinic.getPastAppointments().get(i).getDateTime().getDayOfMonth());
-                    if (tmp.isAfter(start) && tmp.isBefore(end)) {
-                        if (clinic.getPastAppointments().get(i).isCompleted()) {
-                            for (int j = 0; j < clinic.getPastAppointments().get(i).getProcedures().size(); j++) {
-                                totalAmount += clinic.getPastAppointments().get(i).getProcedures().get(j).getCost();
+
+                int monthOrDay = userInteraction.selectMonthOrDay();
+
+                if (monthOrDay == 0) {
+                    for (int i = 0; i < clinic.getPastAppointments().size(); i++) {
+                        LocalDate tmp = LocalDate.of(
+                                clinic.getPastAppointments().get(i).getDateTime().getYear(),
+                                clinic.getPastAppointments().get(i).getDateTime().getMonth(),
+                                clinic.getPastAppointments().get(i).getDateTime().getDayOfMonth());
+                        if (tmp.isAfter(start) && tmp.isBefore(end)) {
+                            if (clinic.getPastAppointments().get(i).isCompleted()) {
+                                for (int j = 0; j < clinic.getPastAppointments().get(i).getProcedures().size(); j++) {
+                                    totalAmount += clinic.getPastAppointments().get(i).getProcedures().get(j).getCost();
+                                }
                             }
                         }
                     }
+                    userInteraction.print("The total amount collected by the clinic from during those months is: " + totalAmount);
+                } else {
+                    for (int i = 0; i < clinic.getPastAppointments().size(); i++) {
+
+                    }
+
                 }
-                userInteraction.print("The total amount collected by the clinic from\n" + start + "  -  " + end + "\n is: " + totalAmount);
                 break;
             case 1:
                 //PATIENT BALANCE
@@ -161,8 +187,7 @@ public class ClinicController {
                 userInteraction.println(selected.getName() + "'s balance is: -" + NumberFormat.getCurrencyInstance(new Locale("en", "US")).format(amount));
                 break;
             case 2:
-                //TODO
-                //COLLECTIONS
+
                 break;
             case 3:
                 //APPOINTMENTS
@@ -750,7 +775,7 @@ public class ClinicController {
             case 5:
                 deleteProcedure();
                 break;
-            case 6://exit
+            case 6:
                 break;
             default:
                 break;
@@ -771,7 +796,7 @@ public class ClinicController {
             case 3:
                 deleteProcedure();
                 break;
-            case 4://exit
+            case 4:
                 userInteraction.println("Returning to previous menu...\n");
                 break;
             default:
@@ -876,8 +901,6 @@ public class ClinicController {
                 List<FutureAppointment> appointmentsList = new ArrayList<>();
                 List<AppointmentRecord> appointmentRecords = new ArrayList<>();
                 userInteraction.println(defaultMessage);
-                //time frame
-                //TODO
                 userInteraction.println(start);
                 LocalDateTime rawStart = userInteraction.getFutureDate(true);
                 LocalDate start = rawStart.toLocalDate();
@@ -896,9 +919,13 @@ public class ClinicController {
                             clinic.getFutureAppointments().get(j).getDateTime().getMonth(),
                             clinic.getFutureAppointments().get(j).getDateTime().getDayOfMonth());
 
-                    
+                    if (tmp1.isAfter(start) && tmp1.isBefore(end)) {
+                        appointmentRecords.add(clinic.getPastAppointments().get(i));
+                    }
+                    if (tmp2.isAfter(start) && tmp2.isBefore(end)) {
+                        appointmentsList.add(clinic.getFutureAppointments().get(j));
+                    }
                 }
-
                 Provider provider = null;
                 Patient patient = null;
                 try {
