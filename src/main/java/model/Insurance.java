@@ -2,6 +2,9 @@ package model;
 
 import java.io.Serializable;
 
+/**
+ * Defines what an Insurance is
+ */
 public class Insurance implements Serializable {
 
     private static final long serialVersionUID = -8264932588394084499L;

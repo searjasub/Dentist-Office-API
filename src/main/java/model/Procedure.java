@@ -2,6 +2,9 @@ package model;
 
 import java.io.Serializable;
 
+/**
+ * Class that will define what a Procedure is
+ */
 public class Procedure implements Serializable {
 
     private static final long serialVersionUID = -5055699438924863645L;
@@ -12,10 +15,12 @@ public class Procedure implements Serializable {
     private Provider provider;
 
     /**
-     * Constructs the procedure
-     * takes in a code, description, cost, and provider
+     * Constructor that creates a Procedure
+     * @param code the procedure code
+     * @param description the description of what was done during the procedure
+     * @param cost how much this procedure cost
+     * @param provider who performed this procedure
      */
-    
     public Procedure(String code, String description, double cost, Provider provider) {
         this.setProvider(provider);
         this.setCode(code);
@@ -24,37 +29,29 @@ public class Procedure implements Serializable {
     }
     
     /**
-     * 
-     * @return the provider that the procedure wil use 
+     * @return the provider that performed this procedure
      */
-
     public Provider getProvider() {
         return provider;
     }
     
     /**
-     * 
-     * Sets the provider that the procedure will use
+     * @param provider the Prvodider who will perform the procedure
      */
-
     public void setProvider(Provider provider) {
         this.provider = provider;
     }
 
     /**
-     * 
-     * @return the code of the procedure (String)
+     * @return The code of the procedure
      */
-    
     public String getCode() {
         return code;
     }
 
     /**
-     * 
-     * sets the code of the pocedure
+     * @param code sets the code of the procedure
      */
-    
     public void setCode(String code) {
         if (code == null || (code.trim()).isEmpty()) {
             throw new IllegalArgumentException("You cannot have nothing for the code");
@@ -63,19 +60,15 @@ public class Procedure implements Serializable {
     }
 
     /**
-     * 
      * @return the description of the procedure
      */
-    
     public String getDescription() {
         return description;
     }
-    
-    /**
-     * 
-     * sets the description of the procedure
-     */
 
+    /**
+     * @param description sets the description of the procedure
+     */
     public void setDescription(String description) {
         if (description == null || (description.trim()).isEmpty()) {
             throw new IllegalArgumentException("Please add a description");
@@ -84,7 +77,6 @@ public class Procedure implements Serializable {
     }
 
     /**
-     * 
      * @return the cost of te procedure
      */
     public double getCost() {
@@ -92,8 +84,7 @@ public class Procedure implements Serializable {
     }
 
     /**
-     * sets the cost of the procedure
-     * 
+     * @param cost Set's the cost of the procecure
      */
     public void setCost(double cost) {
         if (cost < 0 || cost > Double.MAX_VALUE) {
@@ -103,8 +94,7 @@ public class Procedure implements Serializable {
     }
 
     /**
-     * 
-     * @return simple tostring that returns all needed info
+     * @return The information of the Procedure
      */
     @Override
     public String toString() {
