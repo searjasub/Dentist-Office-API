@@ -32,17 +32,18 @@ public class Patient extends Person implements Serializable {
         this.paymentCard = paymentCard;
     }
 
-    @Override
-    public String toString() {
-        return super.toString() + " | Insurance: " + getInsurance().getName() + " | Payment " + getPaymentCard().toString();
-    }
-
-
     public double getBalance() {
         return balance;
     }
 
     public void setBalance(double balance) {
         this.balance += balance;
+    }
+
+
+
+    @Override
+    public String toString() {
+        return super.toString() + " | Insurance: " + getInsurance().getName() + " | Payment " + getPaymentCard().toString();
     }
 }

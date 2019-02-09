@@ -135,4 +135,9 @@ public class User implements Serializable {
     public void setFirstTimePassChange(boolean firstTimePassChange) {
         this.firstTimePassChange = firstTimePassChange;
     }
+
+    @Override
+    public String toString() {
+        return "Username: " + getUsername() + " | Name: " + getName() + " " + getLastName() + " | ["+ getUserRole().toString();
+    }
 }

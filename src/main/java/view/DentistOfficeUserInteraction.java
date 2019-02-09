@@ -144,4 +144,6 @@ public interface DentistOfficeUserInteraction {
     double chargeAmount() throws IOException;
 
     int selectMonthOrDay() throws IOException;
+
+    int gruopBy() throws IOException;
 }
