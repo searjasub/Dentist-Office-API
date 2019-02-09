@@ -11,6 +11,10 @@ public enum ProviderType {
         this.type = type;
     }
 
+    /**
+     * 
+     * @return the type of provider
+     */
     public String getType() {
         return type;
     }
