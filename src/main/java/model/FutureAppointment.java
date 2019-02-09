@@ -21,4 +21,9 @@ public class FutureAppointment extends Appointment {
     public void setProcedures(List<Procedure> procedures) {
         this.procedures = procedures;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

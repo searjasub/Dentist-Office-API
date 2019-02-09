@@ -50,4 +50,9 @@ public class Appointment implements Serializable {
     public void setCompleted(boolean completed) {
         isCompleted = completed;
     }
+
+    @Override
+    public String toString() {
+        return "Patient: " + patient.getName() + " " + patient.getLastName() + " [" + dateTime.toString() + "]";
+    }
 }

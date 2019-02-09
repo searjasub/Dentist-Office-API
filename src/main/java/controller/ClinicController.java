@@ -10,10 +10,7 @@ import java.nio.file.Paths;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * @author Searjasub Lopez
@@ -22,7 +19,7 @@ import java.util.Locale;
 
 /**
  * Controller of the API
- *
+ * <p>
  * The Clinic controller represents a Dentist Office Management App.
  */
 public class ClinicController {
@@ -186,15 +183,26 @@ public class ClinicController {
                 break;
             case 1:
                 //PATIENT BALANCE
+                int selection3 = userInteraction.gruopBy();
+                switch (selection3){
+                    case 0://By largest balance
+
+
+
+
+                        break;
+                    case 1: // by last name, first name
+
+                        break;
+                    case 2:
+                        break;
+                }
                 Patient selected = userInteraction.selectPatient(clinic.getPatients(), "Select a Patient", false);
                 double amount = clinic.getAccountBalance(selected.getUniqueId());
                 userInteraction.println(selected.getName() + "'s balance is: -" + NumberFormat.getCurrencyInstance(new Locale("en", "US")).format(amount));
                 break;
             case 2:
                 //todo
-
-
-
 
                 break;
             case 3:
@@ -986,15 +994,20 @@ public class ClinicController {
                 String firstName = userInteraction.getName(true);
                 String lastName = userInteraction.getLastName(true);
                 for (int i = 0; i < clinic.getUsers().size(); i++) {
-                    if(username.equals(clinic.getUsers().get(i).getUsername())){
+                    if (username.equals(clinic.getUsers().get(i).getUsername())) {
                         userList.add(clinic.getUsers().get(i));
-                    } else if (firstName.equals(clinic.getUsers().get(i).getName())){
+                    } else if (firstName.equals(clinic.getUsers().get(i).getName())) {
                         userList.add(clinic.getUsers().get(i));
-                    }else if (lastName.equals(clinic.getUsers().get(i).getLastName())){
+                    } else if (lastName.equals(clinic.getUsers().get(i).getLastName())) {
                         userList.add(clinic.getUsers().get(i));
                     }
                 }
 
+                if (userList.isEmpty()) {
+                    userInteraction.println(userInteraction.removeCharacters(clinic.getUsers().toString()));
+                } else {
+                    userInteraction.println(userInteraction.removeCharacters(userList.toString()));
+                }
                 break;
             case 4:
                 userInteraction.println("Returning to Previous Menu...");
