@@ -2,7 +2,6 @@ package model;
 
 /**
  * Defines a provider. A Provider is a person and extends all its parameters and methods
- * @extends Person with all his information
  */
 public class Provider extends Person {
 

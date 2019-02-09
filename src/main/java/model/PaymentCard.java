@@ -48,7 +48,7 @@ public class PaymentCard implements Serializable {
 
     /**
      * Sets the expiration month on the card
-     * @param expMonth
+     * @param expMonth new expiration month
      */
     public void setExpMonth(int expMonth) {
         if (expMonth < 0 || expMonth > 12) {

@@ -40,7 +40,7 @@ public class Patient extends Person implements Serializable, Comparable<Patient>
 
     /**
      * Sets the Insurance of the Patient
-     * @param insurance
+     * @param insurance new insurance
      * @see Insurance for more information
      */
     public void setInsurance(Insurance insurance) {

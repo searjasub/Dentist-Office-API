@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
-  <zoom_level>6</zoom_level>
+  <zoom_level>10</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>198</x>
-      <y>78</y>
-      <w>252</w>
-      <h>318</h>
+      <x>1390</x>
+      <y>1260</y>
+      <w>420</w>
+      <h>490</h>
     </coordinates>
     <panel_attributes>model::Clinic
 --
@@ -40,17 +40,18 @@
 +setUsers(List&lt;User&gt; users): void
 +getInsurances(): List&lt;Insurance&gt;
 +setInsurances(List&lt;Insurance&gt; insurances): void
---
-</panel_attributes>
+
+
+layer=2</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>576</x>
-      <y>78</y>
-      <w>390</w>
-      <h>240</h>
+      <x>1950</x>
+      <y>1610</y>
+      <w>650</w>
+      <h>360</h>
     </coordinates>
     <panel_attributes>model::PaymentCard
 --
@@ -75,17 +76,16 @@
 +getZipCode(): int
 +setZipCode(int zipCode): void
 +toString(): String
---
-</panel_attributes>
+layer=2</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1308</x>
-      <y>804</y>
-      <w>354</w>
-      <h>198</h>
+      <x>2840</x>
+      <y>1260</y>
+      <w>590</w>
+      <h>290</h>
     </coordinates>
     <panel_attributes>model::Person
 --
@@ -106,17 +106,18 @@
 +getPhoneNumber(): String
 +setPhoneNumber(String phoneNumber): void
 +toString(): String
---
-</panel_attributes>
+
+group=2
+layer=2</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>990</x>
-      <y>558</y>
-      <w>366</w>
-      <h>198</h>
+      <x>2840</x>
+      <y>2160</y>
+      <w>610</w>
+      <h>300</h>
     </coordinates>
     <panel_attributes>model::Procedure
 --
@@ -137,17 +138,18 @@
 +setDescription(String description): void
 +getCost(): double
 +setCost(double cost): void
---
-</panel_attributes>
+
+
+layer=2</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1386</x>
-      <y>552</y>
-      <w>504</w>
-      <h>198</h>
+      <x>1950</x>
+      <y>1260</y>
+      <w>840</w>
+      <h>330</h>
     </coordinates>
     <panel_attributes>model::ProcedureRecord
 --
@@ -168,17 +170,18 @@
 +setProcedure(Procedure procedure): void
 +getCost(): double
 +setCost(double cost): void
---
-</panel_attributes>
+
+
+layer=2</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1620</x>
-      <y>1140</y>
-      <w>372</w>
-      <h>198</h>
+      <x>1950</x>
+      <y>2430</y>
+      <w>630</w>
+      <h>300</h>
     </coordinates>
     <panel_attributes>model::User
 --
@@ -199,17 +202,18 @@
 +getUserRole(): UserRole
 +setUserRole(UserRole userRole): void
 +changePassword(String password): void
---
-</panel_attributes>
+
+
+layer=2</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1026</x>
-      <y>1182</y>
-      <w>246</w>
-      <h>138</h>
+      <x>3340</x>
+      <y>1590</y>
+      <w>410</w>
+      <h>200</h>
     </coordinates>
     <panel_attributes>model::Insurance
 --
@@ -224,17 +228,17 @@
 +setGroupId(String groupId): void
 +getMemberId(): String
 +setMemberId(String memberId): void
---
-</panel_attributes>
+group=2
+layer=2</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1026</x>
-      <y>1044</y>
-      <w>546</w>
-      <h>126</h>
+      <x>2840</x>
+      <y>1950</y>
+      <w>910</w>
+      <h>180</h>
     </coordinates>
     <panel_attributes>model::Patient
 --
@@ -248,17 +252,18 @@
 +getPaymentCard(): PaymentCard
 +setPaymentCard(PaymentCard paymentCard): void
 +toString(): String
---
-</panel_attributes>
+
+group=2
+layer=2</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>336</x>
-      <y>822</y>
-      <w>240</w>
-      <h>108</h>
+      <x>1950</x>
+      <y>1990</y>
+      <w>400</w>
+      <h>150</h>
     </coordinates>
     <panel_attributes>model::Appointment
 --
@@ -270,17 +275,18 @@
 +setPatient(Patient patient): void
 +getDateTime(): LocalDateTime
 +setDateTime(LocalDateTime dateTime): void
---
-</panel_attributes>
+
+group=1
+layer=2</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1626</x>
-      <y>1044</y>
-      <w>432</w>
-      <h>84</h>
+      <x>3030</x>
+      <y>1810</y>
+      <w>720</w>
+      <h>120</h>
     </coordinates>
     <panel_attributes>model::Provider
 --
@@ -290,17 +296,18 @@
 +getTitle(): ProviderType
 +setTitle(ProviderType title): void
 +toString(): String
---
-</panel_attributes>
+
+group=2
+layer=2</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>24</x>
-      <y>954</y>
-      <w>402</w>
-      <h>72</h>
+      <x>2060</x>
+      <y>2180</y>
+      <w>670</w>
+      <h>100</h>
     </coordinates>
     <panel_attributes>model::AppointmentRecord
 --
@@ -309,17 +316,19 @@
 +AppointmentRecord(Patient patient, LocalDateTime dateTime, List&lt;ProcedureRecord&gt; procedures): ctor
 +getProcedures(): List&lt;ProcedureRecord&gt;
 +setProcedures(List&lt;ProcedureRecord&gt; procedures): void
---
-</panel_attributes>
+
+
+group=1
+layer=2</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>444</x>
-      <y>954</y>
-      <w>468</w>
-      <h>72</h>
+      <x>1950</x>
+      <y>2300</y>
+      <w>780</w>
+      <h>100</h>
     </coordinates>
     <panel_attributes>model::FutureAppointment
 --
@@ -328,35 +337,19 @@
 +FutureAppointment(Patient patient, LocalDateTime dateTime, HashMap&lt;Provider, Procedure&gt; procedureByProvider): ctor
 +getProcedureByProvider(): Map&lt;Provider, Procedure&gt;
 +setProcedureByProvider(HashMap&lt;Provider, Procedure&gt; procedureByProvider): void
---
-</panel_attributes>
+
+
+group=1
+layer=2</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1200</x>
-      <y>456</y>
-      <w>96</w>
-      <h>66</h>
-    </coordinates>
-    <panel_attributes>model::Payment
---
--amount: double
--patient: Patient
--source: Source
---
---
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1014</x>
-      <y>336</y>
-      <w>162</w>
-      <h>78</h>
+      <x>1390</x>
+      <y>1770</y>
+      <w>270</w>
+      <h>130</h>
     </coordinates>
     <panel_attributes>model::NotFoundException
 --
@@ -365,21 +358,21 @@
 +NotFoundException(String object): ctor
 +getObject(): String
 +setObject(String object): void
---
-</panel_attributes>
+
+
+layer=2</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1902</x>
-      <y>96</y>
-      <w>408</w>
-      <h>684</h>
+      <x>1920</x>
+      <y>160</y>
+      <w>680</w>
+      <h>1040</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 view::DentistOfficeUserInteraction
---
 --
 ~welcome(): void
 ~mainMenu(): int
@@ -442,17 +435,18 @@ view::DentistOfficeUserInteraction
 ~getMinute(): int
 ~getInput(String msg, boolean allowEmpty): String
 ~removeCharacters(String content): String
---
-</panel_attributes>
+
+group=7
+layer=1</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>714</x>
-      <y>336</y>
-      <w>252</w>
-      <h>474</h>
+      <x>1390</x>
+      <y>160</y>
+      <w>420</w>
+      <h>710</h>
     </coordinates>
     <panel_attributes>controller::ClinicController
 --
@@ -499,19 +493,156 @@ view::DentistOfficeUserInteraction
 -save(): void
 -load(): void
 -makeDirectory(): boolean
+
+
+layer=2
+group=6</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3350</x>
+      <y>1540</y>
+      <w>30</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2950</x>
+      <y>1540</y>
+      <w>30</w>
+      <h>430</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;410.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3110</x>
+      <y>1540</y>
+      <w>30</w>
+      <h>290</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;270.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1990</x>
+      <y>2130</y>
+      <w>30</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2080</x>
+      <y>2130</y>
+      <w>30</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1130</x>
+      <y>190</y>
+      <w>280</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;260.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1800</x>
+      <y>500</y>
+      <w>140</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;120.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>800</x>
+      <y>1430</y>
+      <w>610</w>
+      <h>440</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;420.0;10.0;420.0;420.0;590.0;420.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2110</x>
+      <y>60</y>
+      <w>190</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;170.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1800</x>
+      <y>320</y>
+      <w>90</w>
+      <h>1000</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;70.0;10.0;70.0;980.0;10.0;980.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1800</x>
+      <y>1390</y>
+      <w>170</w>
+      <h>270</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;130.0;10.0;130.0;250.0;150.0;250.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>1380</x>
+      <y>1230</y>
+      <w>2380</w>
+      <h>1610</h>
+    </coordinates>
+    <panel_attributes>model
 --
-</panel_attributes>
+bg=pink
+group=5</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>3450</x>
-      <y>0</y>
-      <w>936</w>
-      <h>1032</h>
+      <x>0</x>
+      <y>100</y>
+      <w>1180</w>
+      <h>1470</h>
     </coordinates>
-    <panel_attributes>EmptyPackage
+    <panel_attributes>DentistOffice - Project
 --
 bg=#BDE8FF</panel_attributes>
     <additional_attributes/>
@@ -519,10 +650,10 @@ bg=#BDE8FF</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>3558</x>
-      <y>66</y>
-      <w>450</w>
-      <h>900</h>
+      <x>60</x>
+      <y>180</y>
+      <w>750</w>
+      <h>1330</h>
     </coordinates>
     <panel_attributes>view::UserInteraction
 --
@@ -607,24 +738,157 @@ bg=#BDE8FF</panel_attributes>
 +getMinute(): int
 +getInput(String msg, boolean allowEmpty): String
 +removeCharacters(String content): String
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>30</x>
+      <y>140</y>
+      <w>810</w>
+      <h>1400</h>
+    </coordinates>
+    <panel_attributes>view
 --
-</panel_attributes>
+bg=orange
+layer=1</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>4104</x>
-      <y>90</y>
-      <w>156</w>
-      <h>150</h>
+      <x>880</x>
+      <y>170</y>
+      <w>260</w>
+      <h>70</h>
     </coordinates>
-    <panel_attributes>::Main
---
+    <panel_attributes>Main
 --
 +main(String[] args): void
+
+
+layer=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>1380</x>
+      <y>130</y>
+      <w>440</w>
+      <h>750</h>
+    </coordinates>
+    <panel_attributes>controller
 --
-</panel_attributes>
+bg=orange
+layer=1
+group=6</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>1910</x>
+      <y>130</y>
+      <w>700</w>
+      <h>1080</h>
+    </coordinates>
+    <panel_attributes>view
+--
+bg=green
+group=7
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1800</x>
+      <y>1410</y>
+      <w>280</w>
+      <h>860</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;120.0;10.0;120.0;840.0;260.0;840.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1800</x>
+      <y>1430</y>
+      <w>170</w>
+      <h>960</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;110.0;10.0;110.0;940.0;150.0;940.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1800</x>
+      <y>1450</y>
+      <w>170</w>
+      <h>1060</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;100.0;10.0;100.0;1040.0;150.0;1040.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1800</x>
+      <y>1470</y>
+      <w>1560</w>
+      <h>1300</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;90.0;10.0;90.0;1280.0;940.0;1280.0;940.0;170.0;1540.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1800</x>
+      <y>1490</y>
+      <w>1250</w>
+      <h>1300</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;80.0;10.0;80.0;1280.0;950.0;1280.0;950.0;390.0;1230.0;390.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1800</x>
+      <y>1510</y>
+      <w>1060</w>
+      <h>1300</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;60.0;10.0;60.0;1280.0;970.0;1280.0;970.0;550.0;1040.0;550.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1800</x>
+      <y>1530</y>
+      <w>1060</w>
+      <h>1300</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;40.0;10.0;40.0;1280.0;990.0;1280.0;990.0;700.0;1040.0;700.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>1330</x>
+      <y>80</y>
+      <w>2470</w>
+      <h>2810</h>
+    </coordinates>
+    <panel_attributes>DentistOffice API - Project
+--
+bg=#BDE8FF</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>
