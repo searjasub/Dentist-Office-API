@@ -22,10 +22,19 @@ public class User implements Serializable {
 
     }
 
+    /**
+     * 
+     * @return the first name of user when called
+     */
+    
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the first name of user
+     */
+    
     public void setName(String name) {
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("This is not a valid name input");
@@ -33,10 +42,19 @@ public class User implements Serializable {
         this.name = name;
     }
 
+    /**
+     * 
+     * @return last name of the user
+     */
+    
     public String getLastName() {
         return lastName;
     }
 
+    /**
+     * Sets the last name of user
+     */
+    
     public void setLastName(String lastName) {
         if (lastName == null || lastName.trim().isEmpty()) {
             throw new IllegalArgumentException("This is not a valid last name input");
@@ -44,10 +62,19 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
+    /**
+     * 
+     * @return username of the user
+     */
+    
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Sets username of user
+     */
+    
     public void setUsername(String username) {
         if (username == null || username.trim().isEmpty()) {
             throw new IllegalArgumentException("This is not a valid username input");
@@ -55,10 +82,17 @@ public class User implements Serializable {
         this.username = username;
     }
 
+    /**
+     * @return password of the user
+     */
+    
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Sets the passowrd of the user
+     */
     public void setPassword(String password) {
         if (password == null || password.trim().isEmpty()) {
             throw new IllegalArgumentException("This is not a valid password input");
@@ -66,10 +100,18 @@ public class User implements Serializable {
         this.password = password;
     }
 
+    /**
+     * 
+     * @return userRole of the user
+     */
+    
     public UserRole getUserRole() {
         return userRole;
     }
 
+    /**
+     * sets userrole fo the user
+     */
     public void setUserRole(UserRole userRole) {
         if (userRole == null) {
             throw new IllegalArgumentException("This should not happen, but the setUserRole is not working.");
@@ -78,10 +120,18 @@ public class User implements Serializable {
         this.userRole = userRole;
     }
 
+    /**
+     * 
+     * @return whether or not this is the first time the user logged in or not
+     */
     public boolean isFirstTimePassChange() {
         return firstTimePassChange;
     }
 
+    /**
+     * 
+     * @return last name of the user
+     */
     public void setFirstTimePassChange(boolean firstTimePassChange) {
         this.firstTimePassChange = firstTimePassChange;
     }
