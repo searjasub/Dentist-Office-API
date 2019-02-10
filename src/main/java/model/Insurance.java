@@ -45,6 +45,13 @@ public class Insurance implements Serializable {
     }
 
     /**
+     * @return the group Id
+     */
+    public String getGroupId() {
+        return groupId;
+    }
+
+    /**
      * Set's the group ID
      * @param groupId new number for group ID
      */

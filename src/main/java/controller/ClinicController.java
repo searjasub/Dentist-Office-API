@@ -10,7 +10,10 @@ import java.nio.file.Paths;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Searjasub Lopez
@@ -156,9 +159,7 @@ public class ClinicController {
                 LocalDate start = userInteraction.getLocalDate();
                 userInteraction.print(end);
                 LocalDate end = userInteraction.getLocalDate();
-
                 int monthOrDay = userInteraction.selectMonthOrDay();
-
                 if (monthOrDay == 0) {
                     for (int i = 0; i < clinic.getPastAppointments().size(); i++) {
                         LocalDate tmp = LocalDate.of(
@@ -173,10 +174,11 @@ public class ClinicController {
                             }
                         }
                     }
-                    userInteraction.print("The total amount collected by the clinic from during those months is: " + totalAmount);
+                    userInteraction.print("The total amount collected by the clinic from: " + start.toString() + " until: " + end.toString() + " is: " + totalAmount + "\n");
+
                 } else {
                     for (int i = 0; i < clinic.getPastAppointments().size(); i++) {
-                        //MAP
+
                     }
 
                 }
@@ -184,10 +186,8 @@ public class ClinicController {
             case 1:
                 //PATIENT BALANCE
                 int selection3 = userInteraction.gruopBy();
-                switch (selection3){
+                switch (selection3) {
                     case 0://By largest balance
-
-
 
 
                         break;
@@ -204,6 +204,7 @@ public class ClinicController {
             case 2:
                 //todo
 
+
                 break;
             case 3:
                 //APPOINTMENTS
@@ -212,7 +213,7 @@ public class ClinicController {
                     case 0://SHOW PAST APPOINTMENT
                         for (int i = 0; i < clinic.getPastAppointments().size(); i++) {
                             if (clinic.getPastAppointments().get(i) != null) {
-                                userInteraction.println("Patient: " + clinic.getPastAppointments().get(i).getPatient().getName() + " " + clinic.getPastAppointments().get(i).getPatient().getLastName() + " | Time: " + clinic.getPastAppointments().get(i).getDateTime().getMonth() + "/" + clinic.getPastAppointments().get(i).getDateTime().getDayOfMonth() + " " + clinic.getPastAppointments().get(i).getDateTime().getHour() + ":" + clinic.getPastAppointments().get(i).getDateTime().getMinute() + "\n\t\tProcedures performed" + clinic.getPastAppointments().get(i).toString());
+                                userInteraction.println(userInteraction.removeCharacters("Patient: " + clinic.getPastAppointments().get(i).getPatient().getName() + " " + clinic.getPastAppointments().get(i).getPatient().getLastName() + " | Time: " + clinic.getPastAppointments().get(i).getDateTime().getMonth() + "/" + clinic.getPastAppointments().get(i).getDateTime().getDayOfMonth() + " " + clinic.getPastAppointments().get(i).getDateTime().getHour() + ":" + clinic.getPastAppointments().get(i).getDateTime().getMinute() + "\n\t\tProcedures performed" + clinic.getPastAppointments().get(i).toString() + "\n"));
                             }
                         }
                         break;
@@ -1004,7 +1005,7 @@ public class ClinicController {
                 }
 
                 if (userList.isEmpty()) {
-                    userInteraction.println(userInteraction.removeCharacters(clinic.getUsers().toString()));
+                   userInteraction.println("I couldn't find anything that matches that");
                 } else {
                     userInteraction.println(userInteraction.removeCharacters(userList.toString()));
                 }
