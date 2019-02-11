@@ -286,7 +286,7 @@ public class ClinicController {
                     	for(int x = 0; x < balanceList.length;x ++) {
                     		for(int y = 0; y < balanceList.length; y++) {
                     			if(balanceList[x] == clinic.getPatients().get(y).getBalance()) {
-                    				printList[x] = clinic.getPatients().get(y).getLastName() + balanceList[x];
+                    				printList[x] = clinic.getPatients().get(y).getLastName() + " $" + balanceList[x];
                     			}
                     		}
                     	}
@@ -295,8 +295,27 @@ public class ClinicController {
                     	}
                         break;
                     case 1: // by last name, first name
-
+                    	
+                    	String[] printList2 = new String[clinic.getPatients().size()];
+                    	String[] lastNameList = new String[clinic.getPatients().size()];
+                    	for(int i = 0; i < clinic.getPatients().size();i++) {
+                    		lastNameList[i] = clinic.getPatients().get(i).getLastName();
+                    	}
+                    	Arrays.sort(lastNameList);
+                    	for(int x = 0; x < lastNameList.length;x ++) {
+                    		for(int y = 0; y < lastNameList.length; y++) {
+                    			if(lastNameList[x] == clinic.getPatients().get(y).getLastName()) {
+                    				printList2[x] = lastNameList[x] + " $" + clinic.getPatients().get(y).getBalance();
+                    			}
+                    		}
+                    	}
+                    	for(int q = 0; q < printList2.length;q++) {
+                    		System.out.println(printList2[q]);
+                    	}
                         break;
+                        
+                        
+                        
                     case 2:
                         break;
                 }
