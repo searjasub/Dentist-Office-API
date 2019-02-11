@@ -208,16 +208,16 @@ public class ClinicController {
                     }
 
                     if (jan != 0) {
-                        userInteraction.println("March: $" + jan);
+                        userInteraction.println("January: $" + jan);
                     }
                     if (feb != 0) {
-                        userInteraction.println("March: $" + feb);
+                        userInteraction.println("February: $" + feb);
                     }
                     if (mar != 0) {
                         userInteraction.println("March: $" + mar);
                     }
                     if (apr != 0) {
-                        userInteraction.println("March: $" + apr);
+                        userInteraction.println("April: $" + apr);
                     }
                     if (may != 0) {
                         userInteraction.println("March: $" + may);
@@ -241,13 +241,11 @@ public class ClinicController {
                         userInteraction.println("March: $" + nov);
                     }
                     if (dec != 0) {
-                        userInteraction.println("March: $" + dec);
+                        userInteraction.println("December: $" + dec);
                     }
-
-
-
                 } else {
-
+                    //full date month and day
+                    //testing will add two appotment same day
 
 
 
