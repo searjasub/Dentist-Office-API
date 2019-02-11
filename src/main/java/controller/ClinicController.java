@@ -245,6 +245,7 @@ public class ClinicController {
 
                     LocalDate start1 = getStart();
                     LocalDate end1 = getEnd();
+                    int amountByDay = 0;
 
 
                     for (int i = 1; i < clinic.getPastAppointments().size(); i++) {
@@ -254,19 +255,24 @@ public class ClinicController {
 //                                clinic.getPastAppointments().get(i).getDateTime().getDayOfMonth());
 
 
-                        int amountByDay = 0;
-                        while (start1.isEqual(end1)){
+                        while (start1.isEqual(end1)) {
 
-                            if(start1.getDayOfMonth() == i){
+                            if (start1.getDayOfMonth() == i) {
                                 amountByDay += whenWasPaidByDay.get(i);
                             }
+
                             start1 = start1.plusDays(1);
                             i++;
 
-                            if(i == 31){
+                            if (i == 31) {
                                 i = 1;
                             }
                         }
+
+                    }
+
+                    if (amountByDay != 0) {
+
                     }
 
 
@@ -277,22 +283,22 @@ public class ClinicController {
                 int selection3 = userInteraction.gruopBy();
                 switch (selection3) {
                     case 0://By largest balance
-                    	double[] balanceList = new double[clinic.getPatients().size()];
-                    	String[] printList = new String[clinic.getPatients().size()];
-                    	for(int i = 0; i < clinic.getPatients().size();i++) {
-                    		balanceList[i] = clinic.getPatients().get(i).getBalance();
-                    	}
-                    	Arrays.sort(balanceList);
-                    	for(int x = 0; x < balanceList.length;x ++) {
-                    		for(int y = 0; y < balanceList.length; y++) {
-                    			if(balanceList[x] == clinic.getPatients().get(y).getBalance()) {
-                    				printList[x] = clinic.getPatients().get(y).getLastName() + balanceList[x];
-                    			}
-                    		}
-                    	}
-                    	for(int q = 0; q < printList.length;q++) {
-                    		System.out.println(printList[q]);
-                    	}
+                        double[] balanceList = new double[clinic.getPatients().size()];
+                        String[] printList = new String[clinic.getPatients().size()];
+                        for (int i = 0; i < clinic.getPatients().size(); i++) {
+                            balanceList[i] = clinic.getPatients().get(i).getBalance();
+                        }
+                        Arrays.sort(balanceList);
+                        for (int x = 0; x < balanceList.length; x++) {
+                            for (int y = 0; y < balanceList.length; y++) {
+                                if (balanceList[x] == clinic.getPatients().get(y).getBalance()) {
+                                    printList[x] = clinic.getPatients().get(y).getLastName() + balanceList[x];
+                                }
+                            }
+                        }
+                        for (int q = 0; q < printList.length; q++) {
+                            System.out.println(printList[q]);
+                        }
                         break;
                     case 1: // by last name, first name
 
@@ -307,7 +313,27 @@ public class ClinicController {
             case 2:
                 //todo
 
+                LocalDate start2 = getStart();
+                LocalDate end2 = getEnd();
 
+                double totalAmount = 0;
+                for (int i = 0; i < clinic.getPastAppointments().size(); i++) {
+                    LocalDate tmp = LocalDate.of(
+                            clinic.getPastAppointments().get(i).getDateTime().getYear(),
+                            clinic.getPastAppointments().get(i).getDateTime().getMonth(),
+                            clinic.getPastAppointments().get(i).getDateTime().getDayOfMonth());
+
+                    if (tmp.isAfter(start2) && tmp.isBefore(end2)) {
+                        if (clinic.getPastAppointments().get(i).isCompleted()) {
+                            for (int j = 0; j < clinic.getPastAppointments().get(i).getProcedures().size(); j++) {
+                                totalAmount += clinic.getPastAppointments().get(i).getProcedures().get(j).getCost();
+                            }
+
+
+                        }
+                    }
+                }
+                userInteraction.print("The total amount collected by the clinic from: " + start2.toString() + " until: " + end2.toString() + " is: " + totalAmount + "\n");
                 break;
             case 3:
                 //APPOINTMENTS
