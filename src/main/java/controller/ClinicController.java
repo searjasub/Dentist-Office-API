@@ -245,7 +245,7 @@ public class ClinicController {
                     }
                 } else {
                     //full date month and day
-                    //testing will add two appotment same day
+                    //testing will add two appointment same day
 
 
 
@@ -256,8 +256,22 @@ public class ClinicController {
                 int selection3 = userInteraction.gruopBy();
                 switch (selection3) {
                     case 0://By largest balance
-
-
+                    	double[] balanceList = new double[clinic.getPatients().size()];
+                    	String[] printList = new String[clinic.getPatients().size()];
+                    	for(int i = 0; i < clinic.getPatients().size();i++) {
+                    		balanceList[i] = clinic.getPatients().get(i).getBalance();
+                    	}
+                    	Arrays.sort(balanceList);
+                    	for(int x = 0; x < balanceList.length;x ++) {
+                    		for(int y = 0; y < balanceList.length; y++) {
+                    			if(balanceList[x] == clinic.getPatients().get(y).getBalance()) {
+                    				printList[x] = clinic.getPatients().get(y).getLastName() + balanceList[x];
+                    			}
+                    		}
+                    	}
+                    	for(int q = 0; q < printList.length;q++) {
+                    		System.out.println(printList[q]);
+                    	}
                         break;
                     case 1: // by last name, first name
 
