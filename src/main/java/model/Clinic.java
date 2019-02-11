@@ -40,7 +40,7 @@ public class Clinic implements Serializable {
         }
         return 0;
     }
-
+    
     /**
      * @return The list of providers
      */
