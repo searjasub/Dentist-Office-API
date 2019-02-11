@@ -10,10 +10,8 @@ import java.nio.file.Paths;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
+import java.time.Month;
+import java.util.*;
 
 /**
  * @author Searjasub Lopez
@@ -34,6 +32,7 @@ public class ClinicController {
     private User currentUser;
     private DentistOfficeUserInteraction userInteraction;
     private HashMap<String, String> loginCredentials = new HashMap<>();
+    private Map<Month, Double> whenWasPaid = new HashMap<>();
 
     /**
      * @param ui instance of the user interaction calling project
@@ -152,34 +151,105 @@ public class ClinicController {
     private void viewMenuHandler(int selection) throws IOException, ClassNotFoundException {
         switch (selection) {
             case 0:
-                //TODO
-                //PRODUCTION
-                int totalAmount = 0;
                 userInteraction.print(start);
                 LocalDate start = userInteraction.getLocalDate();
                 userInteraction.print(end);
                 LocalDate end = userInteraction.getLocalDate();
+
+                double jan = 0;
+                double feb = 0;
+                double mar = 0;
+                double apr = 0;
+                double may = 0;
+                double jun = 0;
+                double jul = 0;
+                double aug = 0;
+                double sept = 0;
+                double oct = 0;
+                double nov = 0;
+                double dec = 0;
+
+
                 int monthOrDay = userInteraction.selectMonthOrDay();
-                if (monthOrDay == 0) {
+                if (monthOrDay == 1) {
                     for (int i = 0; i < clinic.getPastAppointments().size(); i++) {
                         LocalDate tmp = LocalDate.of(
                                 clinic.getPastAppointments().get(i).getDateTime().getYear(),
                                 clinic.getPastAppointments().get(i).getDateTime().getMonth(),
                                 clinic.getPastAppointments().get(i).getDateTime().getDayOfMonth());
+
                         if (tmp.isAfter(start) && tmp.isBefore(end)) {
-                            if (clinic.getPastAppointments().get(i).isCompleted()) {
-                                for (int j = 0; j < clinic.getPastAppointments().get(i).getProcedures().size(); j++) {
-                                    totalAmount += clinic.getPastAppointments().get(i).getProcedures().get(j).getCost();
-                                }
+                            if (tmp.getMonth() == Month.JANUARY) {
+                                jan += whenWasPaid.get(tmp.getMonth());
+                            } else if (tmp.getMonth() == Month.FEBRUARY) {
+                                feb += whenWasPaid.get(tmp.getMonth());
+                            } else if (tmp.getMonth() == Month.MARCH) {
+                                mar += whenWasPaid.get(tmp.getMonth());
+                            } else if (tmp.getMonth() == Month.APRIL) {
+                                apr += whenWasPaid.get(tmp.getMonth());
+                            } else if (tmp.getMonth() == Month.MAY) {
+                                may += whenWasPaid.get(tmp.getMonth());
+                            } else if (tmp.getMonth() == Month.JUNE) {
+                                jun += whenWasPaid.get(tmp.getMonth());
+                            } else if (tmp.getMonth() == Month.JULY) {
+                                jul += whenWasPaid.get(tmp.getMonth());
+                            } else if (tmp.getMonth() == Month.AUGUST) {
+                                aug += whenWasPaid.get(tmp.getMonth());
+                            } else if (tmp.getMonth() == Month.SEPTEMBER) {
+                                sept += whenWasPaid.get(tmp.getMonth());
+                            } else if (tmp.getMonth() == Month.OCTOBER) {
+                                oct += whenWasPaid.get(tmp.getMonth());
+                            } else if (tmp.getMonth() == Month.NOVEMBER) {
+                                nov += whenWasPaid.get(tmp.getMonth());
+                            } else if (tmp.getMonth() == Month.DECEMBER) {
+                                dec += whenWasPaid.get(tmp.getMonth());
                             }
                         }
                     }
-                    userInteraction.print("The total amount collected by the clinic from: " + start.toString() + " until: " + end.toString() + " is: " + totalAmount + "\n");
+
+                    if (jan != 0) {
+                        userInteraction.println("March: $" + jan);
+                    }
+                    if (feb != 0) {
+                        userInteraction.println("March: $" + feb);
+                    }
+                    if (mar != 0) {
+                        userInteraction.println("March: $" + mar);
+                    }
+                    if (apr != 0) {
+                        userInteraction.println("March: $" + apr);
+                    }
+                    if (may != 0) {
+                        userInteraction.println("March: $" + may);
+                    }
+                    if (jun != 0) {
+                        userInteraction.println("March: $" + jun);
+                    }
+                    if (jul != 0) {
+                        userInteraction.println("March: $" + jul);
+                    }
+                    if (aug != 0) {
+                        userInteraction.println("March: $" + aug);
+                    }
+                    if (sept != 0) {
+                        userInteraction.println("March: $" + sept);
+                    }
+                    if (oct != 0) {
+                        userInteraction.println("March: $" + oct);
+                    }
+                    if (nov != 0) {
+                        userInteraction.println("March: $" + nov);
+                    }
+                    if (dec != 0) {
+                        userInteraction.println("March: $" + dec);
+                    }
+
+
 
                 } else {
-                    for (int i = 0; i < clinic.getPastAppointments().size(); i++) {
 
-                    }
+
+
 
                 }
                 break;
@@ -238,6 +308,12 @@ public class ClinicController {
                                         userInteraction.chargeAmount(),
                                         appointment.getPatient(),
                                         userInteraction.getSource());
+
+                                double amountTotal = 0;
+                                for (int i = 0; i < ap.getProcedures().size(); i++) {
+                                    amountTotal += ap.getProcedures().get(i).getCost();
+                                }
+                                whenWasPaid.put(appointment.getDateTime().getMonth(), amountTotal);
 
                                 clinic.receivePayment(payment);
                                 appointment.getPatient().setBalance(-payment.getAmount());
@@ -842,14 +918,18 @@ public class ClinicController {
     }
 
     private void deleteAppointment() throws IOException, ClassNotFoundException {
-        FutureAppointment appointment = userInteraction.selectFutureAppointment(clinic.getFutureAppointments(), "Select appointment to delete");
-        for (int i = 0; i < clinic.getFutureAppointments().size(); i++) {
-            if (appointment.getPatient() == clinic.getFutureAppointments().get(i).getPatient() &&
-                    appointment.getDateTime() == clinic.getFutureAppointments().get(i).getDateTime()) {
-                clinic.getFutureAppointments().remove(appointment);
+        try {
+            FutureAppointment appointment = userInteraction.selectFutureAppointment(clinic.getFutureAppointments(), "Select appointment to delete");
+            for (int i = 0; i < clinic.getFutureAppointments().size(); i++) {
+                if (appointment.getPatient() == clinic.getFutureAppointments().get(i).getPatient() &&
+                        appointment.getDateTime() == clinic.getFutureAppointments().get(i).getDateTime()) {
+                    clinic.getFutureAppointments().remove(appointment);
+                }
             }
+            autoSaveLoad();
+        } catch (NotFoundException ex) {
+            userInteraction.println(ex.getObject());
         }
-        autoSaveLoad();
     }
 
     private void deleteProcedure() throws IOException, ClassNotFoundException {
@@ -896,7 +976,7 @@ public class ClinicController {
                 try {
                     insurance = userInteraction.selectInsurance(clinic.getInsurances(), "Select insurance to search for");
                 } catch (NotFoundException ex) {
-                    System.out.println(ex.getObject());
+                    userInteraction.println(ex.getObject());
                 }
                 for (int i = 0; i < clinic.getPatients().size(); i++) {
                     if (patientName.equals(clinic.getPatients().get(i).getName())) {
@@ -949,7 +1029,7 @@ public class ClinicController {
                     provider = userInteraction.selectProvider(clinic.getProviders(), "Select a Provider to search for", true);
                     patient = userInteraction.selectPatient(clinic.getPatients(), "Select a Patient to search for", true);
                 } catch (NotFoundException ex) {
-                    System.out.println(ex.getObject());
+                    userInteraction.println(ex.getObject());
                 }
                 String code = userInteraction.getCode();
 
@@ -1005,7 +1085,7 @@ public class ClinicController {
                 }
 
                 if (userList.isEmpty()) {
-                   userInteraction.println("I couldn't find anything that matches that");
+                    userInteraction.println("I couldn't find anything that matches that");
                 } else {
                     userInteraction.println(userInteraction.removeCharacters(userList.toString()));
                 }
@@ -1078,6 +1158,12 @@ public class ClinicController {
             loginCredentials.put(clinic.getUsers().get(i).getUsername(), clinic.getUsers().get(i).getPassword());
         }
         in.close();
+
+        for (int i = 0; i < clinic.getPastAppointments().size(); i++) {
+            if (clinic.getPayments().get(i).getPatient() == clinic.getPastAppointments().get(i).getPatient()) {
+                whenWasPaid.put(clinic.getPastAppointments().get(i).getDateTime().getMonth(), clinic.getPayments().get(i).getAmount());
+            }
+        }
     }
 
     private boolean makeDirectory() throws IOException {
