@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 /**
  * Define the payment functionality
@@ -12,6 +13,7 @@ public class Payment implements Serializable {
     private double amount;
     private Patient patient;
     private Source source;
+    private LocalDate time;
 
     /**
      * Constructor of Payment
@@ -23,6 +25,13 @@ public class Payment implements Serializable {
         this.amount = amount;
         this.patient = patient;
         this.source = source;
+    }
+
+    public Payment(double amount, Patient patient, Source source, LocalDate time) {
+        this.amount = amount;
+        this.patient = patient;
+        this.source = source;
+        this.setTime(time);
     }
 
     /**
@@ -62,5 +71,13 @@ public class Payment implements Serializable {
      */
     public void setSource(Source source) {
         this.source = source;
+    }
+
+    public LocalDate getTime() {
+        return time;
+    }
+
+    public void setTime(LocalDate time) {
+        this.time = time;
     }
 }

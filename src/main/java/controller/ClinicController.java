@@ -247,6 +247,7 @@ public class ClinicController {
                     int amountByDay = 0;
 
 
+
                     for (int i = 1; i < clinic.getPastAppointments().size(); i++) {
 //                        LocalDate tmp = LocalDate.of(
 //                                clinic.getPastAppointments().get(i).getDateTime().getYear(),
@@ -328,6 +329,8 @@ public class ClinicController {
                 LocalDate start2 = getStart();
                 LocalDate end2 = getEnd();
 
+                double jan1 = 0, feb1 = 0, mar1 = 0, apr1 = 0, may1 = 0, jun1 = 0, jul1 = 0, aug1 = 0, sept1 = 0, oct1 = 0, nov1 = 0, dec1 = 0;
+
                 double totalAmount = 0;
                 for (int i = 0; i < clinic.getPastAppointments().size(); i++) {
                     LocalDate tmp = LocalDate.of(
@@ -337,14 +340,20 @@ public class ClinicController {
 
                     if (tmp.isAfter(start2) && tmp.isBefore(end2)) {
                         if (clinic.getPastAppointments().get(i).isCompleted()) {
-                            for (int j = 0; j < clinic.getPastAppointments().get(i).getProcedures().size(); j++) {
-                                totalAmount += clinic.getPastAppointments().get(i).getProcedures().get(j).getCost();
-                            }
 
+                                totalAmount += clinic.getPastAppointments().get(i).getPayment().getAmount();
 
                         }
                     }
                 }
+
+
+
+
+
+
+
+
                 userInteraction.print("The total amount collected by the clinic from: " + start2.toString() + " until: " + end2.toString() + " is: " + totalAmount + "\n");
                 break;
             case 3:
@@ -369,16 +378,17 @@ public class ClinicController {
                                         tmp.getDateTime(),
                                         tmp.isCompleted());
 
-                                AppointmentRecord ap = new AppointmentRecord(
-                                        appointment.getPatient(),
-                                        appointment.getDateTime(),
-                                        appointment.isCompleted(),
-                                        getProcedureRecords(appointment.getPatient(), tmp));
 
                                 Payment payment = new Payment(
                                         userInteraction.chargeAmount(),
                                         appointment.getPatient(),
                                         userInteraction.getSource());
+                                AppointmentRecord ap = new AppointmentRecord(
+                                        appointment.getPatient(),
+                                        appointment.getDateTime(),
+                                        appointment.isCompleted(),
+                                        getProcedureRecords(appointment.getPatient(), tmp),
+                                        payment);
 
                                 double amountTotal = 0;
                                 for (int i = 0; i < ap.getProcedures().size(); i++) {

@@ -11,15 +11,25 @@ public class AppointmentRecord extends Appointment {
     private static final long serialVersionUID = 8843901474642222173L;
 
     private List<ProcedureRecord> procedures;
+    private Payment payment;
 
     /**
      * Constructor of the appointment record
      * @param procedures list of procedures performed
      * @see Appointment for information about constructor, methods and parameter adquired by the parent class
      */
-    public AppointmentRecord(Patient patient, LocalDateTime dateTime, boolean isCompleted, List<ProcedureRecord> procedures) {
+    public AppointmentRecord(Patient patient, LocalDateTime dateTime, boolean isCompleted, List<ProcedureRecord> procedures, Payment payment) {
         super(patient, dateTime, isCompleted);
         this.setProcedures(procedures);
+        this.setPayment(payment);
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 
     /**
