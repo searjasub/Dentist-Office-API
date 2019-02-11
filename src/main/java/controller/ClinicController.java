@@ -7,7 +7,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -283,51 +282,45 @@ public class ClinicController {
                 int selection3 = userInteraction.gruopBy();
                 switch (selection3) {
                     case 0://By largest balance
-                    	double[] balanceList = new double[clinic.getPatients().size()];
-                    	String[] printList = new String[clinic.getPatients().size()];
-                    	for(int i = 0; i < clinic.getPatients().size();i++) {
-                    		balanceList[i] = clinic.getPatients().get(i).getBalance();
-                    	}
-                    	Arrays.sort(balanceList);
-                    	for(int x = 0; x < balanceList.length;x ++) {
-                    		for(int y = 0; y < balanceList.length; y++) {
-                    			if(balanceList[x] == clinic.getPatients().get(y).getBalance()) {
-                    				printList[x] = clinic.getPatients().get(y).getLastName() + " $" + balanceList[x];
-                    			}
-                    		}
-                    	}
-                    	for(int q = 0; q < printList.length;q++) {
-                    		System.out.println(printList[q]);
-                    	}
+                        double[] balanceList = new double[clinic.getPatients().size()];
+                        String[] printList = new String[clinic.getPatients().size()];
+                        for (int i = 0; i < clinic.getPatients().size(); i++) {
+                            balanceList[i] = clinic.getPatients().get(i).getBalance();
+                        }
+                        Arrays.sort(balanceList);
+                        for (int x = 0; x < balanceList.length; x++) {
+                            for (int y = 0; y < balanceList.length; y++) {
+                                if (balanceList[x] == clinic.getPatients().get(y).getBalance()) {
+                                    printList[x] = clinic.getPatients().get(y).getLastName() + " $" + balanceList[x];
+                                }
+                            }
+                        }
+                        for (int q = 0; q < printList.length; q++) {
+                            System.out.println(printList[q]);
+                        }
                         break;
                     case 1: // by last name, first name
-                    	
-                    	String[] printList2 = new String[clinic.getPatients().size()];
-                    	String[] lastNameList = new String[clinic.getPatients().size()];
-                    	for(int i = 0; i < clinic.getPatients().size();i++) {
-                    		lastNameList[i] = clinic.getPatients().get(i).getLastName();
-                    	}
-                    	Arrays.sort(lastNameList);
-                    	for(int x = 0; x < lastNameList.length;x ++) {
-                    		for(int y = 0; y < lastNameList.length; y++) {
-                    			if(lastNameList[x] == clinic.getPatients().get(y).getLastName()) {
-                    				printList2[x] = lastNameList[x] + " $" + clinic.getPatients().get(y).getBalance();
-                    			}
-                    		}
-                    	}
-                    	for(int q = 0; q < printList2.length;q++) {
-                    		System.out.println(printList2[q]);
-                    	}
+
+                        String[] printList2 = new String[clinic.getPatients().size()];
+                        String[] lastNameList = new String[clinic.getPatients().size()];
+                        for (int i = 0; i < clinic.getPatients().size(); i++) {
+                            lastNameList[i] = clinic.getPatients().get(i).getLastName();
+                        }
+                        Arrays.sort(lastNameList);
+                        for (int x = 0; x < lastNameList.length; x++) {
+                            for (int y = 0; y < lastNameList.length; y++) {
+                                if (lastNameList[x] == clinic.getPatients().get(y).getLastName()) {
+                                    printList2[x] = lastNameList[x] + " $" + clinic.getPatients().get(y).getBalance();
+                                }
+                            }
+                        }
+                        for (int q = 0; q < printList2.length; q++) {
+                            System.out.println(printList2[q]);
+                        }
                         break;
-                        
-                        
-                        
                     case 2:
                         break;
                 }
-                Patient selected = userInteraction.selectPatient(clinic.getPatients(), "Select a Patient", false);
-                double amount = clinic.getAccountBalance(selected.getUniqueId());
-                userInteraction.println(selected.getName() + "'s balance is: -" + NumberFormat.getCurrencyInstance(new Locale("en", "US")).format(amount));
                 break;
             case 2:
                 //todo
