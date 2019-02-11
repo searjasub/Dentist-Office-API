@@ -32,7 +32,8 @@ public class ClinicController {
     private User currentUser;
     private DentistOfficeUserInteraction userInteraction;
     private HashMap<String, String> loginCredentials = new HashMap<>();
-    private Map<Month, Double> whenWasPaid = new HashMap<>();
+    private Map<Month, Double> whenWasPaidByMonth = new HashMap<>();
+    private Map<Integer, Double> whenWasPaidByDay = new HashMap<>();
 
     /**
      * @param ui instance of the user interaction calling project
@@ -147,28 +148,24 @@ public class ClinicController {
         return false;
     }
 
+    private LocalDate getStart() throws IOException {
+        userInteraction.print(start);
+        return userInteraction.getLocalDate();
+
+    }
+
+    private LocalDate getEnd() throws IOException {
+        userInteraction.print(end);
+        return userInteraction.getLocalDate();
+    }
 
     private void viewMenuHandler(int selection) throws IOException, ClassNotFoundException {
         switch (selection) {
             case 0:
-                userInteraction.print(start);
-                LocalDate start = userInteraction.getLocalDate();
-                userInteraction.print(end);
-                LocalDate end = userInteraction.getLocalDate();
 
-                double jan = 0;
-                double feb = 0;
-                double mar = 0;
-                double apr = 0;
-                double may = 0;
-                double jun = 0;
-                double jul = 0;
-                double aug = 0;
-                double sept = 0;
-                double oct = 0;
-                double nov = 0;
-                double dec = 0;
-
+                LocalDate start = getStart();
+                LocalDate end = getEnd();
+                double jan = 0, feb = 0, mar = 0, apr = 0, may = 0, jun = 0, jul = 0, aug = 0, sept = 0, oct = 0, nov = 0, dec = 0;
 
                 int monthOrDay = userInteraction.selectMonthOrDay();
                 if (monthOrDay == 1) {
@@ -180,33 +177,32 @@ public class ClinicController {
 
                         if (tmp.isAfter(start) && tmp.isBefore(end)) {
                             if (tmp.getMonth() == Month.JANUARY) {
-                                jan += whenWasPaid.get(tmp.getMonth());
+                                jan += whenWasPaidByMonth.get(tmp.getMonth());
                             } else if (tmp.getMonth() == Month.FEBRUARY) {
-                                feb += whenWasPaid.get(tmp.getMonth());
+                                feb += whenWasPaidByMonth.get(tmp.getMonth());
                             } else if (tmp.getMonth() == Month.MARCH) {
-                                mar += whenWasPaid.get(tmp.getMonth());
+                                mar += whenWasPaidByMonth.get(tmp.getMonth());
                             } else if (tmp.getMonth() == Month.APRIL) {
-                                apr += whenWasPaid.get(tmp.getMonth());
+                                apr += whenWasPaidByMonth.get(tmp.getMonth());
                             } else if (tmp.getMonth() == Month.MAY) {
-                                may += whenWasPaid.get(tmp.getMonth());
+                                may += whenWasPaidByMonth.get(tmp.getMonth());
                             } else if (tmp.getMonth() == Month.JUNE) {
-                                jun += whenWasPaid.get(tmp.getMonth());
+                                jun += whenWasPaidByMonth.get(tmp.getMonth());
                             } else if (tmp.getMonth() == Month.JULY) {
-                                jul += whenWasPaid.get(tmp.getMonth());
+                                jul += whenWasPaidByMonth.get(tmp.getMonth());
                             } else if (tmp.getMonth() == Month.AUGUST) {
-                                aug += whenWasPaid.get(tmp.getMonth());
+                                aug += whenWasPaidByMonth.get(tmp.getMonth());
                             } else if (tmp.getMonth() == Month.SEPTEMBER) {
-                                sept += whenWasPaid.get(tmp.getMonth());
+                                sept += whenWasPaidByMonth.get(tmp.getMonth());
                             } else if (tmp.getMonth() == Month.OCTOBER) {
-                                oct += whenWasPaid.get(tmp.getMonth());
+                                oct += whenWasPaidByMonth.get(tmp.getMonth());
                             } else if (tmp.getMonth() == Month.NOVEMBER) {
-                                nov += whenWasPaid.get(tmp.getMonth());
+                                nov += whenWasPaidByMonth.get(tmp.getMonth());
                             } else if (tmp.getMonth() == Month.DECEMBER) {
-                                dec += whenWasPaid.get(tmp.getMonth());
+                                dec += whenWasPaidByMonth.get(tmp.getMonth());
                             }
                         }
                     }
-
                     if (jan != 0) {
                         userInteraction.println("January: $" + jan);
                     }
@@ -245,8 +241,33 @@ public class ClinicController {
                     }
                 } else {
                     //full date month and day
-                    //testing will add two appotment same day
+                    //testing will add two appointment same day
 
+                    LocalDate start1 = getStart();
+                    LocalDate end1 = getEnd();
+
+
+                    for (int i = 1; i < clinic.getPastAppointments().size(); i++) {
+//                        LocalDate tmp = LocalDate.of(
+//                                clinic.getPastAppointments().get(i).getDateTime().getYear(),
+//                                clinic.getPastAppointments().get(i).getDateTime().getMonth(),
+//                                clinic.getPastAppointments().get(i).getDateTime().getDayOfMonth());
+
+
+                        int amountByDay = 0;
+                        while (start1.isEqual(end1)){
+
+                            if(start1.getDayOfMonth() == i){
+                                amountByDay += whenWasPaidByDay.get(i);
+                            }
+                            start1 = start1.plusDays(1);
+                            i++;
+
+                            if(i == 31){
+                                i = 1;
+                            }
+                        }
+                    }
 
 
                 }
@@ -311,7 +332,7 @@ public class ClinicController {
                                 for (int i = 0; i < ap.getProcedures().size(); i++) {
                                     amountTotal += ap.getProcedures().get(i).getCost();
                                 }
-                                whenWasPaid.put(appointment.getDateTime().getMonth(), amountTotal);
+                                whenWasPaidByMonth.put(appointment.getDateTime().getMonth(), amountTotal);
 
                                 clinic.receivePayment(payment);
                                 appointment.getPatient().setBalance(-payment.getAmount());
@@ -1159,7 +1180,13 @@ public class ClinicController {
 
         for (int i = 0; i < clinic.getPastAppointments().size(); i++) {
             if (clinic.getPayments().get(i).getPatient() == clinic.getPastAppointments().get(i).getPatient()) {
-                whenWasPaid.put(clinic.getPastAppointments().get(i).getDateTime().getMonth(), clinic.getPayments().get(i).getAmount());
+                whenWasPaidByMonth.put(clinic.getPastAppointments().get(i).getDateTime().getMonth(), clinic.getPayments().get(i).getAmount());
+            }
+        }
+
+        for (int i = 0; i < clinic.getPastAppointments().size(); i++) {
+            if (clinic.getPayments().get(i).getPatient() == clinic.getPastAppointments().get(i).getPatient()) {
+                whenWasPaidByDay.put(clinic.getPastAppointments().get(i).getDateTime().getDayOfMonth(), clinic.getPayments().get(i).getAmount());
             }
         }
     }
