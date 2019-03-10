@@ -9,6 +9,7 @@
         <module name="Dentist Application" />
         <module name="dentist-application" />
         <module name="dentist-application-api" />
+        <module name="Dentist-Office-API" />
       </profile>
     </annotationProcessing>
   </component>
